@@ -13,14 +13,13 @@ import java.util.LinkedList;
 
 import javax.swing.SwingUtilities;
 
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.angelcalvo.palitos.PlayerAI;
-import com.angelcalvo.palitos.Player;
-import com.angelcalvo.palitos.Game;
 import com.angelcalvo.palitos.Board;
+import com.angelcalvo.palitos.Game;
+import com.angelcalvo.palitos.Player;
+import com.angelcalvo.palitos.PlayerAI;
 import com.angelcalvo.superpalitos.gui.FinJuegoDialog;
 import com.angelcalvo.superpalitos.gui.SPFrame;
 import com.angelcalvo.superpalitos.net.PNClient;
@@ -153,8 +152,10 @@ public class SuperPalitos {
    * @param args Argumentos de entrada.
    */
   public static void main(String[] args) {
-		BeanFactory factory = new XmlBeanFactory(new ClassPathResource(SPRING_FILE));
-		final SuperPalitos sp = (SuperPalitos) factory.getBean("sp");
+		//BeanFactory factory = new XmlBeanFactory(new ClassPathResource(SPRING_FILE));
+		ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+		
+		final SuperPalitos sp = (SuperPalitos) context.getBean("sp");
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

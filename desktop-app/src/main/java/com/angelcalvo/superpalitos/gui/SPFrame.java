@@ -123,7 +123,7 @@ public class SPFrame extends JFrame {
    * Crea la ventana principal
    */
   public SPFrame() {
-    super("Super_Palitos_3_M3");
+    super("Super Palitos 3 M3");
     
     loadResources();
     
