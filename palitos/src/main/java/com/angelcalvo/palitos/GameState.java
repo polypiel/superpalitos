@@ -7,7 +7,7 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.palitos;
+package com.angelcalvo.palitos;
 import java.util.*;
 
 /**
@@ -16,7 +16,7 @@ import java.util.*;
  *
  * @author Angel Luis Calvo Ortega
  */
-public class Estado implements Cloneable {
+public class GameState implements Cloneable {
   /** Jugadas ganadoras */
   private static final int[][][] jugadas = {
       {{1, 0, 0, 0, 0}, {3, 0, 0, 0, 0}, {0, 2, 0, 0, 0}},
@@ -29,7 +29,7 @@ public class Estado implements Cloneable {
   /**
    * Constructor, inicializa el array a {1, 1, 1, 1, 1}
    */
-  public Estado() {
+  public GameState() {
     est = new int[5];
     for(int i = 0; i < est.length; i++) {
       est[i] = 1;
@@ -39,7 +39,7 @@ public class Estado implements Cloneable {
   /**
    * Actualiza el estado cuando se ha introduzido una jugada.
    */
-  public void actualiza(Palito palitos) {
+  public void update(Sticks palitos) {
     int aux = 0, indice;
 
     for(int i = 0; i < est.length; i++) {
@@ -76,7 +76,7 @@ public class Estado implements Cloneable {
   				}
   			}
   			if(cont == 1) {
-  				return IA.MIN - (i + 1);
+  				return PlayerAI.MIN - (i + 1);
   			}
   		}
   	}
@@ -88,10 +88,10 @@ public class Estado implements Cloneable {
    * @param e El estado
    * @return
    */
-  public int[] getJugada(Estado e) {
+  public int[] getMove(GameState e) {
     int jug[] = new int[3];
 
-    jug[0] = numPalitos() - e.numPalitos();
+    jug[0] = numSticksAlive() - e.numSticksAlive();
     jug[2] = 0;
     for(int i = est.length - 1; i >= 0; i--) {
       if(est[i] > e.est[i]) {
@@ -113,7 +113,7 @@ public class Estado implements Cloneable {
           }
         }
         if(cont == est.length) {
-          return IA.MAX + i + 1;
+          return PlayerAI.MAX + i + 1;
         }
       }
     }
@@ -128,7 +128,7 @@ public class Estado implements Cloneable {
    * @param dif La dificultad del contrario.
    * @return La optimidad del estado.
    */
-  public int valor(int dif) {
+  protected int value(int dif) {
 		int v;
 		
     if((v = esJugada(dif)) != 0) {
@@ -144,7 +144,7 @@ public class Estado implements Cloneable {
    * Metodo para saber el numero de palitos sin tachar.
    * @return El numero de palitos sin tachar.
    */
-  public int numPalitos() {
+  public int numSticksAlive() {
     int n = 0;
 
     for(int i = 0; i < est.length; i++) {
@@ -157,7 +157,7 @@ public class Estado implements Cloneable {
    * Incrementa una meseta de longitudes de palitos.
    * @param indice La meseta a incrementar.
    */
-  public void inc(int indice) {
+  private void inc(int indice) {
     est[indice]++;
   }
 
@@ -165,7 +165,7 @@ public class Estado implements Cloneable {
    * Decrementa una meseta de longitudes de palitos.
    * @param indice La meseta a incrementar.
    */
-  public void dec(int indice) {
+  private void dec(int indice) {
     est[indice]--;
   }
 
@@ -174,14 +174,13 @@ public class Estado implements Cloneable {
    * @return Un iterador con todos los estados.
    */
 
-  public Collection<Estado> hijos() {
-    Vector<Estado> v = new Vector<Estado>();
+  protected Collection<GameState> children() {
+    Vector<GameState> v = new Vector<GameState>();
 
     for(int i = 0; i < 5; i++) {
       for(int j = 0; j <= i && est[i] > 0; j++) {
         for(int k = 0; k <= (i - j) / 2; k++) {
-          //System.out.print("("+i+","+j+","+k+") o> ");
-          Estado e = (Estado)clone();
+          GameState e = (GameState)clone();
 
           e.dec(i);
           if(i - j - k > 0) {
@@ -191,7 +190,7 @@ public class Estado implements Cloneable {
             e.inc(k - 1);
           }
 
-          if(e.numPalitos() > 0) {
+          if(e.numSticksAlive() > 0) {
             v.addElement(e);
           }
         }
@@ -203,7 +202,7 @@ public class Estado implements Cloneable {
   @Override
   public Object clone() {
     try {
-      Estado nuevoEstado = (Estado)super.clone();
+      GameState nuevoEstado = (GameState)super.clone();
       nuevoEstado.est = (int[])est.clone();
       return nuevoEstado;
     } catch(CloneNotSupportedException e) {
@@ -213,11 +212,11 @@ public class Estado implements Cloneable {
 
   @Override
   public String toString() {
-  	StringBuffer buf = new StringBuffer(java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("Estado:_"));
+  	StringBuffer buf = new StringBuffer();
 
     for(int i = 0; i < est.length; i++) {
     	buf.append(est[i]);
-    	buf.append(java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("_"));
+    	buf.append(" ");
     }
     return buf.toString();
   }

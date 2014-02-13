@@ -4,11 +4,11 @@
  * Created on 2 de diciembre de 2007, 19:17
  */
 
-package org.pvs.superpalitos.gui;
+package com.angelcalvo.superpalitos.gui;
 
 import javax.swing.JOptionPane;
 
-import org.pvs.superpalitos.SuperPalitos;
+import com.angelcalvo.superpalitos.SuperPalitos;
 
 /**
  *
@@ -54,14 +54,14 @@ public class NewConnectionDialog extends javax.swing.JDialog {
       sp.conectar(dirTF.getText(), port);
     } else {
       //TODO quitar
-      JOptionPane.showMessageDialog(this, java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("Datos_incorrectos"), java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("Error"), JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(this, java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("Datos_incorrectos"), java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("Error"), JOptionPane.ERROR_MESSAGE);
     }
   }
     
   private void cancel() {
     if(state == CONECTANDO) {
       state = INICIO;
-      setTitle(java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("JDConectar"));
+      setTitle(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("JDConectar"));
       dirTF.setEnabled(true);
       portTF.setEnabled(true);
       okButton.setEnabled(true);
@@ -99,7 +99,7 @@ public class NewConnectionDialog extends javax.swing.JDialog {
     connProgress = new javax.swing.JProgressBar();
     statusLabel = new javax.swing.JLabel();
 
-    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle"); // NOI18N
+    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle"); // NOI18N
     setTitle(bundle.getString("connDialog.title")); // NOI18N
     addWindowListener(new java.awt.event.WindowAdapter() {
       public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -107,7 +107,7 @@ public class NewConnectionDialog extends javax.swing.JDialog {
       }
     });
 
-    okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/apply.png"))); // NOI18N
+    okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/apply.png"))); // NOI18N
     okButton.setText(bundle.getString("connDialog.ok")); // NOI18N
     okButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,7 +115,7 @@ public class NewConnectionDialog extends javax.swing.JDialog {
       }
     });
 
-    cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/cancel.png"))); // NOI18N
+    cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/cancel.png"))); // NOI18N
     cancelButton.setText(bundle.getString("connDialog.cancel")); // NOI18N
     cancelButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {

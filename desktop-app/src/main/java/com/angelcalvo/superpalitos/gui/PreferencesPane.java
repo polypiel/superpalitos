@@ -4,14 +4,14 @@
  * Created on 1 de diciembre de 2007, 11:36
  */
 
-package org.pvs.superpalitos.gui;
+package com.angelcalvo.superpalitos.gui;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import org.pvs.superpalitos.SuperPalitos;
+import com.angelcalvo.superpalitos.SuperPalitos;
 
 /**
  *
@@ -91,7 +91,7 @@ public class PreferencesPane extends javax.swing.JPanel {
 
     jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
 
-    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle"); // NOI18N
+    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle"); // NOI18N
     jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("prefsDialog.player1"))); // NOI18N
 
     jLabel1.setText(bundle.getString("prefsDialog.player1.name")); // NOI18N
@@ -286,7 +286,7 @@ public class PreferencesPane extends javax.swing.JPanel {
 
     jTabbedPane1.addTab(bundle.getString("prefsDialog.lnl"), jPanel3); // NOI18N
 
-    jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/apply.png"))); // NOI18N
+    jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/apply.png"))); // NOI18N
     jButton1.setText(bundle.getString("prefsDialog.apply")); // NOI18N
     jButton1.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -358,7 +358,7 @@ public class PreferencesPane extends javax.swing.JPanel {
   
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JCheckBox animsCheck;
-  private org.pvs.superpalitos.SPConf conf;
+  private com.angelcalvo.superpalitos.SPConf conf;
   private javax.swing.JComboBox j1ColorCB;
   private javax.swing.JTextField j1NameTF;
   private javax.swing.JComboBox j2ColorCB;

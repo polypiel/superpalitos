@@ -9,12 +9,12 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.superpalitos.net;
+package com.angelcalvo.superpalitos.net;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.pvs.superpalitos.SuperPalitos;
+import com.angelcalvo.superpalitos.SuperPalitos;
 
 /**
  * Esta Clase representa un servidor del protocolo palitosNet

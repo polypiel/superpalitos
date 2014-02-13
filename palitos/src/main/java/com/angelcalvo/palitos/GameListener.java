@@ -7,7 +7,7 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.palitos;
+package com.angelcalvo.palitos;
 
 /**
  * Un supervisor es una clase que monitorea los eventos nuevo
@@ -15,7 +15,7 @@ package org.pvs.palitos;
  * 
  * @author Angel Luis Calvo Ortega
  */
-public interface PartidaListener {
+public interface GameListener {
   /**
    * Es llamado cuando se empieza un nuevo turno.
    * @param s El nombre del jugador

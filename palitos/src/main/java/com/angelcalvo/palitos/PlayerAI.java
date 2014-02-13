@@ -7,7 +7,7 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.palitos;
+package com.angelcalvo.palitos;
 import java.util.Random;
 
 
@@ -16,7 +16,7 @@ import java.util.Random;
  * 
  * @author Angel Luis Calvo Ortega
  */
-public class IA implements Jugador {
+public class PlayerAI implements Player {
   /** Modo facil de la IA */
   public static final int FACIL = 0;
   /** Modo normal de la IA */
@@ -31,8 +31,8 @@ public class IA implements Jugador {
 	protected final static int MAX = 1000;
 	
   private int dificultad;
-  private Estado e;
-  private Palito p;
+  private GameState e;
+  private Sticks p;
   private int color;
   private String nombre = "IA";
   private Random r;
@@ -41,33 +41,33 @@ public class IA implements Jugador {
    * M&eacute;todo para establecer la dificultad de la IA.
    * @param dificultad La dificultad de la IA
    */
-  public IA(int dificultad, int color) {
+  public PlayerAI(int dificultad, int color) {
     this.dificultad = dificultad;
     this.color = color;
     r = new Random();
     r.setSeed(System.currentTimeMillis());
   }
 
-  public void actualiza(Jugada j, Palito p, Hueco h, Estado e) {
+  @Override
+  public void update(Move j, Sticks p, Gaps h, GameState e) {
     this.p = p;
     this.e = e;
   }
   
-  public Jugada getMovimiento() {
+  @Override
+  public Move move() {
     int max = MIN;
-    Estado resultado = null;
+    GameState resultado = null;
 		
-    for(Estado aux: e.hijos()) {
+    for(GameState aux: e.children()) {
       int valor = backtraking(aux, 0);
-      //System.out.println(e + " => " + valor);
       if((valor > max) || resultado == null || (valor == max && r.nextFloat() < COTA)) {
         resultado = aux;
         max = valor;
       }
     }
-    int d[] = e.getJugada(resultado);
-    Jugada j = defineJugada(d[0], d[1], d[2]);
-    //System.out.println(resultado + " -> " + d[0] + " " + d[1] + " " + d[2]);
+    int d[] = e.getMove(resultado);
+    Move j = defineJugada(d[0], d[1], d[2]);
     return j;
   }
 
@@ -80,25 +80,25 @@ public class IA implements Jugador {
   }
 
   @Override
-  public void setNombre(String n) {}
+  public void setName(String n) {}
 
   @Override
-  public String getNombre() {
+  public String getName() {
     return nombre + "(" + s[dificultad] + ")";
   }
   
   @Override
-  public void terminar() {}
+  public void finish() {}
 
-	private int backtraking(Estado sig, int nivel) {
+	private int backtraking(GameState sig, int nivel) {
     int max = MIN; 
     int min = MAX; 
-    int v = sig.valor(dificultad);
+    int v = sig.value(dificultad);
 		
     if(v != 0 || nivel == dificultad) {
       return v;
     }
-    for(Estado aux: sig.hijos()) {
+    for(GameState aux: sig.children()) {
       int b = backtraking(aux, nivel + 1);
       if(nivel % 2 == 0 && b < min) {
         min = b;
@@ -109,7 +109,7 @@ public class IA implements Jugador {
     return(nivel % 2 != 0) ? min : max;
   }
 
-  private Jugada defineJugada(int lon, int lon2, int desp) {
+  private Move defineJugada(int lon, int lon2, int desp) {
     int aux = 0, indice, p1 = 0, j;
     for(int i = 0; i < 5; i++) {
       indice = 0;
@@ -119,12 +119,12 @@ public class IA implements Jugador {
           indice++;
         } else if(indice == lon2) {
           p1 = (i * i + i) / 2 + j - lon2 + desp;
-          return new Jugada(p1, p1 + lon - 1, Jugada.PALITO);
+          return new Move(p1, p1 + lon - 1, Move.PALITO);
         }
       }
       if(indice == lon2) {
         p1 = (i * i + i) / 2 + j - lon2 + desp;
-        return new Jugada(p1, p1 + lon - 1, Jugada.PALITO);
+        return new Move(p1, p1 + lon - 1, Move.PALITO);
       }
     }
     return null;

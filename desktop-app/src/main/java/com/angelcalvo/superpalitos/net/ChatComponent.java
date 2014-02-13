@@ -8,7 +8,7 @@
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
 
-package org.pvs.superpalitos.net;
+package com.angelcalvo.superpalitos.net;
 
 /**
  * Interfaz para una ventana que muestre un chat de PalitosNet.

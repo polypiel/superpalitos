@@ -8,7 +8,7 @@
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
 
-package org.pvs.superpalitos.gui;
+package com.angelcalvo.superpalitos.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -22,10 +22,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.pvs.palitos.Partida;
-import org.pvs.superpalitos.SuperPalitos;
-import org.pvs.superpalitos.net.ChatComponent;
-import org.pvs.superpalitos.net.SPChat;
+import com.angelcalvo.palitos.Game;
+import com.angelcalvo.superpalitos.SuperPalitos;
+import com.angelcalvo.superpalitos.net.ChatComponent;
+import com.angelcalvo.superpalitos.net.SPChat;
 
 /**
  * Componente que representa un chat.
@@ -34,8 +34,8 @@ import org.pvs.superpalitos.net.SPChat;
  */
 public class ChatPane extends JPanel implements ChatComponent {
 	private static final long serialVersionUID = 4049640083550188085L;
-  private static final String INICIO = java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("<html><body>");
-  private static final String FIN = java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("</html><body>");
+  private static final String INICIO = java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("<html><body>");
+  private static final String FIN = java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("</html><body>");
 	//private static Font fuente = new Font("Arial", Font.PLAIN, 12);
 	private JTextField entrada;
 	private JEditorPane salida;
@@ -69,7 +69,7 @@ public class ChatPane extends JPanel implements ChatComponent {
 		});
     pane.add(entrada, BorderLayout.CENTER);
     
-    enviar = new JButton(java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("Enviar"));
+    enviar = new JButton(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("Enviar"));
     enviar.setFocusCycleRoot(true);
     //enviar.setCursor(new Curor(Cursor.DEFAULT_CURSOR));
     //enviar.setDefaultCapable(true);
@@ -84,7 +84,7 @@ public class ChatPane extends JPanel implements ChatComponent {
 		texto = new StringBuffer();
     
 		salida = new JEditorPane();
-    salida.setContentType(java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("text/html"));
+    salida.setContentType(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("text/html"));
     //salida.setText("<html><body><b>hola</b></body></hmtl>");
     salida.setEditable(false);
     //salida.setVerticalAlignment(JLabel.TOP);
@@ -104,29 +104,29 @@ public class ChatPane extends JPanel implements ChatComponent {
         chat.writeLine(s);
       }
       showMessage(sp.getJ1Name(), sp.getJ1Color(), s);
-      entrada.setText(java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString(""));
+      entrada.setText(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString(""));
     }
   }
 
   public void showMessage(String nick, int c, String msg) {
-    texto.append(java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("<font_face=arial_color=#"));
+    texto.append(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("<font_face=arial_color=#"));
     texto.append(color2hex(c));
-    texto.append(java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("><b>"));
+    texto.append(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("><b>"));
     texto.append(nick);
-    texto.append(java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString(":_</b>"));
+    texto.append(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString(":_</b>"));
     texto.append(msg);
-    texto.append(java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("<br>"));
+    texto.append(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("<br>"));
 		salida.setText(INICIO + texto.toString() + FIN);
   }
   
   private String color2hex(int color) {
-  	if(color == Partida.BLUE_COLOR) {
+  	if(color == Game.BLUE_COLOR) {
   		return "0000FF";
   	}
-  	if(color == Partida.BLACK_COLOR) {
+  	if(color == Game.BLACK_COLOR) {
   		return "000000";
   	}
-  	if(color == Partida.RED_COLOR) {
+  	if(color == Game.RED_COLOR) {
   		return "FF0000";
   	}
   	return "00FF00";

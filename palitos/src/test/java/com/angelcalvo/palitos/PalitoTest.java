@@ -2,10 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.pvs.palitos;
+package com.angelcalvo.palitos;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.angelcalvo.palitos.Sticks;
 
 /**
  *
@@ -15,16 +17,16 @@ public class PalitoTest {
       
   @Test
   public void testTacha() {
-  	Palito p = new Palito();
-  	p.tacha(2);
+  	Sticks p = new Sticks();
+  	p.cross(2);
   	Assert.assertTrue(!p.getEstado(2));
   }
   
   @Test
   public void testVivos() {
-  	Palito p = new Palito();
-  	p.tacha(2);
-  	p.tacha(5);
-  	Assert.assertTrue(p.vivos() == Palito.NPALS - 2);
+  	Sticks p = new Sticks();
+  	p.cross(2);
+  	p.cross(5);
+  	Assert.assertTrue(p.vivos() == Sticks.NPALS - 2);
   }
 }

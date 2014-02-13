@@ -10,26 +10,26 @@
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
 
-package org.pvs.superpalitos.net;
+package com.angelcalvo.superpalitos.net;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import org.pvs.palitos.Estado;
-import org.pvs.palitos.Hueco;
-import org.pvs.palitos.Jugada;
-import org.pvs.palitos.Jugador;
-import org.pvs.palitos.Palito;
-import org.pvs.superpalitos.SuperPalitos;
+import com.angelcalvo.palitos.GameState;
+import com.angelcalvo.palitos.Gaps;
+import com.angelcalvo.palitos.Move;
+import com.angelcalvo.palitos.Player;
+import com.angelcalvo.palitos.Sticks;
+import com.angelcalvo.superpalitos.SuperPalitos;
 
 /**
  * Esta clase representa un cliente del protocolo palitosNet
  *
  *  @author Angel Luis Calvo Ortega
  */
-public class PNClient extends Thread implements Jugador, SPChat {
+public class PNClient extends Thread implements Player, SPChat {
 	private final static int REQUEST_CONNECTION = 0;
 	private final static int CONNECTED = 1;
 	private final static int PLAYING = 2;
@@ -42,7 +42,7 @@ public class PNClient extends Thread implements Jugador, SPChat {
 	private ChatComponent chat;
 	private String name;
 	private int color;
-	private Jugada jugada;
+	private Move jugada;
 	private SuperPalitos sp;
 	
 	public PNClient(SuperPalitos sp) {
@@ -174,7 +174,7 @@ public class PNClient extends Thread implements Jugador, SPChat {
 
 	/* Metodos de la interfaz Jugador */
 	@Override
-	public synchronized Jugada getMovimiento() {
+	public synchronized Move move() {
 		try {
 			wait();
 		} catch(InterruptedException e) {
@@ -184,7 +184,7 @@ public class PNClient extends Thread implements Jugador, SPChat {
 	}
 
 	@Override
-	public void actualiza(Jugada j, Palito p, Hueco h, Estado e) {
+	public void update(Move j, Sticks p, Gaps h, GameState e) {
 		if(j != null) { // para palitosNet
 			Paquete paq = new Paquete(Paquete.JUGADA);
 			paq.setJugada(j);
@@ -200,16 +200,16 @@ public class PNClient extends Thread implements Jugador, SPChat {
 		return color;
 	}
 
-	@Override
-	public void setNombre(String n) {}
+	/*
+	public void setName(String n) {}
 
-	@Override
-	public String getNombre() {
+	
+	public String getName() {
 		return name;
-	}
+	}*/
 
 	@Override
-	public void terminar() {
+	public void finish() {
 		state = CLOSE;
 		Paquete p = new Paquete(Paquete.ADIOS);
 		p.send(out);

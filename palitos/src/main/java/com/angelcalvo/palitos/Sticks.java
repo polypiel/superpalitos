@@ -7,14 +7,14 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.palitos;
+package com.angelcalvo.palitos;
 
 /**
  * Esta clase representa los palitos
  * 
  * @author Angel Luis Calvo Ortega
  */
-public class Palito extends Cosa {
+public class Sticks extends Thing {
   private static final int Y[] = {0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4};
   public static final int NPALS = 15;
   
@@ -22,7 +22,7 @@ public class Palito extends Cosa {
    * Constructor. Pone el estado de cada palito a true
    *
    */
-  public Palito() {
+  public Sticks() {
     estados = new boolean[NPALS];
     for(int i = 0; i < estados.length; i++) {
       estados[i] = true;
@@ -46,7 +46,7 @@ public class Palito extends Cosa {
    * @param j La jugada a validar
    * @return Si la jugada es valida o no
    */
-  public boolean jugadaValida(Jugada j) {
+  public boolean jugadaValida(Move j) {
   	if(j == null) {
   		return false;
   	}
@@ -63,35 +63,4 @@ public class Palito extends Cosa {
     }
     return true;
   }
-
-  /*public Jugada getJugada(Palito despues) {
-    int p1 = 0, p2 = 0;
-    boolean b = false;
-
-    for(int i = 0; i < cosas.length; i++) {
-      if(cosas[i] != despues.cosas[i]) {
-        if(!b) {
-          p1 = i;
-          b = true;
-        } else {
-          p2 = i;
-        }
-      }
-    }
-    if(b)
-      return new Jugada(p1, p2, Jugada.PALITO);
-    return null;
-  }
-   public Hueco toHuecoIzq() {
-    return getHueco(getId() + y[getId()]);
-   }
-   public Hueco toHuecoDer() {
-    return getHueco(getId() + y[getId()] + 1);
-   }*/
-  
-  @Override
-  public String toString() {
-    return java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("Palito:_") + super.toString();
-  }
-
 }

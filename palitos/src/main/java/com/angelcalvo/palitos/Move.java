@@ -7,14 +7,14 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.palitos;
+package com.angelcalvo.palitos;
 
 /**
  * Esta clase representa una jugada.
  * 
  * @author Angel Luis Calvo Ortega
  */
-public class Jugada {
+public class Move {
 	/** Indica que la jugada se crea indicando los numeros de los palitos */
   public static final int PALITO = 0;
 	/** Indica que la jugada se crea indicando los numeros de los huecos */
@@ -34,7 +34,7 @@ public class Jugada {
    * @param c2 cosa2
    * @param modo palito o hueco
    */
-  public Jugada(int c1, int c2, int modo) {
+  public Move(int c1, int c2, int modo) {
     if(modo == PALITO) {
       if(c1 > c2) {
         pInicio = c2;
@@ -43,8 +43,8 @@ public class Jugada {
         pInicio = c1;
         pFin = c2;
       }
-      hInicio = Cosa.P2HI[pInicio];
-      hFin = Cosa.P2HD[pFin];
+      hInicio = Thing.P2HI[pInicio];
+      hFin = Thing.P2HD[pFin];
     } else if(modo == HUECO) {
       if(c1 > c2) {
         hInicio = c2;
@@ -53,8 +53,8 @@ public class Jugada {
         hInicio = c1;
         hFin = c2;
       }
-      pInicio = Cosa.H2PD[hInicio];
-      pFin = Cosa.H2PI[hFin];
+      pInicio = Thing.H2PD[hInicio];
+      pFin = Thing.H2PI[hFin];
     }
     lon = hFin - hInicio;
   }

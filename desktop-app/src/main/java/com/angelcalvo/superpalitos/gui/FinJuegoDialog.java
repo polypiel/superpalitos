@@ -9,7 +9,7 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.superpalitos.gui;
+package com.angelcalvo.superpalitos.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -22,7 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import org.pvs.superpalitos.SuperPalitos;
+import com.angelcalvo.superpalitos.SuperPalitos;
 
 /**
  * @author Angel Luis Calvo Ortega

@@ -8,7 +8,7 @@
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
 
-package org.pvs.superpalitos.gui;
+package com.angelcalvo.superpalitos.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -37,10 +37,10 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import org.pvs.palitos.Tablero;
-import org.pvs.superpalitos.SuperPalitos;
-import org.pvs.superpalitos.net.ChatComponent;
-import org.pvs.superpalitos.net.SPChat;
+import com.angelcalvo.palitos.Board;
+import com.angelcalvo.superpalitos.SuperPalitos;
+import com.angelcalvo.superpalitos.net.ChatComponent;
+import com.angelcalvo.superpalitos.net.SPChat;
 
 
 /**
@@ -58,29 +58,29 @@ public class SPFrame extends JFrame {
     II_CLOSE_24, II_CONNECT, II_DISCONNECT, II_EXIT, II_HELP, II_LICENSE,
     II_NEW, II_OPTIONS, II_PAUSE, II_PNCHAT, II_PNNEW, II_PNSERVER, II_PLAY,
     II_PVS, II_REPEAT, II_SP, II_SP32, II_STOP;
-  /*public static final ImageIcon II_ABOUT = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/about.png"));
-  public static final ImageIcon II_ACCEPT =new ImageIcon(JFrame.class.getResource("/org/pvs/resources/apply.png"));
-  public static final ImageIcon II_BLANK = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/blank.png"));
-  public static final ImageIcon II_CANCEL = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/cancel.png"));
-  public static final ImageIcon II_CLOSE_16 = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/close16.png"));
-  public static final ImageIcon II_CLOSE_24 = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/close24.png"));
-  public static final ImageIcon II_CONNECT = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/connect.png"));
-  public static final ImageIcon II_DISCONNECT = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/disconnect.png"));
-  public static final ImageIcon II_EXIT = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/exit.png"));
-  public static final ImageIcon II_HELP= new ImageIcon(JFrame.class.getResource("/org/pvs/resources/help.png"));
-  public static final ImageIcon II_LICENSE = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/license.png"));
-  public static final ImageIcon II_NEW = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/new.png"));
-  public static final ImageIcon II_OPTIONS = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/options.png"));
-  public static final ImageIcon II_PAUSE = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/pause.png"));
-  public static final ImageIcon II_PNCHAT = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/chat.png"));
-  public static final ImageIcon II_PNNEW = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/pnnew.png"));
-  public static final ImageIcon  II_PNSERVER = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/pnserver.png"));
-  public static final ImageIcon  II_PLAY = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/play.png"));
-  public static final ImageIcon II_PVS = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/pvs.png"));
-  public static final ImageIcon II_REPEAT = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/refresh.png"));
-  public static final ImageIcon II_SP = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/sp.png"));
-  public static final ImageIcon II_SP32 = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/sp32.png"));
-  public static final ImageIcon II_STOP = new ImageIcon(JFrame.class.getResource("/org/pvs/resources/stop.png"));*/
+  /*public static final ImageIcon II_ABOUT = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/about.png"));
+  public static final ImageIcon II_ACCEPT =new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/apply.png"));
+  public static final ImageIcon II_BLANK = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/blank.png"));
+  public static final ImageIcon II_CANCEL = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/cancel.png"));
+  public static final ImageIcon II_CLOSE_16 = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/close16.png"));
+  public static final ImageIcon II_CLOSE_24 = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/close24.png"));
+  public static final ImageIcon II_CONNECT = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/connect.png"));
+  public static final ImageIcon II_DISCONNECT = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/disconnect.png"));
+  public static final ImageIcon II_EXIT = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/exit.png"));
+  public static final ImageIcon II_HELP= new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/help.png"));
+  public static final ImageIcon II_LICENSE = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/license.png"));
+  public static final ImageIcon II_NEW = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/new.png"));
+  public static final ImageIcon II_OPTIONS = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/options.png"));
+  public static final ImageIcon II_PAUSE = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/pause.png"));
+  public static final ImageIcon II_PNCHAT = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/chat.png"));
+  public static final ImageIcon II_PNNEW = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/pnnew.png"));
+  public static final ImageIcon  II_PNSERVER = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/pnserver.png"));
+  public static final ImageIcon  II_PLAY = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/play.png"));
+  public static final ImageIcon II_PVS = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/pvs.png"));
+  public static final ImageIcon II_REPEAT = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/refresh.png"));
+  public static final ImageIcon II_SP = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/sp.png"));
+  public static final ImageIcon II_SP32 = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/sp32.png"));
+  public static final ImageIcon II_STOP = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/stop.png"));*/
   
   /** Constante para identificar el color azul */
   public static final int AZUL = 0;
@@ -157,7 +157,7 @@ public class SPFrame extends JFrame {
     tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT); 
     
     /* welcome tab */
-    JLabel l = new JLabel(new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/title.png")));
+    JLabel l = new JLabel(new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/title.png")));
     l.setPreferredSize(new Dimension(WIDTH, HEIGHT));
     addTab(l, WELCOME_TAB, "Welcome", II_SP);
     p.add(tabbedPane);
@@ -194,7 +194,7 @@ public class SPFrame extends JFrame {
    * v 3.0
    * @return
    */
-  public Tablero createTablero(String title) {
+  public Board createTablero(String title) {
     TableroPanel spp = new TableroPanel(sp);
     addTab(spp, MATCH_TAB, title, II_SP);
     return spp;
@@ -477,29 +477,29 @@ public class SPFrame extends JFrame {
   
   private void loadResources() {
     // Iconos
-    II_ABOUT = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/about.png"));
-    II_ACCEPT =new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/apply.png"));
-    II_BLANK = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/blank.png"));
-    II_CANCEL = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/cancel.png"));
-    II_CLOSE_16 = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/close16.png"));
-    II_CLOSE_24 = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/close24.png"));
-    II_CONNECT = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/connect.png"));
-    II_DISCONNECT = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/disconnect.png"));
-    II_EXIT = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/exit.png"));
-    II_HELP= new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/help.png"));
-    II_LICENSE = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/license.png"));
-    II_NEW = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/new.png"));
-    II_OPTIONS = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/options.png"));
-//    II_PAUSE = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/pause.png"));
-    II_PNCHAT = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/chat.png"));
-    II_PNNEW = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/pnnew.png"));
-    II_PNSERVER = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/pnserver.png"));
-    II_PLAY = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/play.png"));
-    II_PVS = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/pvs.png"));
-    II_REPEAT = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/refresh.png"));
-    II_SP = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/sp.png"));
-    II_SP32 = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/sp32.png"));
-    II_STOP = new ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/stop.png"));
+    II_ABOUT = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/about.png"));
+    II_ACCEPT =new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/apply.png"));
+    II_BLANK = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/blank.png"));
+    II_CANCEL = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/cancel.png"));
+    II_CLOSE_16 = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/close16.png"));
+    II_CLOSE_24 = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/close24.png"));
+    II_CONNECT = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/connect.png"));
+    II_DISCONNECT = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/disconnect.png"));
+    II_EXIT = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/exit.png"));
+    II_HELP= new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/help.png"));
+    II_LICENSE = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/license.png"));
+    II_NEW = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/new.png"));
+    II_OPTIONS = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/options.png"));
+//    II_PAUSE = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/pause.png"));
+    II_PNCHAT = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/chat.png"));
+    II_PNNEW = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/pnnew.png"));
+    II_PNSERVER = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/pnserver.png"));
+    II_PLAY = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/play.png"));
+    II_PVS = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/pvs.png"));
+    II_REPEAT = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/refresh.png"));
+    II_SP = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/sp.png"));
+    II_SP32 = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/sp32.png"));
+    II_STOP = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/stop.png"));
   }
   
   private void initMenu() {

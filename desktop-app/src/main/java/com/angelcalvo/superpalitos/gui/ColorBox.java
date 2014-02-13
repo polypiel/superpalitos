@@ -9,7 +9,7 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.superpalitos.gui;
+package com.angelcalvo.superpalitos.gui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -70,7 +70,7 @@ public class ColorBox extends JComboBox {
   static class ColorBoxRenderer extends JPanel implements ListCellRenderer {
 		private static final long serialVersionUID = 3904964131575575092L;
 		private Color color = Color.black;
-    private Color focusColor = (Color)UIManager.get(java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("List.selectionBackground"));
+    private Color focusColor = (Color)UIManager.get(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("List.selectionBackground"));
     private Color nonFocusColor = Color.white;
     
     @Override

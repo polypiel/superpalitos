@@ -7,7 +7,7 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.palitos;
+package com.angelcalvo.palitos;
 
 /**
  * Representa un tablero donde se pueden dibujar las lineas del
@@ -15,16 +15,16 @@ package org.pvs.palitos;
  * 
  * @author Angel Luis Calvo Ortega
  */
-public interface Tablero {
+public interface Board {
   /**
    * Indica al tablero que la partida se ha iniciado
    */
-  void iniciar();
+  void started();
   
   /**
    * Indica al tablero que la partidad ha terminado
    */
-  void terminar();
+  void finished();
   
   /**
    * Dibuja una linea desde un punto a otro.
@@ -34,7 +34,8 @@ public interface Tablero {
    * @param y2 La componente vertical del &Uacute;ltimo punto.
    * @param c El color de la linea.
    */
-  void dibujar(int x1, int y1, int x2, int y2, int c);
+  // TODO KILL
+  void drawLine(int x1, int y1, int x2, int y2, int c);
   
   /**
    * Dibuja una l&iacute;nea desde un hueco a otro.
@@ -42,7 +43,7 @@ public interface Tablero {
    * @param h2 El &Uacute;ltimo hueco.
    * @param c El color de la l&iacute;nea.
    */
-  void dibujar(int h1, int h2, int c);
+  void drawLine(int h1, int h2, int c);
   
   /**
    * Crea un jugador que juega en el tablero
@@ -50,7 +51,7 @@ public interface Tablero {
    * @param c
    * @return
    */
-  Jugador createJugador(String name, int c);
+  Player createPlayer(String name, int c);
 
   /**
    * Establece el identificador del tablero
@@ -68,5 +69,5 @@ public interface Tablero {
 	 * Establece el marcador de la partida
 	 * @param msg El marcador
 	 */
-	void setMarcador(String msg);
+	void setScore(String msg);
 }

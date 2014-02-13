@@ -4,9 +4,9 @@
  * Created on 1 de diciembre de 2007, 20:28
  */
 
-package org.pvs.superpalitos.gui;
+package com.angelcalvo.superpalitos.gui;
 
-import org.pvs.superpalitos.SuperPalitos;
+import com.angelcalvo.superpalitos.SuperPalitos;
 
 /**
  *
@@ -66,7 +66,7 @@ public class NewGameDialog extends javax.swing.JDialog {
     hardRB = new javax.swing.JRadioButton();
     jSeparator1 = new javax.swing.JSeparator();
 
-    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle"); // NOI18N
+    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle"); // NOI18N
     setTitle(bundle.getString("newDialog.tittle")); // NOI18N
     setModal(true);
     setResizable(false);
@@ -76,7 +76,7 @@ public class NewGameDialog extends javax.swing.JDialog {
       }
     });
 
-    okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/apply.png"))); // NOI18N
+    okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/apply.png"))); // NOI18N
     okButton.setText(bundle.getString("newDialog.ok")); // NOI18N
     okButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,7 +84,7 @@ public class NewGameDialog extends javax.swing.JDialog {
       }
     });
 
-    cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/pvs/superpalitos/gui/cancel.png"))); // NOI18N
+    cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/cancel.png"))); // NOI18N
     cancelButton.setText(bundle.getString("newDialog.cancel")); // NOI18N
     cancelButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {

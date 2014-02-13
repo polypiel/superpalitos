@@ -7,7 +7,7 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.palitos;
+package com.angelcalvo.palitos;
 
 
 /**
@@ -15,7 +15,8 @@ package org.pvs.palitos;
  *
  * @author Angel Luis Calvo Ortega
  */
-public abstract class Cosa {
+// TODO kill
+public abstract class Thing {
   /** Transformacion de palito al hueco de la izquierda */
   protected static final int P2HI[] = {0, 2, 3, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 18};
   /** Transformacion de palito al hueco de la derecha */
@@ -39,7 +40,7 @@ public abstract class Cosa {
    * Tacha un palito/hueco, poner cosas[indice] a falso.
    * @param indice El palito a tachar
    */
-  public void tacha(int indice) {
+  public void cross(int indice) {
     estados[indice] = false;
   }
   
@@ -54,19 +55,6 @@ public abstract class Cosa {
         n++;
       }
     }
-//    for(int i = 0; i < estados.length; i++) {
-//      if(estados[i]) {
-//        n++;
-//      }
-//    }
     return n;
   }
-  
-/*  public String toString() {
-    StringBuffer s = new StringBuffer();
-    for(boolean one: estados) {
-    	s.append(one?java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("1"):java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("0"));
-    }
-    return s.toString();
-  }*/
 }

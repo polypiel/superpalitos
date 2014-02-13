@@ -7,7 +7,7 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.superpalitos.net;
+package com.angelcalvo.superpalitos.net;
 
 /**
  * Interfaz del chat de PalitosNet

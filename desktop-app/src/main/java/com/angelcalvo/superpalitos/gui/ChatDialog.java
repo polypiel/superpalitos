@@ -7,7 +7,7 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.superpalitos.gui;
+package com.angelcalvo.superpalitos.gui;
 
 import java.awt.Dimension;
 
@@ -15,9 +15,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
-import org.pvs.superpalitos.SuperPalitos;
-import org.pvs.superpalitos.net.ChatComponent;
-import org.pvs.superpalitos.net.SPChat;
+import com.angelcalvo.superpalitos.SuperPalitos;
+import com.angelcalvo.superpalitos.net.ChatComponent;
+import com.angelcalvo.superpalitos.net.SPChat;
 
 /**
  * 

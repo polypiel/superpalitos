@@ -4,7 +4,7 @@
  * Created on 9 de marzo de 2007, 20:22
  */
 
-package org.pvs.superpalitos.gui;
+package com.angelcalvo.superpalitos.gui;
 
 import javax.swing.ImageIcon;
 

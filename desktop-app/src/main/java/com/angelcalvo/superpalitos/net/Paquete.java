@@ -7,12 +7,12 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.superpalitos.net;
+package com.angelcalvo.superpalitos.net;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.pvs.palitos.Jugada;
+import com.angelcalvo.palitos.Move;
 
 /**
  * Un paquete del protocolo PalitosNet.
@@ -33,7 +33,7 @@ public class Paquete {
   private int tipo; 
 	private String nombre;
 	private int color;
-	private Jugada jugada;
+	private Move jugada;
 	private String mensaje;
   
 	/**
@@ -72,7 +72,7 @@ public class Paquete {
 					int p1 = in.readInt();
 					int p2 = in.readInt();
 					System.out.println("jugada_received_(" + p1 + "," + p2 + ")");     
-					paquete.setJugada(new Jugada(p1, p2, Jugada.PALITO));
+					paquete.setJugada(new Move(p1, p2, Move.PALITO));
 					break;
         case CHAT:
           String msj = in.readUTF();
@@ -134,7 +134,7 @@ public class Paquete {
 	 * Metodo para establecer la jugada de un paquete tipo JUGADA.
 	 * @param jugada La jugada a enviar.
 	 */
-	public void setJugada(Jugada jugada) {
+	public void setJugada(Move jugada) {
 		this.jugada = jugada;
 	}
 	
@@ -142,7 +142,7 @@ public class Paquete {
 	 * Metodo para devolver la jugada de un paquete tipo JUGADA.
 	 * @return La jugada del paquete.
 	 */
-	public Jugada getJugada() {
+	public Move getJugada() {
 		return jugada;
 	}
 	

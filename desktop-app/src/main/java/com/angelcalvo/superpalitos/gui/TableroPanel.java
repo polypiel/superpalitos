@@ -7,7 +7,7 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.superpalitos.gui;
+package com.angelcalvo.superpalitos.gui;
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.Color;
@@ -26,21 +26,21 @@ import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
-import org.pvs.palitos.Estado;
-import org.pvs.palitos.Hueco;
-import org.pvs.palitos.Jugada;
-import org.pvs.palitos.Jugador;
-import org.pvs.palitos.Palito;
-import org.pvs.palitos.Partida;
-import org.pvs.palitos.Tablero;
-import org.pvs.superpalitos.SuperPalitos;
+import com.angelcalvo.palitos.GameState;
+import com.angelcalvo.palitos.Gaps;
+import com.angelcalvo.palitos.Move;
+import com.angelcalvo.palitos.Player;
+import com.angelcalvo.palitos.Sticks;
+import com.angelcalvo.palitos.Game;
+import com.angelcalvo.palitos.Board;
+import com.angelcalvo.superpalitos.SuperPalitos;
 
 /**
  * El panel con el tablero
  * 
  * @author Angel Luis Calvo Ortega
  */
-public class TableroPanel extends JPanel implements Tablero {
+public class TableroPanel extends JPanel implements Board {
   private static final long serialVersionUID = 3616447899681305654L;
   
   private static final int STATE_OFF = 0;
@@ -54,7 +54,7 @@ public class TableroPanel extends JPanel implements Tablero {
   private static final int XINC = 16;
   private static final int QUAD_DELAY = 60;
   
-  private static final String IMAGE_FILE = "/org/pvs/superpalitos/gui/fondo.png";
+  private static final String IMAGE_FILE = "/com/angelcalvo/superpalitos/gui/fondo.png";
   private static final Image FONDO = Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource(IMAGE_FILE));
 
   private static final int huecos[][] = {
@@ -69,10 +69,10 @@ public class TableroPanel extends JPanel implements Tablero {
   private Humano j;
   
   private final static Image[] bolis = {
-  	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/org/pvs/superpalitos/gui/boliAzul.png")),
-  	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/org/pvs/superpalitos/gui/boliNegro.png")),
-  	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/org/pvs/superpalitos/gui/boliRojo.png")),
-  	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/org/pvs/superpalitos/gui/boliVerde.png"))
+  	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliAzul.png")),
+  	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliNegro.png")),
+  	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliRojo.png")),
+  	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliVerde.png"))
   };
   private final static Cursor[] cursores = {
     Toolkit.getDefaultToolkit().createCustomCursor(bolis[SPFrame.AZUL], new Point(0, 0), "Boli Azul"),
@@ -125,24 +125,24 @@ public class TableroPanel extends JPanel implements Tablero {
     TableroPanel.cursores[SPFrame.VERDE] = Toolkit.getDefaultToolkit().createCustomCursor(bolis[SPFrame.VERDE], new Point(0, 0), "Boli Verde");
     */
     timer = new Timer();
-    clip = Applet.newAudioClip(getClass().getResource("/org/pvs/superpalitos/gui/boli.wav"));
+    clip = Applet.newAudioClip(getClass().getResource("/com/angelcalvo/superpalitos/gui/boli.wav"));
   }
   
   
   // Metodos de Tablero -------------------------------------------------------
   @Override
-  public void iniciar() {
+  public void started() {
     clear();
     setCursor(cursores[color2index(sp.getJ1Color())]);
   }
   
   @Override
-  public void terminar() {
+  public void finished() {
     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
   }
   
   @Override
-  public void dibujar(int x1, int y1, int x2, int y2, int c) {
+  public void drawLine(int x1, int y1, int x2, int y2, int c) {
     Linea l = new Linea(x1, y1, x2, y2, false);
     l.setColor(c);
     drawLine(l, sp.isAnim());
@@ -153,21 +153,21 @@ public class TableroPanel extends JPanel implements Tablero {
   }
   
   @Override
-  public void dibujar(int h1, int h2, int c) {
+  public void drawLine(int h1, int h2, int c) {
     int x1Aux = huecos[h1][0] + Math.round((float)Math.random() * ANCHO);
     int y1Aux = huecos[h1][1] + Math.round((float)Math.random() * ANCHO);
     int x2Aux = huecos[h2][0] + Math.round((float)Math.random() * ANCHO);
     int y2Aux = huecos[h2][1] + Math.round((float)Math.random() * ANCHO);
-    dibujar(x1Aux, y1Aux, x2Aux, y2Aux, c);
+    drawLine(x1Aux, y1Aux, x2Aux, y2Aux, c);
   }
   
   @Override
-  public Jugador createJugador(String name, int c) {
+  public Player createPlayer(String name, int c) {
     return new Humano(name, c);
   }
   
   @Override
-  public void setMarcador(String marcador) {
+  public void setScore(String marcador) {
   	this.marcador = marcador;
   	repaint();
   }
@@ -194,7 +194,7 @@ public class TableroPanel extends JPanel implements Tablero {
       j.x2 = e.getX();
       j.y2 = e.getY();
       if((j.h2 = cursorIn(j.x2, j.y2)) != -1 && j.h.getEstado(j.h2)) {
-        if(j.h1 != j.h2 && huecos[j.h1][1] == huecos[j.h2][1] && j.p.jugadaValida(new Jugada(j.h1, j.h2, Jugada.HUECO))) {
+        if(j.h1 != j.h2 && huecos[j.h1][1] == huecos[j.h2][1] && j.p.jugadaValida(new Move(j.h1, j.h2, Move.HUECO))) {
           state = STATE_2ND_CLICK;
           //despertar();
           //super.notifyAll();
@@ -258,13 +258,13 @@ public class TableroPanel extends JPanel implements Tablero {
   }
   
   private Color toColor(int c) {
-  	if(c == Partida.BLUE_COLOR) {
+  	if(c == Game.BLUE_COLOR) {
   		return Color.BLUE;
   	}
-  	if(c == Partida.BLACK_COLOR) {
+  	if(c == Game.BLACK_COLOR) {
   		return Color.BLACK;
   	}
-  	if(c == Partida.RED_COLOR) {
+  	if(c == Game.RED_COLOR) {
   		return Color.RED;
   	}
   	return Color.GREEN;
@@ -338,9 +338,9 @@ public class TableroPanel extends JPanel implements Tablero {
    * @author Angel Luis Calvo Ortega
    * @version 1.0
    */
-  private class Humano implements Jugador {
-    private Hueco h;
-    private Palito p;
+  private class Humano implements Player {
+    private Gaps h;
+    private Sticks p;
     private int color;
     private String nombre;
     private int h1, h2;
@@ -357,7 +357,7 @@ public class TableroPanel extends JPanel implements Tablero {
     }
     
     @Override
-    public Jugada getMovimiento() {
+    public Move move() {
       repaint();
       j = this;
       state = STATE_READY;
@@ -372,7 +372,7 @@ public class TableroPanel extends JPanel implements Tablero {
         return null;
       }
       state = STATE_OFF;
-      Jugada jug = new Jugada(h1, h2, Jugada.HUECO);
+      Move jug = new Move(h1, h2, Move.HUECO);
       jug.setCoord(x1, y1, x2, y2);
       return jug;
     }
@@ -383,7 +383,7 @@ public class TableroPanel extends JPanel implements Tablero {
     }
     
     @Override
-    public String getNombre() {
+    public String getName() {
       return nombre;
     }
     
@@ -393,18 +393,18 @@ public class TableroPanel extends JPanel implements Tablero {
     }
     
     @Override
-    public void setNombre(String nombre) {
+    public void setName(String nombre) {
       this.nombre = nombre;
     }
     
     @Override
-    public void actualiza(Jugada j, Palito p, Hueco h, Estado e) {
+    public void update(Move j, Sticks p, Gaps h, GameState e) {
       this.p = p;
       this.h = h;
     }
     
     @Override
-    public void terminar() {}
+    public void finish() {}
   }
   
   /**

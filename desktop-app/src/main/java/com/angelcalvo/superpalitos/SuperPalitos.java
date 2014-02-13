@@ -7,21 +7,24 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.superpalitos;
+package com.angelcalvo.superpalitos;
 
 import java.util.LinkedList;
+
 import javax.swing.SwingUtilities;
-import org.pvs.palitos.IA;
-import org.pvs.palitos.Jugador;
-import org.pvs.palitos.Partida;
-import org.pvs.palitos.Tablero;
-import org.pvs.superpalitos.gui.FinJuegoDialog;
-import org.pvs.superpalitos.gui.SPFrame;
-import org.pvs.superpalitos.net.PNClient;
-import org.pvs.superpalitos.net.PNServer;
+
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.ClassPathResource;
+
+import com.angelcalvo.palitos.PlayerAI;
+import com.angelcalvo.palitos.Player;
+import com.angelcalvo.palitos.Game;
+import com.angelcalvo.palitos.Board;
+import com.angelcalvo.superpalitos.gui.FinJuegoDialog;
+import com.angelcalvo.superpalitos.gui.SPFrame;
+import com.angelcalvo.superpalitos.net.PNClient;
+import com.angelcalvo.superpalitos.net.PNServer;
 
 /**
  * Clase controlador
@@ -56,6 +59,7 @@ public class SuperPalitos {
   private static final String PROPS_NAME = ".superpalitos";
   private static final String PROPS_FILE = System.getProperty("user.home") + "/" + PROPS_NAME;
   
+  private static final String SPRING_FILE = "com/angelcalvo/superpalitos/sp.xml";
 //  private static SuperPalitos instance;
   
   private boolean serverON;
@@ -77,8 +81,8 @@ public class SuperPalitos {
     
     j1Name = DEFAULT_J1_NAME;
     j2Name = DEFAULT_J2_NAME;
-    j1Color = Partida.BLUE_COLOR;
-    j2Color = Partida.RED_COLOR;
+    j1Color = Game.BLUE_COLOR;
+    j2Color = Game.RED_COLOR;
     anim = true;
     sound = true;
     
@@ -113,17 +117,17 @@ public class SuperPalitos {
    * @param first
    */
   public void nuevaPartida(int tipo, PNClient pnPlayer, boolean first) {
-    Tablero t = frame.createTablero(tags[tipo]);
-    Jugador j1 = t.createJugador(j1Name, j1Color);
-    Jugador j2 = null;
+    Board t = frame.createTablero(tags[tipo]);
+    Player j1 = t.createPlayer(j1Name, j1Color);
+    Player j2 = null;
     if(tipo == JUEGO_1J_FACIL) {						// FACIL
-      j2 = new IA(IA.FACIL, Partida.BLACK_COLOR);
+      j2 = new PlayerAI(PlayerAI.FACIL, Game.BLACK_COLOR);
     } else if(tipo == JUEGO_1J_NORMAL) {		// NORMAL
-      j2 = new IA(IA.NORMAL, Partida.BLACK_COLOR);
+      j2 = new PlayerAI(PlayerAI.NORMAL, Game.BLACK_COLOR);
     } else if(tipo == JUEGO_1J_DIFICIL) {	 // DIFICIL
-      j2 = new IA(IA.DIFICIL, Partida.BLACK_COLOR);
+      j2 = new PlayerAI(PlayerAI.DIFICIL, Game.BLACK_COLOR);
     } else if(tipo == JUEGO_2J) {					 // 2 JUGADORES
-      j2 = t.createJugador(j2Name, j2Color);
+      j2 = t.createPlayer(j2Name, j2Color);
     } else if(tipo == JUEGO_MJ) {
     	j2 = pnPlayer;
     	pnPlayer.setChat(frame.addChat(pnPlayer));
@@ -138,7 +142,7 @@ public class SuperPalitos {
     pm.play();
   }
   
-  private PartidaManager createPM(Jugador j1, Jugador j2, Tablero t, boolean first) {
+  private PartidaManager createPM(Player j1, Player j2, Board t, boolean first) {
     PartidaManager pm = new PartidaManager(j1, j2, t, first, this);
     partidas.addLast(pm);
     return pm;
@@ -149,7 +153,7 @@ public class SuperPalitos {
    * @param args Argumentos de entrada.
    */
   public static void main(String[] args) {
-		BeanFactory factory = new XmlBeanFactory(new ClassPathResource("org/pvs/superpalitos/sp.xml"));
+		BeanFactory factory = new XmlBeanFactory(new ClassPathResource(SPRING_FILE));
 		final SuperPalitos sp = (SuperPalitos) factory.getBean("sp");
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -201,7 +205,7 @@ public class SuperPalitos {
     return null;
   }
   
-  private PartidaManager getPartidaManager(Jugador j) {
+  private PartidaManager getPartidaManager(Player j) {
   	for(PartidaManager p: partidas) {
     //Iterator it = partidas.iterator();
     //while(it.hasNext()) {
@@ -256,7 +260,7 @@ public class SuperPalitos {
 	    if(pnServer.setON()) {
 	    	serverON = true;
 	    } else {
-	    	frame.showErrMsg(java.util.ResourceBundle.getBundle("org/pvs/superpalitos/gui/Bundle").getString("No_se_ha_podido_iniciar_el_servidor"));
+	    	frame.showErrMsg(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("No_se_ha_podido_iniciar_el_servidor"));
 	    }
   	}
   }
@@ -279,7 +283,7 @@ public class SuperPalitos {
    * @return Si la conexion es aceptado o denegada.
    */
   public boolean aceptarConexion(PNClient pnClient, String ip) {
-    if(frame.showNewConnMsg(pnClient.getNombre(), ip, pnClient.getColor())) {
+    if(frame.showNewConnMsg(pnClient.getName(), ip, pnClient.getColor())) {
     	nuevaPartida(JUEGO_MJ, pnClient, true);
       return true;
     }
@@ -307,7 +311,7 @@ public class SuperPalitos {
   /**
    * Metodo para indicar que el extremo (jugador contrario) se ha desconectado.
    */
-  public void desconectado(Jugador j) {
+  public void desconectado(Player j) {
     PartidaManager pm = getPartidaManager(j);
   	frame.destroyTablero(pm.getId());
   	pm.end();
@@ -322,7 +326,7 @@ public class SuperPalitos {
    */
   public void conectar(String dir, int puerto) {
     PNClient pnClient = new PNClient(this);
-    pnClient.setNombre(j1Name);
+    pnClient.setName(j1Name);
     pnClient.setColor(j1Color);
     pnClient.connect(dir, puerto);
   }

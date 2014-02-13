@@ -7,19 +7,19 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.palitos;
+package com.angelcalvo.palitos;
 
 /**
  * Interfaz de un jugador
  * 
  * @author Angel Luis Calvo Ortega
  */
-public interface Jugador {
+public interface Player {
 	/**
 	 * Metodo por el cual el jugador realiza una jugada.
 	 * @return La jugada realizada.
 	 */
-  Jugada getMovimiento();
+  Move move();
   
   /**
    * Metodo por el cual un jugador es notificado del movimiento del contrario.
@@ -28,7 +28,7 @@ public interface Jugador {
    * @param h El estado actual de los huecos.
    * @param e El estado actual.
    */
-  void actualiza(Jugada j, Palito p, Hueco h, Estado e);
+  void update(Move j, Sticks p, Gaps h, GameState e);
   
   /**
    * Metodo para cambiar el color de un jugador.
@@ -46,17 +46,17 @@ public interface Jugador {
    * Metodo para cambiar el nombre de un jugador.
    * @param n El nuevo nombre.
    */
-  void setNombre(String n);
+  void setName(String n);
   
   /**
    * Metodo para conseguir el nombre de un jugador.
    * @return El nombre del jugador.
    */
-  String getNombre();
+  String getName();
   
   /**
    * Metodo para avisar al jugador que se ha terminado la partida
    *
    */
-  void terminar();
+  void finish();
 }

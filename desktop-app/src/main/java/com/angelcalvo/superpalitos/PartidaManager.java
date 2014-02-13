@@ -9,20 +9,20 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.superpalitos;
+package com.angelcalvo.superpalitos;
 
 import java.util.LinkedList;
 
-import org.pvs.palitos.Jugador;
-import org.pvs.palitos.Partida;
-import org.pvs.palitos.PartidaListener;
-import org.pvs.palitos.Tablero;
+import com.angelcalvo.palitos.Player;
+import com.angelcalvo.palitos.Game;
+import com.angelcalvo.palitos.GameListener;
+import com.angelcalvo.palitos.Board;
 
 /**
  * 
  * @author Angel Luis Calvo Ortega
  */
-public class PartidaManager implements PartidaListener {
+public class PartidaManager implements GameListener {
 	private static long ID_COUNT = 0;
 	
 	/* Modo de la partida */
@@ -30,11 +30,11 @@ public class PartidaManager implements PartidaListener {
   public static final int PARTIDA_TIMEATTACK = 1;
   public static final int PARTIDA_2 = 2;
   
-  private Jugador j1, j2;
-  private Tablero tablero;
+  private Player j1, j2;
+  private Board tablero;
   //private int type;
   // private int mode;
-  private Partida partida;
+  private Game partida;
   
   // accounting
   private long time;
@@ -42,7 +42,7 @@ public class PartidaManager implements PartidaListener {
   private long id;
   
   private boolean jugando, j1Turn;
-  private LinkedList<PartidaListener> partidaListeners;
+  private LinkedList<GameListener> partidaListeners;
   private SuperPalitos sp;
   
   /**
@@ -50,7 +50,7 @@ public class PartidaManager implements PartidaListener {
    * @param j2 Jugador dos
    * @param tablero El tablero
    */
-  public PartidaManager(Jugador j1, Jugador j2, Tablero tablero, SuperPalitos sp) {
+  public PartidaManager(Player j1, Player j2, Board tablero, SuperPalitos sp) {
   	this(j1, j2, tablero, true, sp);
 	}
   
@@ -60,7 +60,7 @@ public class PartidaManager implements PartidaListener {
    * @param tablero El tablero
    * @param j1Turn Indica si mueve el jugador uno primero
    */
-  public PartidaManager(Jugador j1, Jugador j2, Tablero tablero, boolean j1Turn, SuperPalitos sp) {
+  public PartidaManager(Player j1, Player j2, Board tablero, boolean j1Turn, SuperPalitos sp) {
   	id = ID_COUNT++;
   	
     this.j1 = j1;
@@ -71,7 +71,7 @@ public class PartidaManager implements PartidaListener {
     
     this.tablero.setId(id);
     
-    partidaListeners = new LinkedList<PartidaListener>();
+    partidaListeners = new LinkedList<GameListener>();
     jugando = false;
   }
   
@@ -80,9 +80,9 @@ public class PartidaManager implements PartidaListener {
    */
   public void play() {
     if(!jugando) {
-    	partida = new Partida(j1, j2, tablero, j1Turn);
-    	partida.addPartidaListener(this);
-    	tablero.setMarcador(j1.getNombre() + "  " + j1Score + " - " + j2Score + "  " + j2.getNombre());
+    	partida = new Game(j1, j2, tablero, j1Turn);
+    	partida.addGameListener(this);
+    	tablero.setScore(j1.getName() + "  " + j1Score + " - " + j2Score + "  " + j2.getName());
     	/*Iterator it = partidaListeners.iterator();
     	while(it.hasNext()) {
     		partida.addPartidaListener((PartidaListener)it.next());
@@ -108,7 +108,7 @@ public class PartidaManager implements PartidaListener {
     	j2Score++;
     }
     
-    int opt = sp.finJuego((j1Winner)?j1.getNombre():j2.getNombre(), time);
+    int opt = sp.finJuego((j1Winner)?j1.getName():j2.getName(), time);
     if(opt == SuperPalitos.FIN_JUEGO_CONTINUAR) {
     	replay();
     } else if(opt == SuperPalitos.FIN_JUEGO_TERMINAR) {
@@ -130,12 +130,12 @@ public class PartidaManager implements PartidaListener {
    * Termina la partida
    */
   public void end() {
-  	j1.terminar();
-  	j2.terminar();
-  	tablero.terminar();
+  	j1.finish();
+  	j2.finish();
+  	tablero.finished();
   }
   
-  public void addPartidaListener(PartidaListener partidaListener) {
+  public void addPartidaListener(GameListener partidaListener) {
   	partidaListeners.addLast(partidaListener);
   }
 
@@ -143,7 +143,7 @@ public class PartidaManager implements PartidaListener {
   	return id;
   }
   
-  public boolean estaJugandgo(Jugador j) {
+  public boolean estaJugandgo(Player j) {
   	return j1 == j || j2 == j;
   }
   

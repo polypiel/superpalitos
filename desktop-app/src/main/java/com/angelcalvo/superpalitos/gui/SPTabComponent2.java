@@ -1,4 +1,4 @@
-package org.pvs.superpalitos.gui;
+package com.angelcalvo.superpalitos.gui;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;

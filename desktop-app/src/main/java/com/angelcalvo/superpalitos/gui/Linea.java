@@ -7,9 +7,9 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.superpalitos.gui;
+package com.angelcalvo.superpalitos.gui;
 
-import org.pvs.palitos.Partida;
+import com.angelcalvo.palitos.Game;
 
 /**
  * Representa una l&iacute;nea.
@@ -35,7 +35,7 @@ public class Linea {
     this.x2 = x2;
     this.y2 = y2;
     this.volatil = volatil;
-    color = Partida.BLUE_COLOR;
+    color = Game.BLUE_COLOR;
   }
 
   /**

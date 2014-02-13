@@ -9,7 +9,7 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.superpalitos;
+package com.angelcalvo.superpalitos;
 
 import java.awt.Color;
 import java.io.File;
@@ -18,9 +18,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.pvs.superpalitos.gui.SPFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.angelcalvo.superpalitos.gui.SPFrame;
 
 /**
  *

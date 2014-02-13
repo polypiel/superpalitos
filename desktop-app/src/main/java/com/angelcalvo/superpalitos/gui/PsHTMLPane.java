@@ -7,7 +7,7 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.superpalitos.gui;
+package com.angelcalvo.superpalitos.gui;
 
 import java.awt.Dimension;
 import java.io.BufferedReader;
@@ -22,7 +22,7 @@ import javax.swing.JScrollPane;
  */
 public class PsHTMLPane extends JScrollPane {
   private static final long serialVersionUID = -7033635729402179291L;
-  private static final String RUTA = "/org/pvs/superpalitos/gui/";
+  private static final String RUTA = "/com/angelcalvo/superpalitos/gui/";
   
   public PsHTMLPane(String path) {
     JEditorPane text = new JEditorPane("text/html", readLic(path));

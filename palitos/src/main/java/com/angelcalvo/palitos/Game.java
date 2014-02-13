@@ -7,7 +7,7 @@
  * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
-package org.pvs.palitos;
+package com.angelcalvo.palitos;
 
 import java.util.Vector;
 
@@ -17,7 +17,7 @@ import java.util.Vector;
  * 
  * @author Angel Luis Calvo Ortega
  */
-public class Partida extends Thread {
+public class Game extends Thread {
   /** Modo 1 jugador */
   public final static int _1P = 0;
   /** Modo 2 jugadores */
@@ -33,13 +33,14 @@ public class Partida extends Thread {
   private static final int TURN_DELAY = 500;
   //private static long ID_CONT;
   
-  private Palito palitos;
-  private Hueco huecos;
-  private Estado estado;
+  private Sticks palitos;
+  private Gaps huecos;
+  private GameState estado;
+  
   private boolean turno;
-  private Jugador j1, j2;
-  private Tablero tablero;
-  private Vector<PartidaListener> partidaListeners;
+  private Player j1, j2;
+  private Board tablero;
+  private Vector<GameListener> partidaListeners;
   /** Identificador de la partida */
   //private long id;
   
@@ -50,57 +51,53 @@ public class Partida extends Thread {
    * @param tablero El Tablero
    * @param turno Indica si j1 es el primero en jugar
    */
-  public Partida(Jugador j1, Jugador j2, Tablero tablero, boolean turno) {
-    palitos = new Palito();
-    huecos = new Hueco();
-    estado = new Estado();
+  public Game(Player j1, Player j2, Board tablero, boolean turno) {
+    palitos = new Sticks();
+    huecos = new Gaps();
+    estado = new GameState();
     this.tablero = tablero;
     this.j1 = j1;
     this.j2 = j2;
     //this.id = id;
     this.turno = turno;
     
-    partidaListeners = new Vector<PartidaListener>();
+    partidaListeners = new Vector<GameListener>();
   }
   
   /**
    * Metodo para establecer el partidaListener de la partida.
    * @param partidaListener El partidaListener.
    */
-  public void addPartidaListener(PartidaListener partidaListener) {
+  public void addGameListener(GameListener partidaListener) {
      partidaListeners.addElement(partidaListener);
   }
   
-  /*public long getId() {
-    return id;
-  }*/
-  
   @Override
   public void run() {
-    Jugador j = null;
-    Jugada jug = null;
+    Player j = null;
+    Move jug = null;
     
-    tablero.iniciar();
+    tablero.started();
     
-    while(!esFin()) {
+    while(!isFinished()) {
       j = (turno) ? j1 : j2;
-      fireCambiaTurnoEvent(j.getNombre());
+      fireCambiaTurnoEvent(j.getName());
 
-      j.actualiza(jug, palitos, huecos, estado);
+      j.update(jug, palitos, huecos, estado);
       
       do {
-        jug = j.getMovimiento();
+        jug = j.move();
         if(jug == null) {
           return;
         }
       } while(!palitos.jugadaValida(jug));
       
-      insertaJugada(jug);
+      move(jug);
       
       if(jug.isCoord()) {   
-        tablero.dibujar(jug.getX1(), jug.getY1(), jug.getX2(), jug.getY2(), j.getColor());
+        tablero.drawLine(jug.getX1(), jug.getY1(), jug.getX2(), jug.getY2(), j.getColor());
       } else {
-        tablero.dibujar(jug.getHInicio(), jug.getHFin(), j.getColor());
+        tablero.drawLine(jug.getHInicio(), jug.getHFin(), j.getColor());
       }
       
       turno = !turno;
@@ -111,10 +108,10 @@ public class Partida extends Thread {
         e.printStackTrace();
       }
     }
-    Jugador per = (turno) ? j1 : j2;
-    per.actualiza(jug, palitos, huecos, estado);
+    Player per = (turno) ? j1 : j2;
+    per.update(jug, palitos, huecos, estado);
     
-    tablero.terminar();
+    tablero.finished();
     
     fireFinPartidaEvent(j == j1);
   }
@@ -123,42 +120,42 @@ public class Partida extends Thread {
    * Inserta una jugada y actualiza la partida.
    * @param j La jugada a insertar
    */
-  public void insertaJugada(Jugada j) {
+  public void move(Move j) {
     for(int i = 0; i < j.getLon(); i++) {
-      palitos.tacha(j.getPInicio() + i);
+      palitos.cross(j.getPInicio() + i);
     }
     for(int i = 1; i < j.getLon(); i++) {
-      huecos.tacha(j.getHInicio() + i);
+      huecos.cross(j.getHInicio() + i);
     }
     
-    if(Hueco.isBoundary(j.getHInicio())) {
-      huecos.tacha(j.getHInicio());
+    if(Gaps.isBoundary(j.getHInicio())) {
+      huecos.cross(j.getHInicio());
     } else if(!palitos.getEstado(j.getPInicio() - 1)) {
-      huecos.tacha(j.getHInicio());
+      huecos.cross(j.getHInicio());
     }
     
-    if(Hueco.isBoundary(j.getHFin())) {
-      huecos.tacha(j.getHFin());
+    if(Gaps.isBoundary(j.getHFin())) {
+      huecos.cross(j.getHFin());
     } else if(!palitos.getEstado(j.getPFin() + 1)) {
-      huecos.tacha(j.getHFin());
+      huecos.cross(j.getHFin());
     }
     
-    estado.actualiza(palitos);
+    estado.update(palitos);
   }
   
   /**
    * Metodo que dice si la partida a llegado a su fin.
    * @return Si la partida ha terminado o sigue.
    */
-  public boolean esFin() {
+  public boolean isFinished() {
     return palitos.vivos() == 1;
   }
   
   /**
    * Finaliza la partida bruscamente.
    */
-  public void terminar() {
-    tablero.terminar();
+  public void finish() {
+    tablero.finished();
     this.interrupt();
   }
   
@@ -166,7 +163,7 @@ public class Partida extends Thread {
    * Devuelve el primer jugador
    * @return El jugador 1
    */
-  public Jugador getJ1() {
+  public Player getPlayerOne() {
     return j1;
   }
   
@@ -174,20 +171,20 @@ public class Partida extends Thread {
    * Devuelve el segundo jugador
    * @return El jugador 2
    */
-  public Jugador getJ2() {
+  public Player getPlayerTwo() {
     return j2;
   }
 
   private void fireCambiaTurnoEvent(String jug) {
   	for(int i = 0; i < partidaListeners.size(); i++) {
-  		PartidaListener listener = (PartidaListener) partidaListeners.elementAt(i);
+  		GameListener listener = (GameListener) partidaListeners.elementAt(i);
   		listener.cambiaTurno(jug);
   	}
   }
 
   private void fireFinPartidaEvent(boolean j1Winner) {
   	for(int i = 0; i < partidaListeners.size(); i++) {
-  		PartidaListener listener = (PartidaListener) partidaListeners.elementAt(i);
+  		GameListener listener = (GameListener) partidaListeners.elementAt(i);
   		listener.finPartida(j1Winner);
   	}
   }
