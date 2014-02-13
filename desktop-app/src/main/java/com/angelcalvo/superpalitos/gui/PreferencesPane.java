@@ -36,7 +36,7 @@ public class PreferencesPane extends javax.swing.JPanel {
   //	j2ColorCB.setColors(colors);
 
   	initLookAndFeels();
-  	lnfCB.setModel(new DefaultComboBoxModel(lookAndFeelTags));
+  	lnfCB.setModel(new DefaultComboBoxModel<String>(lookAndFeelTags));
   }
   
   private void initLookAndFeels() {
@@ -70,22 +70,22 @@ public class PreferencesPane extends javax.swing.JPanel {
     jLabel1 = new javax.swing.JLabel();
     jLabel3 = new javax.swing.JLabel();
     j1NameTF = new javax.swing.JTextField();
-    j1ColorCB = new javax.swing.JComboBox();
+    j1ColorCB = new ColorBox();
     jPanel5 = new javax.swing.JPanel();
     jLabel4 = new javax.swing.JLabel();
     jLabel5 = new javax.swing.JLabel();
     j2NameTF = new javax.swing.JTextField();
-    j2ColorCB = new javax.swing.JComboBox();
+    j2ColorCB = new ColorBox();
     jPanel2 = new javax.swing.JPanel();
     jLabel6 = new javax.swing.JLabel();
     portTF = new javax.swing.JTextField();
     jPanel3 = new javax.swing.JPanel();
     jLabel7 = new javax.swing.JLabel();
-    lnfCB = new javax.swing.JComboBox();
+    lnfCB = new javax.swing.JComboBox<String>();
     animsCheck = new javax.swing.JCheckBox();
     soundCheck = new javax.swing.JCheckBox();
     jLabel2 = new javax.swing.JLabel();
-    jComboBox1 = new javax.swing.JComboBox();
+    jcbLang = new javax.swing.JComboBox<String>();
     jButton1 = new javax.swing.JButton();
     jSeparator1 = new javax.swing.JSeparator();
 
@@ -100,10 +100,11 @@ public class PreferencesPane extends javax.swing.JPanel {
 
     j1NameTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-    org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, conf, org.jdesktop.beansbinding.ELProperty.create("${j1Name}"), j1NameTF, org.jdesktop.beansbinding.BeanProperty.create("text_ON_ACTION_OR_FOCUS_LOST"));
-    bindingGroup.addBinding(binding);
-
-    j1ColorCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+		org.jdesktop.beansbinding.Binding<Object, Object, Object, Object> binding = org.jdesktop.beansbinding.Bindings
+				.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, conf,
+						org.jdesktop.beansbinding.ELProperty.create("${j1Name}"), j1NameTF,
+						org.jdesktop.beansbinding.BeanProperty.create("text_ON_ACTION_OR_FOCUS_LOST"));
+		bindingGroup.addBinding(binding);
 
     javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
     jPanel4.setLayout(jPanel4Layout);
@@ -142,8 +143,6 @@ public class PreferencesPane extends javax.swing.JPanel {
 
     binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, conf, org.jdesktop.beansbinding.ELProperty.create("${j2Name}"), j2NameTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
     bindingGroup.addBinding(binding);
-
-    j2ColorCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
     javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
     jPanel5.setLayout(jPanel5Layout);
@@ -240,8 +239,8 @@ public class PreferencesPane extends javax.swing.JPanel {
 
     jLabel2.setText(bundle.getString("prefsDialog.language")); // NOI18N
 
-    jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Español", "Inglés" }));
-    jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+    jcbLang.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Español", "Inglés" }));
+    jcbLang.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         jComboBox1ActionPerformed(evt);
       }
@@ -262,7 +261,7 @@ public class PreferencesPane extends javax.swing.JPanel {
               .addComponent(jLabel2))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-              .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+              .addComponent(jcbLang, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
               .addComponent(lnfCB, 0, 131, Short.MAX_VALUE))))
         .addContainerGap())
     );
@@ -276,7 +275,7 @@ public class PreferencesPane extends javax.swing.JPanel {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel2)
-          .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addComponent(jcbLang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(soundCheck)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -359,12 +358,12 @@ public class PreferencesPane extends javax.swing.JPanel {
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JCheckBox animsCheck;
   private com.angelcalvo.superpalitos.SPConf conf;
-  private javax.swing.JComboBox j1ColorCB;
+  private ColorBox j1ColorCB;
   private javax.swing.JTextField j1NameTF;
-  private javax.swing.JComboBox j2ColorCB;
+  private ColorBox j2ColorCB;
   private javax.swing.JTextField j2NameTF;
   private javax.swing.JButton jButton1;
-  private javax.swing.JComboBox jComboBox1;
+  private javax.swing.JComboBox<String> jcbLang;
   private javax.swing.JLabel jLabel1;
   private javax.swing.JLabel jLabel2;
   private javax.swing.JLabel jLabel3;
@@ -379,7 +378,7 @@ public class PreferencesPane extends javax.swing.JPanel {
   private javax.swing.JPanel jPanel5;
   private javax.swing.JSeparator jSeparator1;
   private javax.swing.JTabbedPane jTabbedPane1;
-  private javax.swing.JComboBox lnfCB;
+  private javax.swing.JComboBox<String> lnfCB;
   private javax.swing.JTextField portTF;
   private javax.swing.JCheckBox soundCheck;
   private org.jdesktop.beansbinding.BindingGroup bindingGroup;

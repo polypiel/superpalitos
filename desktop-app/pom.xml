@@ -23,16 +23,6 @@
   		<groupId>com.angelcalvo</groupId>
   		<version>3.1</version>
   	</dependency>
-   	<dependency>
-  		<groupId>org.springframework</groupId>
-  		<artifactId>spring-beans</artifactId>
-  		<version>4.0.1.RELEASE</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.jdesktop</groupId>
-  		<artifactId>beansbinding</artifactId>
-  		<version>1.2.1</version>
-  	</dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -48,6 +38,11 @@
         	<groupId>org.springframework</groupId>
         	<artifactId>spring-context</artifactId>
         	<version>4.0.1.RELEASE</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.jdesktop</groupId>
+        	<artifactId>beansbinding</artifactId>
+        	<version>1.2.1</version>
         </dependency>
   </dependencies>
 </project>

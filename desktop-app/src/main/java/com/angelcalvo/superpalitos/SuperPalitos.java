@@ -58,9 +58,6 @@ public class SuperPalitos {
   private static final String PROPS_NAME = ".superpalitos";
   private static final String PROPS_FILE = System.getProperty("user.home") + "/" + PROPS_NAME;
   
-  private static final String SPRING_FILE = "com/angelcalvo/superpalitos/sp.xml";
-//  private static SuperPalitos instance;
-  
   private boolean serverON;
   private PNServer pnServer;
   
@@ -152,7 +149,7 @@ public class SuperPalitos {
    * @param args Argumentos de entrada.
    */
   public static void main(String[] args) {
-		//BeanFactory factory = new XmlBeanFactory(new ClassPathResource(SPRING_FILE));
+		@SuppressWarnings("resource")
 		ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 		
 		final SuperPalitos sp = (SuperPalitos) context.getBean("sp");

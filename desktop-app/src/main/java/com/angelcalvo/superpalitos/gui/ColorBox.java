@@ -27,7 +27,7 @@ import javax.swing.border.MatteBorder;
 /**
  * @author Angel Luis Calvo Ortega
  */
-public class ColorBox extends JComboBox {
+public class ColorBox extends JComboBox<Color> {
 	private static final long serialVersionUID = 3546083536269357619L;
   private static final Color[] DEFAULT_COLORS = {
     Color.BLACK, Color.BLUE, Color.CYAN, Color.DARK_GRAY, Color.GRAY, Color.GREEN,
@@ -46,7 +46,7 @@ public class ColorBox extends JComboBox {
   }
 	
   public void setColors(Color[] colors) {
-      super.setModel(new DefaultComboBoxModel(colors));
+      super.setModel(new DefaultComboBoxModel<Color>(colors));
       this.colors = colors;
   }
   
@@ -67,29 +67,29 @@ public class ColorBox extends JComboBox {
     return colors[getSelectedIndex()];
   }
   
-  static class ColorBoxRenderer extends JPanel implements ListCellRenderer {
+  static class ColorBoxRenderer extends JPanel implements ListCellRenderer<Color> {
 		private static final long serialVersionUID = 3904964131575575092L;
 		private Color color = Color.black;
     private Color focusColor = (Color)UIManager.get(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("List.selectionBackground"));
     private Color nonFocusColor = Color.white;
     
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    public void paintComponent(Graphics g) {
+      setBackground(color);
+      super.paintComponent(g);
+    }
+
+		@Override
+		public Component getListCellRendererComponent(JList<? extends Color> list, Color color,
+				int index, boolean isSelected, boolean cellHasFocus) {
       if(cellHasFocus || isSelected) {
         setBorder(new CompoundBorder(new MatteBorder(2, 10, 2, 10, focusColor), new LineBorder(Color.black)));
       } else {
         setBorder(new CompoundBorder(new MatteBorder(2, 10, 2, 10, nonFocusColor), new LineBorder(Color.black)));
       }
-      if(value instanceof Color) {
-        color = (Color)value;
-      }
+      this.color = color;
+
       return this;
-    }
-    
-    @Override
-    public void paintComponent(Graphics g) {
-      setBackground(color);
-      super.paintComponent(g);
-    }
+		}
   }
 }
