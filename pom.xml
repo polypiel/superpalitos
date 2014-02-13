@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.pvs</groupId>
+  <artifactId>superpalitos</artifactId>
+  <name>SuperPalitos</name>
+  <packaging>pom</packaging>
+  <version>3.1</version>
+  <description>'Palitos' paper and pencil game written in Java</description>
+  <url>http://superpalitos.googlepages.com</url>
+
+  <modules>
+    <module>palitos</module>
+    <module>desktop-app</module>
+  </modules>
+  
+  <developers>
+    <developer>
+      <id/>
+      <name>Angel Luis Calvo Ortega</name>
+      <email>polloverdetm@gmail.com</email>
+      <url/>
+      <organization>Pollo Verde Software</organization>
+      <organizationUrl>http://polloverdetm.googlepages.com</organizationUrl>
+      <roles>
+      	<role>All</role>
+      </roles>
+      <timezone>1</timezone>
+      <properties/>
+    </developer>
+  </developers>
+  
+  <licenses>
+    <license>
+      <name>GPL</name>
+      <url>http://www.gnu.org/licenses/gpl.txt</url>
+      <distribution/>
+      <comments/>
+    </license>
+  </licenses>
+  
+  <scm>
+    <connection>scm:svn:http://superpalitos.googlecode.com/svn/trunk/</connection>
+    <developerConnection>scm:svn:https://superpalitos.googlecode.com/svn/trunk/</developerConnection>
+    <tag/>
+    <url>http://code.google.com/p/superpalitos/source</url>
+  </scm>
+  
+  <organization>
+    <name>Pollo Verde Software</name>
+    <url>http://polloverdetm.googlepages.com</url>
+  </organization>
+  <!-- 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>org.pvs.superpalitos.SuperPalitos</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>6</source>
+          <target>6</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+   -->
+
+  
+  <!--reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jxr-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting-->
+</project>

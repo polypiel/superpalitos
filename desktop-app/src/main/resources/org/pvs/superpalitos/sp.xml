@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="sp" class="org.pvs.superpalitos.SuperPalitos">
+		<property name="frame">
+			<ref bean="frame" />
+		</property>
+	</bean>
+	<bean id="frame" class="org.pvs.superpalitos.gui.SPFrame">
+		<property name="sp">
+			<ref bean="sp"/>
+		</property>
+	</bean>
+</beans>
