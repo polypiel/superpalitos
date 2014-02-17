@@ -88,6 +88,7 @@ public class GameState implements Cloneable {
    * @param e El estado
    * @return
    */
+  // TODO move to PlayerAI
   public int[] getMove(GameState e) {
     int jug[] = new int[3];
 

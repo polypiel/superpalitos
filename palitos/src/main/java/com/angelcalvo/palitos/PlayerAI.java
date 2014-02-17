@@ -72,15 +72,9 @@ public class PlayerAI implements Player {
   }
 
   @Override
-  public void setColor(int c) {}
-
-  @Override
   public int getColor() {
     return color;
   }
-
-  @Override
-  public void setName(String n) {}
 
   @Override
   public String getName() {

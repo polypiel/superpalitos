@@ -193,9 +193,6 @@ public class PNClient extends Thread implements Player, SPChat {
 	}
 
 	@Override
-	public void setColor(int c) {}
-
-	@Override
 	public int getColor() {
 		return color;
 	}

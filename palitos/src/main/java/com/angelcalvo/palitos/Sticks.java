@@ -12,7 +12,7 @@ package com.angelcalvo.palitos;
 /**
  * Esta clase representa los palitos
  * 
- * @author Angel Luis Calvo Ortega
+ * @author Angel Calvo
  */
 public class Sticks extends Thing {
   private static final int Y[] = {0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4};
@@ -35,7 +35,7 @@ public class Sticks extends Thing {
    * @param indice El palito del que se desea obtener la fila
    * @return La fila del palito
    */
-  public int getY(int indice) {
+  public int getRow(int indice) {
     return Y[indice];
   }
 
@@ -50,7 +50,7 @@ public class Sticks extends Thing {
   	if(j == null) {
   		return false;
   	}
-    if(getY(j.getPInicio()) != getY(j.getPFin())) {
+    if(getRow(j.getPInicio()) != getRow(j.getPFin())) {
       return false;
     }
     for(int i = 0; i < j.getLon(); i++) {

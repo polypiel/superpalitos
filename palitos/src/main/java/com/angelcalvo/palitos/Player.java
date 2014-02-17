@@ -31,22 +31,10 @@ public interface Player {
   void update(Move j, Sticks p, Gaps h, GameState e);
   
   /**
-   * Metodo para cambiar el color de un jugador.
-   * @param c El nuevo color.
-   */
-  void setColor(int c);
-  
-  /**
    * Metodo para conseguir el color de un jugador.
    * @return El color del jugador.
    */
   int getColor();
-  
-  /**
-   * Metodo para cambiar el nombre de un jugador.
-   * @param n El nuevo nombre.
-   */
-  void setName(String n);
   
   /**
    * Metodo para conseguir el nombre de un jugador.

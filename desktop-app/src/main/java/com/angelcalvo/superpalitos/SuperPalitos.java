@@ -325,7 +325,7 @@ public class SuperPalitos {
   public void conectar(String dir, int puerto) {
     PNClient pnClient = new PNClient(this);
     pnClient.setName(j1Name);
-    pnClient.setColor(j1Color);
+    // pnClient.setColor(j1Color);
     pnClient.connect(dir, puerto);
   }
   

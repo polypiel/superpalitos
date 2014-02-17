@@ -13,10 +13,10 @@ package com.angelcalvo.palitos;
 /**
  * Clase abstracta de la que heredan Palito y Hueco
  *
- * @author Angel Luis Calvo Ortega
+ * @author Angel Calvo 
  */
 // TODO kill
-public abstract class Thing {
+abstract class Thing {
   /** Transformacion de palito al hueco de la izquierda */
   protected static final int P2HI[] = {0, 2, 3, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 18};
   /** Transformacion de palito al hueco de la derecha */
@@ -25,6 +25,7 @@ public abstract class Thing {
   protected static final int H2PD[] = {0, -1, 1, 2, -1, 3, 4, 5, -1, 6, 7, 8, 9, -1, 10, 11, 12, 13, 14, -1};
   /** Transformacion de hueco al palito de la izquierda */
   protected static final int H2PI[] = {-1, 0, -1, 1, 2, -1, 3, 4, 5, -1, 6, 7, 8, 9, -1, 10, 11, 12, 13, 14};
+  
   /** true => sin tachar, false => tachado */
   protected boolean[] estados;
   

@@ -388,16 +388,6 @@ public class TableroPanel extends JPanel implements Board {
     }
     
     @Override
-    public void setColor(int color) {
-      this.color = color;
-    }
-    
-    @Override
-    public void setName(String nombre) {
-      this.nombre = nombre;
-    }
-    
-    @Override
     public void update(Move j, Sticks p, Gaps h, GameState e) {
       this.p = p;
       this.h = h;
