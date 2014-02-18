@@ -15,7 +15,7 @@ import java.util.Vector;
 /**
  * Clase que maneja una partida.
  * 
- * @author Angel Luis Calvo Ortega
+ * @author Angel Calvo
  */
 public class Game extends Thread {
   /** Modo 1 jugador */
@@ -35,7 +35,6 @@ public class Game extends Thread {
   
   private Sticks palitos;
   private Gaps huecos;
-  private GameState estado;
   
   private boolean turno;
   private Player j1, j2;
@@ -54,7 +53,6 @@ public class Game extends Thread {
   public Game(Player j1, Player j2, Board tablero, boolean turno) {
     palitos = new Sticks();
     huecos = new Gaps();
-    estado = new GameState();
     this.tablero = tablero;
     this.j1 = j1;
     this.j2 = j2;
@@ -83,7 +81,7 @@ public class Game extends Thread {
       j = (turno) ? j1 : j2;
       fireCambiaTurnoEvent(j.getName());
 
-      j.update(jug, palitos, huecos, estado);
+      j.update(jug, palitos, huecos);
       
       do {
         jug = j.move();
@@ -109,7 +107,7 @@ public class Game extends Thread {
       }
     }
     Player per = (turno) ? j1 : j2;
-    per.update(jug, palitos, huecos, estado);
+    per.update(jug, palitos, huecos);
     
     tablero.finished();
     
@@ -139,8 +137,6 @@ public class Game extends Thread {
     } else if(!palitos.getEstado(j.getPFin() + 1)) {
       huecos.cross(j.getHFin());
     }
-    
-    estado.update(palitos);
   }
   
   /**

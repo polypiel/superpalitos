@@ -28,7 +28,7 @@ public interface Player {
    * @param h El estado actual de los huecos.
    * @param e El estado actual.
    */
-  void update(Move j, Sticks p, Gaps h, GameState e);
+  void update(Move j, Sticks p, Gaps h);
   
   /**
    * Metodo para conseguir el color de un jugador.
