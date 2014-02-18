@@ -25,10 +25,8 @@ public interface Player {
    * Metodo por el cual un jugador es notificado del movimiento del contrario.
    * @param j La jugada realizada.
    * @param p El estado actual de los palitos.
-   * @param h El estado actual de los huecos.
-   * @param e El estado actual.
    */
-  void update(Move j, Sticks p, Gaps h);
+  void update(Move j, GameState state);
   
   /**
    * Metodo para conseguir el color de un jugador.

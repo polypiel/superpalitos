@@ -17,10 +17,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import com.angelcalvo.palitos.Gaps;
+import com.angelcalvo.palitos.GameState;
 import com.angelcalvo.palitos.Move;
 import com.angelcalvo.palitos.Player;
-import com.angelcalvo.palitos.Sticks;
 import com.angelcalvo.superpalitos.SuperPalitos;
 
 /**
@@ -183,7 +182,7 @@ public class PNClient extends Thread implements Player, SPChat {
 	}
 
 	@Override
-	public void update(Move j, Sticks p, Gaps h) {
+	public void update(Move j, GameState s) {
 		if(j != null) { // para palitosNet
 			Paquete paq = new Paquete(Paquete.JUGADA);
 			paq.setJugada(j);

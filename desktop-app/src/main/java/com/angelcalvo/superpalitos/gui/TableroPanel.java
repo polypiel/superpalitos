@@ -26,13 +26,11 @@ import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
+import com.angelcalvo.palitos.Board;
+import com.angelcalvo.palitos.Game;
 import com.angelcalvo.palitos.GameState;
-import com.angelcalvo.palitos.Gaps;
 import com.angelcalvo.palitos.Move;
 import com.angelcalvo.palitos.Player;
-import com.angelcalvo.palitos.Sticks;
-import com.angelcalvo.palitos.Game;
-import com.angelcalvo.palitos.Board;
 import com.angelcalvo.superpalitos.SuperPalitos;
 
 /**
@@ -187,14 +185,14 @@ public class TableroPanel extends JPanel implements Board {
     if(state == STATE_READY) {
       j.x1 = e.getX();
       j.y1 = e.getY();
-      if((j.h1 = cursorIn(j.x1, j.y1)) != -1 && j.h.getEstado(j.h1)) {
+      if((j.h1 = cursorIn(j.x1, j.y1)) != -1 && j.s.getGap(j.h1)) {
         state = STATE_1ST_CLICK;
       }
     } else if(state == STATE_1ST_CLICK) {
       j.x2 = e.getX();
       j.y2 = e.getY();
-      if((j.h2 = cursorIn(j.x2, j.y2)) != -1 && j.h.getEstado(j.h2)) {
-        if(j.h1 != j.h2 && huecos[j.h1][1] == huecos[j.h2][1] && j.p.jugadaValida(new Move(j.h1, j.h2, Move.HUECO))) {
+      if((j.h2 = cursorIn(j.x2, j.y2)) != -1 && j.s.getGap(j.h2)) {
+        if(j.h1 != j.h2 && huecos[j.h1][1] == huecos[j.h2][1] && j.s.isValid(new Move(j.h1, j.h2, Move.HUECO))) {
           state = STATE_2ND_CLICK;
           //despertar();
           //super.notifyAll();
@@ -339,8 +337,7 @@ public class TableroPanel extends JPanel implements Board {
    * @version 1.0
    */
   private class Humano implements Player {
-    private Gaps h;
-    private Sticks p;
+    private GameState s;
     private int color;
     private String nombre;
     private int h1, h2;
@@ -388,9 +385,8 @@ public class TableroPanel extends JPanel implements Board {
     }
     
     @Override
-    public void update(Move j, Sticks p, Gaps h, GameState e) {
-      this.p = p;
-      this.h = h;
+    public void update(Move j, GameState s) {
+      this.s = s;
     }
     
     @Override

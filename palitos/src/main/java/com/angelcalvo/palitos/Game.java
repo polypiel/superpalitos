@@ -33,15 +33,12 @@ public class Game extends Thread {
   private static final int TURN_DELAY = 500;
   //private static long ID_CONT;
   
-  private Sticks palitos;
-  private Gaps huecos;
+  private GameState state;
   
   private boolean turno;
   private Player j1, j2;
   private Board tablero;
   private Vector<GameListener> partidaListeners;
-  /** Identificador de la partida */
-  //private long id;
   
   /**
    * Constructor, crea una nueva partida.
@@ -51,12 +48,10 @@ public class Game extends Thread {
    * @param turno Indica si j1 es el primero en jugar
    */
   public Game(Player j1, Player j2, Board tablero, boolean turno) {
-    palitos = new Sticks();
-    huecos = new Gaps();
+    state = new GameState();
     this.tablero = tablero;
     this.j1 = j1;
     this.j2 = j2;
-    //this.id = id;
     this.turno = turno;
     
     partidaListeners = new Vector<GameListener>();
@@ -81,17 +76,18 @@ public class Game extends Thread {
       j = (turno) ? j1 : j2;
       fireCambiaTurnoEvent(j.getName());
 
-      j.update(jug, palitos, huecos);
+      j.update(jug, state);
       
       do {
         jug = j.move();
         if(jug == null) {
           return;
         }
-      } while(!palitos.jugadaValida(jug));
+      } while(!state.isValid(jug));
       
-      move(jug);
+      state.move(jug);
       
+      // TODO change!S
       if(jug.isCoord()) {   
         tablero.drawLine(jug.getX1(), jug.getY1(), jug.getX2(), jug.getY2(), j.getColor());
       } else {
@@ -107,7 +103,7 @@ public class Game extends Thread {
       }
     }
     Player per = (turno) ? j1 : j2;
-    per.update(jug, palitos, huecos);
+    per.update(jug, state);
     
     tablero.finished();
     
@@ -115,36 +111,11 @@ public class Game extends Thread {
   }
   
   /**
-   * Inserta una jugada y actualiza la partida.
-   * @param j La jugada a insertar
-   */
-  public void move(Move j) {
-    for(int i = 0; i < j.getLon(); i++) {
-      palitos.cross(j.getPInicio() + i);
-    }
-    for(int i = 1; i < j.getLon(); i++) {
-      huecos.cross(j.getHInicio() + i);
-    }
-    
-    if(Gaps.isBoundary(j.getHInicio())) {
-      huecos.cross(j.getHInicio());
-    } else if(!palitos.getEstado(j.getPInicio() - 1)) {
-      huecos.cross(j.getHInicio());
-    }
-    
-    if(Gaps.isBoundary(j.getHFin())) {
-      huecos.cross(j.getHFin());
-    } else if(!palitos.getEstado(j.getPFin() + 1)) {
-      huecos.cross(j.getHFin());
-    }
-  }
-  
-  /**
    * Metodo que dice si la partida a llegado a su fin.
    * @return Si la partida ha terminado o sigue.
    */
   public boolean isFinished() {
-    return palitos.vivos() == 1;
+    return state.alive() == 1;
   }
   
   /**
@@ -184,4 +155,9 @@ public class Game extends Thread {
   		listener.finPartida(j1Winner);
   	}
   }
+
+	@Override
+	public String toString() {
+		return state.toString();
+	}
 }
