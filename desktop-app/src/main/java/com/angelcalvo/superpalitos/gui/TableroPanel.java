@@ -27,16 +27,16 @@ import java.util.TimerTask;
 import javax.swing.JPanel;
 
 import com.angelcalvo.palitos.Board;
-import com.angelcalvo.palitos.Game;
 import com.angelcalvo.palitos.GameState;
 import com.angelcalvo.palitos.Move;
 import com.angelcalvo.palitos.Player;
 import com.angelcalvo.superpalitos.SuperPalitos;
+import com.angelcalvo.superpalitos.XyMove;
 
 /**
  * El panel con el tablero
  * 
- * @author Angel Luis Calvo Ortega
+ * @author Angel Calvo
  */
 public class TableroPanel extends JPanel implements Board {
   private static final long serialVersionUID = 3616447899681305654L;
@@ -63,7 +63,7 @@ public class TableroPanel extends JPanel implements Board {
   };
   private static final int ANCHO = 16;
   private int state;
-  private LinkedList<Linea> lineas;
+  private LinkedList<Line> lineas;
   private Humano j;
   
   private final static Image[] bolis = {
@@ -78,7 +78,6 @@ public class TableroPanel extends JPanel implements Board {
     Toolkit.getDefaultToolkit().createCustomCursor(bolis[SPFrame.ROJO], new Point(0, 0), "Boli Rojo"),
     Toolkit.getDefaultToolkit().createCustomCursor(bolis[SPFrame.VERDE], new Point(0, 0), "Boli Verde")
   };
-  private long id;
   
   private int boli;
   private int boliX, boliY;
@@ -92,7 +91,7 @@ public class TableroPanel extends JPanel implements Board {
    */
   public TableroPanel(SuperPalitos sp) {
   	this.sp = sp;
-    lineas = new LinkedList<Linea>();
+    lineas = new LinkedList<Line>();
     state = STATE_OFF;
     boli = -1;
     
@@ -139,45 +138,37 @@ public class TableroPanel extends JPanel implements Board {
     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
   }
   
+  
   @Override
-  public void drawLine(int x1, int y1, int x2, int y2, int c) {
-    Linea l = new Linea(x1, y1, x2, y2, false);
-    l.setColor(c);
-    drawLine(l, sp.isAnim());
+	public void move(Player player, Move move) {
+  	Line line = null;
+  	
+  	if(move instanceof XyMove) {
+  		XyMove xyMove = (XyMove) move;
+      line = new Line(xyMove.getX1(), xyMove.getY1(), xyMove.getX2(), xyMove.getY2(), false);
+  	} else {
+      int x1Aux = huecos[move.getHInicio()][0] + Math.round((float)Math.random() * ANCHO);
+      int y1Aux = huecos[move.getHInicio()][1] + Math.round((float)Math.random() * ANCHO);
+      int x2Aux = huecos[move.getHFin()][0] + Math.round((float)Math.random() * ANCHO);
+      int y2Aux = huecos[move.getHFin()][1] + Math.round((float)Math.random() * ANCHO);
+      line = new Line(x1Aux, y1Aux, x2Aux, y2Aux, false);
+  	}
+  	
+    line.setColor(player.getColor());
+    drawLine(line, sp.isAnim());
     if(sp.isSound()) {
     	clip.loop();
-    	timer.schedule(new StopSound(), (Math.abs(x2 - x1) / ANCHO) * QUAD_DELAY);
+    	timer.schedule(new StopSound(), (Math.abs(line.getX1() - line.getX2()) / ANCHO) * QUAD_DELAY);
     }
-  }
-  
-  @Override
-  public void drawLine(int h1, int h2, int c) {
-    int x1Aux = huecos[h1][0] + Math.round((float)Math.random() * ANCHO);
-    int y1Aux = huecos[h1][1] + Math.round((float)Math.random() * ANCHO);
-    int x2Aux = huecos[h2][0] + Math.round((float)Math.random() * ANCHO);
-    int y2Aux = huecos[h2][1] + Math.round((float)Math.random() * ANCHO);
-    drawLine(x1Aux, y1Aux, x2Aux, y2Aux, c);
-  }
-  
-  @Override
-  public Player createPlayer(String name, int c) {
+	}
+
+  public Player createPlayer(String name, Color c) {
     return new Humano(name, c);
   }
   
-  @Override
   public void setScore(String marcador) {
   	this.marcador = marcador;
   	repaint();
-  }
-  
-  @Override
-  public void setId(long id) {
-    this.id = id;
-  }
-  
-  @Override
-  public long getId() {
-    return id;
   }
   //-----------------------------------------------------------
   
@@ -212,7 +203,7 @@ public class TableroPanel extends JPanel implements Board {
     if(state == STATE_1ST_CLICK) {
       j.x2 = e.getX();
       j.y2 = e.getY();
-      Linea l = new Linea(j.x1, j.y1, j.x2, j.y2, true);
+      Line l = new Line(j.x1, j.y1, j.x2, j.y2, true);
       l.setColor(j.getColor());
       lineas.addLast(l);
       repaint();
@@ -233,11 +224,8 @@ public class TableroPanel extends JPanel implements Board {
     Graphics g2d = g;
     g2d.drawImage(FONDO, 0, 0, null);
     
-    for(Linea l: lineas) {
-    //Iterator it = lineas.iterator();
-    //while(it.hasNext()) {
-    //  Linea l = (Linea)it.next();
-      g2d.setColor(toColor(l.getColor()));
+    for(Line l: lineas) {
+      g2d.setColor(l.getColor());
       g2d.drawLine(l.getX1(), l.getY1(), l.getX2(), l.getY2());
       
       if(boli != -1) {
@@ -249,26 +237,12 @@ public class TableroPanel extends JPanel implements Board {
       	g2d.drawString(marcador, SPFrame.WIDTH / 2, 10);
       }
       if(l.isVolatil()) {
-        //it.remove();
-      	//lineas.remove(l);
+      	lineas.remove(l);
       }
     }
   }
-  
-  private Color toColor(int c) {
-  	if(c == Game.BLUE_COLOR) {
-  		return Color.BLUE;
-  	}
-  	if(c == Game.BLACK_COLOR) {
-  		return Color.BLACK;
-  	}
-  	if(c == Game.RED_COLOR) {
-  		return Color.RED;
-  	}
-  	return Color.GREEN;
-  }
-  
-  private void drawLine(Linea l, boolean anim) {
+
+  private void drawLine(Line l, boolean anim) {
     if(anim) {
       boli = color2index(l.getColor());
       float a = (float)(l.getY2() - l.getY1()) / (float)(l.getX2() - l.getX1());
@@ -278,7 +252,7 @@ public class TableroPanel extends JPanel implements Board {
         boliX = (int)(l.getX1() + xoffset);
         boliY = (int)(a*boliX + b);
         
-        Linea l2 = new Linea(l.getX1(), l.getY1(), boliX, boliY, true);
+        Line l2 = new Line(l.getX1(), l.getY1(), boliX, boliY, true);
         l2.setColor(l.getColor());
         lineas.addLast(l2);
         
@@ -305,27 +279,21 @@ public class TableroPanel extends JPanel implements Board {
     repaint();
   }
   
-  private int color2index(int color) {
-   /* for(int i = 0; i < SPFrame.COLORS.length; i++) {
-      if(color.getRGB() == SPFrame.COLORS[i].getRGB()) {
-        return i;
-      }
-    }
-    return 0;*/
-  	return color;
+  private int color2index(Color color) {
+  	if(SuperPalitos.BLUE_COLOR.equals(color)) {
+  		return 0;
+  	}
+  	if(SuperPalitos.RED_COLOR.equals(color)) {
+  		return 1;
+  	}
+  	if(SuperPalitos.BLACK_COLOR.equals(color)) {
+  		return 2;
+  	}
+  	if(SuperPalitos.GREEN_COLOR.equals(color)) {
+  		return 3;
+  	}
+  	throw new IllegalArgumentException("Non standard color");
   }
-/*
-  private synchronized void dormir() {
-    try {
-      wait();
-    } catch(InterruptedException e) {
-      despertar();
-    }
-  }
- 
-  private synchronized void despertar() {
-    notify();
-  }*/
   
   /**
    * Titulo:      Humano
@@ -338,7 +306,7 @@ public class TableroPanel extends JPanel implements Board {
    */
   private class Humano implements Player {
     private GameState s;
-    private int color;
+    private Color color;
     private String nombre;
     private int h1, h2;
     private int x1, y1, x2, y2;
@@ -348,7 +316,7 @@ public class TableroPanel extends JPanel implements Board {
      * @param nombre
      * @param color
      */
-    private Humano(String nombre, int color) {
+    private Humano(String nombre, Color color) {
       this.nombre = nombre;
       this.color = color;
     }
@@ -358,8 +326,7 @@ public class TableroPanel extends JPanel implements Board {
       repaint();
       j = this;
       state = STATE_READY;
-      /*while(moviendo != 3)
-        dormir();*/
+
       try {
         while(state != STATE_2ND_CLICK) {
           Thread.sleep(WAITING);
@@ -369,13 +336,13 @@ public class TableroPanel extends JPanel implements Board {
         return null;
       }
       state = STATE_OFF;
-      Move jug = new Move(h1, h2, Move.HUECO);
-      jug.setCoord(x1, y1, x2, y2);
+      XyMove jug = new XyMove(h1, h2, Move.HUECO);
+      jug.setCoords(x1, y1, x2, y2);
       return jug;
     }
     
     @Override
-    public int getColor() {
+    public Color getColor() {
       return color;
     }
     

@@ -10,6 +10,8 @@
 
 package com.angelcalvo.superpalitos.net;
 
+import java.awt.Color;
+
 /**
  * Interfaz para una ventana que muestre un chat de PalitosNet.
  * 
@@ -21,5 +23,5 @@ public interface ChatComponent {
 	 * @param nombre Nombre del jugador que ha escrito la l&iacute;nea.
 	 * @param msg Mensaje enviado.
 	 */
-  void showMessage(String nombre, int c, String msg);
+  void showMessage(String nombre, Color c, String msg);
 }

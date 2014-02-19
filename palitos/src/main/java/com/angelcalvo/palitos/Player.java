@@ -9,6 +9,8 @@
  */
 package com.angelcalvo.palitos;
 
+import java.awt.Color;
+
 /**
  * Interfaz de un jugador
  * 
@@ -23,16 +25,16 @@ public interface Player {
   
   /**
    * Metodo por el cual un jugador es notificado del movimiento del contrario.
-   * @param j La jugada realizada.
-   * @param p El estado actual de los palitos.
+   * @param move La jugada realizada.
+   * @param state El estado actual de los palitos.
    */
-  void update(Move j, GameState state);
+  void update(Move move, GameState state);
   
   /**
    * Metodo para conseguir el color de un jugador.
    * @return El color del jugador.
    */
-  int getColor();
+  Color getColor();
   
   /**
    * Metodo para conseguir el nombre de un jugador.

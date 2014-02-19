@@ -9,18 +9,24 @@
  */
 package com.angelcalvo.superpalitos.gui;
 
-import com.angelcalvo.palitos.Game;
+import java.awt.Color;
+
+import com.angelcalvo.superpalitos.SuperPalitos;
 
 /**
  * Representa una l&iacute;nea.
  *  
  * @author &Aacute;ngel Luis Calvo Ortega
  */
-public class Linea {
+public class Line {
   private int x1, y1, x2, y2;
   private boolean volatil;
-  private int color;
+  private Color color;
 
+  public Line(int x1, int y1, int x2, int y2) {
+  	this(x1, y1, x2, y2, false);
+  }
+  
   /**
    * Crea una linea.
    * @param x1 La x del 1er punto de la l&iacute;nea.
@@ -29,13 +35,13 @@ public class Linea {
    * @param y2 La y del &Uacute;ltimo punto de la l&iacute;nea.
    * @param volatil Indica si la l&iacute;nea se deber&aacute; borrar o no.
    */
-  public Linea(int x1, int y1, int x2, int y2, boolean volatil) {
+  public Line(int x1, int y1, int x2, int y2, boolean volatil) {
     this.x1 = x1;
     this.y1 = y1;
     this.x2 = x2;
     this.y2 = y2;
     this.volatil = volatil;
-    color = Game.BLUE_COLOR;
+    color = SuperPalitos.BLUE_COLOR;
   }
 
   /**
@@ -82,15 +88,11 @@ public class Linea {
    * Metodo para obtener el color de la linea.
    * @return El color de la l&iacute;nea.
    */
-  public int getColor() {
+  public Color getColor() {
     return color;
   }
-
-  /**
-   * Metodo para establecer el color de la l&iacute;nea.
-   * @param color El nuevo color.
-   */
-  public void setColor(int color) {
-    this.color = color;
-  }
+	public void setColor(Color color) {
+		this.color = color;
+	}
+  
 }

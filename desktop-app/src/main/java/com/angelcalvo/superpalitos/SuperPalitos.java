@@ -9,6 +9,7 @@
  */
 package com.angelcalvo.superpalitos;
 
+import java.awt.Color;
 import java.util.LinkedList;
 
 import javax.swing.SwingUtilities;
@@ -16,12 +17,11 @@ import javax.swing.SwingUtilities;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.angelcalvo.palitos.Board;
-import com.angelcalvo.palitos.Game;
 import com.angelcalvo.palitos.Player;
 import com.angelcalvo.palitos.PlayerAI;
 import com.angelcalvo.superpalitos.gui.FinJuegoDialog;
 import com.angelcalvo.superpalitos.gui.SPFrame;
+import com.angelcalvo.superpalitos.gui.TableroPanel;
 import com.angelcalvo.superpalitos.net.PNClient;
 import com.angelcalvo.superpalitos.net.PNServer;
 
@@ -58,6 +58,11 @@ public class SuperPalitos {
   private static final String PROPS_NAME = ".superpalitos";
   private static final String PROPS_FILE = System.getProperty("user.home") + "/" + PROPS_NAME;
   
+  public final static Color BLUE_COLOR = Color.BLUE;
+  public final static Color BLACK_COLOR = Color.BLACK;
+  public final static Color RED_COLOR = Color.RED;
+  public final static Color GREEN_COLOR = Color.GREEN;
+  
   private boolean serverON;
   private PNServer pnServer;
   
@@ -66,7 +71,7 @@ public class SuperPalitos {
 
   /* Opciones */
   private String j1Name, j2Name;
-  private int j1Color, j2Color;
+  private Color j1Color, j2Color;
   private boolean anim, sound;
   //
   private SPConf conf;
@@ -77,8 +82,8 @@ public class SuperPalitos {
     
     j1Name = DEFAULT_J1_NAME;
     j2Name = DEFAULT_J2_NAME;
-    j1Color = Game.BLUE_COLOR;
-    j2Color = Game.RED_COLOR;
+    j1Color = BLUE_COLOR;
+    j2Color = RED_COLOR;
     anim = true;
     sound = true;
     
@@ -113,15 +118,15 @@ public class SuperPalitos {
    * @param first
    */
   public void nuevaPartida(int tipo, PNClient pnPlayer, boolean first) {
-    Board t = frame.createTablero(tags[tipo]);
+    TableroPanel t = frame.createTablero(tags[tipo]);
     Player j1 = t.createPlayer(j1Name, j1Color);
     Player j2 = null;
     if(tipo == JUEGO_1J_FACIL) {						// FACIL
-      j2 = new PlayerAI(PlayerAI.FACIL, Game.BLACK_COLOR);
+      j2 = new PlayerAI(PlayerAI.FACIL, BLACK_COLOR);
     } else if(tipo == JUEGO_1J_NORMAL) {		// NORMAL
-      j2 = new PlayerAI(PlayerAI.NORMAL, Game.BLACK_COLOR);
+      j2 = new PlayerAI(PlayerAI.NORMAL, BLACK_COLOR);
     } else if(tipo == JUEGO_1J_DIFICIL) {	 // DIFICIL
-      j2 = new PlayerAI(PlayerAI.DIFICIL, Game.BLACK_COLOR);
+      j2 = new PlayerAI(PlayerAI.DIFICIL, BLACK_COLOR);
     } else if(tipo == JUEGO_2J) {					 // 2 JUGADORES
       j2 = t.createPlayer(j2Name, j2Color);
     } else if(tipo == JUEGO_MJ) {
@@ -138,7 +143,7 @@ public class SuperPalitos {
     pm.play();
   }
   
-  private PartidaManager createPM(Player j1, Player j2, Board t, boolean first) {
+  private PartidaManager createPM(Player j1, Player j2, TableroPanel t, boolean first) {
     PartidaManager pm = new PartidaManager(j1, j2, t, first, this);
     partidas.addLast(pm);
     return pm;
@@ -392,81 +397,40 @@ public class SuperPalitos {
   public int getPuerto() {
     return pnServer.getPort();
   }
-  
-  /**
-   * @return Devuelve j1Color.
-   */
-  public int getJ1Color() {
+
+  public Color getJ1Color() {
     return j1Color;
   }
-  
-  /**
-   * @return Devuelve j1Name.
-   */
+
   public String getJ1Name() {
     return j1Name;
   }
   
-  /**
-   * @return Devuelve j2Color.
-   */
-  public int getJ2Color() {
+  public Color getJ2Color() {
     return j2Color;
   }
-  
-  /**
-   * @param color El j2Color a establecer.
-   */
-  public void setJ2Color(int color) {
-    j2Color = color;
-  }
-  
-  /**
-   * @return Devuelve j2Name.
-   */
+
   public String getJ2Name() {
     return j2Name;
   }
-  
-  /**
-   * @param name El j2Name a establecer.
-   */
-  public void setJ2Name(String name) {
-    j2Name = name;
-  }
-  
-  /**
-   * @param name El j1Name a establecer.
-   */
-  public void setJ1Name(String name) {
-    j1Name = name;
-  }
-  
-  /**
-   * @param color El j1Color a establecer.
-   */
-  public void setJ1Color(int color) {
-    j1Color = color;
-  }
-  
-  /*public void continuar(long id) {
-    
-  }
-  
-  public void repetir(long id) {
-    Partida p = getPartida(id);
-    Partida p2 = (Partida)p.clone();
-    partidas.remove(p);
-    partidas.addLast(p2);
-    p2.start();
-  }
-  
-  public void terminar(long id) {
-    Partida p = getPartida(id);
-    partidas.remove(p);
-  }*/
 
-  /**
+  public void setJ1Name(String j1Name) {
+		this.j1Name = j1Name;
+	}
+
+	public void setJ2Name(String j2Name) {
+		this.j2Name = j2Name;
+	}
+
+	public void setJ1Color(Color j1Color) {
+		this.j1Color = j1Color;
+	}
+
+	public void setJ2Color(Color j2Color) {
+		this.j2Color = j2Color;
+	}
+
+	/**
    * @return Si la animacion esta activada
    */
 	public boolean isAnim() {

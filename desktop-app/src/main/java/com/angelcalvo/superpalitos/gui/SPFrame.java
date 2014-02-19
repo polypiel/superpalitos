@@ -194,7 +194,7 @@ public class SPFrame extends JFrame {
    * v 3.0
    * @return
    */
-  public Board createTablero(String title) {
+  public TableroPanel createTablero(String title) {
     TableroPanel spp = new TableroPanel(sp);
     addTab(spp, MATCH_TAB, title, II_SP);
     return spp;
@@ -207,6 +207,7 @@ public class SPFrame extends JFrame {
   public void destroyTablero(long id) {
   	Component[] comps = tabbedPane.getComponents();
   	Component tab = null;
+  	/*
   	for(int i = 0; i < comps.length; i++) {
   		if(comps[i] instanceof TableroPanel) {
   			TableroPanel t = (TableroPanel)comps[i];
@@ -216,6 +217,8 @@ public class SPFrame extends JFrame {
   			}
   		}
   	}
+  	*/
+  	// TODO
   	if(tab != null) {
 	  	tabbedPane.remove(tab);
 	  	
@@ -234,14 +237,6 @@ public class SPFrame extends JFrame {
     ntabs++;
     bCerrarTab.setEnabled(ntabs > 0);
     jMICerrarPes.setEnabled(ntabs > 0);
-  }
-  
-  private long getTableroId() {
-    String name = tabbedPane.getSelectedComponent().getName();
-    if(name.equals(MATCH_TAB)) {
-    	return ((TableroPanel)tabbedPane.getSelectedComponent()).getId();
-    }
-    return -1;
   }
   
   /**
@@ -349,7 +344,8 @@ public class SPFrame extends JFrame {
     } else if(name.equals(PREFERENCES_TAB)) {
       isPreferencesShowed = false;
     } else if(name.equals(MATCH_TAB)) {
-      sp.cerrarPartida(getTableroId());
+    	// TODO
+      sp.cerrarPartida(0);
     }
     tabbedPane.removeTabAt(tabbedPane.getSelectedIndex());
     
@@ -369,7 +365,7 @@ public class SPFrame extends JFrame {
    * @param ip La direccion del contrario.
    * @return La aceptaci&oacute;n de la partida o no.
    */
-  public boolean showNewConnMsg(String nick, String ip, int c) {
+  public boolean showNewConnMsg(String nick, String ip, Color c) {
   	String mensaje = "<html>¿Quieres_jugar_con_" /* + "<font-color=\"#"
 				+ Integer.toHexString(c.getRGB() & 0x00FFFFFF)*/ + "\"><b>" + nick
 				+ "</b></font>_[" + ip + "]?";

@@ -12,6 +12,7 @@
 
 package com.angelcalvo.superpalitos.net;
 
+import java.awt.Color;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class PNClient extends Thread implements Player, SPChat {
 	private DataOutputStream out;
 	private ChatComponent chat;
 	private String name;
-	private int color;
+	private Color color;
 	private Move jugada;
 	private SuperPalitos sp;
 	
@@ -191,17 +192,9 @@ public class PNClient extends Thread implements Player, SPChat {
 	}
 
 	@Override
-	public int getColor() {
+	public Color getColor() {
 		return color;
 	}
-
-	/*
-	public void setName(String n) {}
-
-	
-	public String getName() {
-		return name;
-	}*/
 
 	@Override
 	public void finish() {

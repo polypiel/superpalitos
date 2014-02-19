@@ -10,6 +10,7 @@
 
 package com.angelcalvo.superpalitos.gui;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import com.angelcalvo.palitos.Game;
 import com.angelcalvo.superpalitos.SuperPalitos;
 import com.angelcalvo.superpalitos.net.ChatComponent;
 import com.angelcalvo.superpalitos.net.SPChat;
@@ -108,7 +108,7 @@ public class ChatPane extends JPanel implements ChatComponent {
     }
   }
 
-  public void showMessage(String nick, int c, String msg) {
+  public void showMessage(String nick, Color c, String msg) {
     texto.append(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("<font_face=arial_color=#"));
     texto.append(color2hex(c));
     texto.append(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("><b>"));
@@ -119,20 +119,11 @@ public class ChatPane extends JPanel implements ChatComponent {
 		salida.setText(INICIO + texto.toString() + FIN);
   }
   
-  private String color2hex(int color) {
-  	if(color == Game.BLUE_COLOR) {
-  		return "0000FF";
-  	}
-  	if(color == Game.BLACK_COLOR) {
-  		return "000000";
-  	}
-  	if(color == Game.RED_COLOR) {
-  		return "FF0000";
-  	}
-  	return "00FF00";
+  private String color2hex(Color color) {
+    String hexColour = Integer.toHexString(color.getRGB() & 0xffffff);
+    if (hexColour.length() < 6) {
+      hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
+    }
+    return "#" + hexColour;
   }
-  /*
-  private String dec2hex(Color color) {
-  	return Integer.toHexString(color.getRGB() & 0x00FFFFFF);
-  }*/
 }

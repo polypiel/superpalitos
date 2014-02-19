@@ -29,13 +29,11 @@ public class Move {
 	/** Indica que la jugada se crea indicando los numeros de los huecos */
   public static final int HUECO = 1;
   
-  private int pInicio;
-  private int pFin;
-  private int hInicio;
-  private int hFin;
-  private int lon;
-  private boolean coord;
-  private int x1, y1, x2, y2;
+  protected int pInicio;
+  protected int pFin;
+  protected int hInicio;
+  protected int hFin;
+  protected int lon;
 
   /**
    * Constructor que crea una jugada.
@@ -106,60 +104,5 @@ public class Move {
    */
   public int getLon() {
     return lon;
-  }
-
-  /**
-   * Indica si la jugada guarda las coordenadas de las lineas.
-   * @return True si las guarda, false si no.
-   */
-  public boolean isCoord() {
-    return coord;
-  }
-
-  /**
-   * Metodo que establece que la jugada guarda las coordenadas.
-   * @param x1 La x del 1er punto de la linea.
-   * @param y1 La y del 1er punto de la linea.
-   * @param x2 La x del ultimo punto de la linea.
-   * @param y2 La y del ultimo punto de la linea.
-   */
-  public void setCoord(int x1, int y1, int x2, int y2) {
-    this.x1 = x1;
-    this.y1 = y1;
-    this.x2 = x2;
-    this.y2 = y2;
-    coord = true;
-  }
-
-  /**
-   * Metodo que devuelve la x del 1er punto de la linea.
-   * @return La x del 1er punto de la linea.
-   */
-  public int getX1() {
-    return x1;
-  }
-
-  /**
-   * Metodo que devuelve la y del 1er punto de la linea.
-   * @return La y del 1er punto de la linea.
-   */
-  public int getY1() {
-    return y1;
-  }
-
-  /**
-   * Metodo que devuelve la x del ultimo punto de la linea.
-   * @return La x del ultimo punto de la linea.
-   */
-  public int getX2() {
-    return x2;
-  }
-  
-  /**
-   * Metodo que devuelve la y del ultimo punto de la linea.
-   * @return La y del ultimo punto de la linea.
-   */
-  public int getY2() {
-    return y2;
   }
 }

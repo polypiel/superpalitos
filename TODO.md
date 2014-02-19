@@ -11,18 +11,21 @@ V 3.0
  
 V 3.1
 -----
- - bug al pintar
- - guardar preferencias
- - multi-idioma (wip)
- - interfaz mejorada (wip)
- - Refactoring and cleaning of core
- 
+ - BUG: drawing human player line
+ - Better GUI (wip)
+ - Refactoring and cleaning of core (done)
+ - Highligh gap when hovering
+ - Fill README.md
+ - Get rid of beansbinding dependency
+  
 V 3.2
 -----
- - poner bien marcador
- - Establecer barra de estado
- - Modos de juegos
- - Estadísticas
+ - multi-idioma (wip)
+ - store preferences?
+ - BUG: scoreboard
+ - Status bar
+ - Game modes
+ - Stats
  - PNClient bucle para recibir eventos y proceso descentralizado
- - Get rid of beansbinding dependency
+
   

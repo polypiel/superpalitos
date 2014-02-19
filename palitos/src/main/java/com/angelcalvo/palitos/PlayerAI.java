@@ -9,6 +9,7 @@
  */
 package com.angelcalvo.palitos;
 
+import java.awt.Color;
 import java.util.Collection;
 import java.util.Random;
 import java.util.Vector;
@@ -41,7 +42,7 @@ public class PlayerAI implements Player {
 	protected final static int MAX = 1000;
 
 	private int dificultad;
-	private int color;
+	private Color color;
 	private String nombre = "IA";
 	private Random r;
 	private GameState state;
@@ -52,7 +53,7 @@ public class PlayerAI implements Player {
 	 * @param dificultad
 	 *          La dificultad de la IA
 	 */
-	public PlayerAI(int dificultad, int color) {
+	public PlayerAI(int dificultad, Color color) {
 		this.dificultad = dificultad;
 		this.color = color;
 		r = new Random();
@@ -79,11 +80,12 @@ public class PlayerAI implements Player {
 		}
 		int d[] = e.getMove(resultado);
 		Move j = defineJugada(d[0], d[1], d[2]);
+    
 		return j;
 	}
 
 	@Override
-	public int getColor() {
+	public Color getColor() {
 		return color;
 	}
 
@@ -93,8 +95,7 @@ public class PlayerAI implements Player {
 	}
 
 	@Override
-	public void finish() {
-	}
+	public void finish() {}
 
 	private int backtraking(SimpleGameState sig, int nivel) {
 		int max = MIN;

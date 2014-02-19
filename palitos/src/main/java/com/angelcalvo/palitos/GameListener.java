@@ -13,18 +13,18 @@ package com.angelcalvo.palitos;
  * Un supervisor es una clase que monitorea los eventos nuevo
  * turno y fin de partida de una partida.
  * 
- * @author Angel Luis Calvo Ortega
+ * @author Angel Calvo
  */
 public interface GameListener {
   /**
    * Es llamado cuando se empieza un nuevo turno.
-   * @param s El nombre del jugador
+   * @param player The player who moves
    */
-  void cambiaTurno(String s);
+  void newTurn(Player player);
   
   /**
    * Es llamado cuando se termina la partida.
-   * @param j1Winner El nombre del jugador ganador.
+   * @param player The winner
    */
-  void finPartida(boolean j1Winner);
+  void finish(Player player);
 }

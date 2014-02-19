@@ -8,6 +8,7 @@
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
 package com.angelcalvo.superpalitos.net;
+import java.awt.Color;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class Paquete {
   
   private int tipo; 
 	private String nombre;
-	private int color;
+	private Color color;
 	private Move jugada;
 	private String mensaje;
   
@@ -62,7 +63,7 @@ public class Paquete {
 					String nick = in.readUTF();
 					paquete.setNombre(nick);
 					int rgb = in.readInt();
-					paquete.setColor(rgb);
+					paquete.setColor(new Color(rgb));
 					System.out.println("hola_received");
 					break;
 				case ADIOS:
@@ -100,7 +101,7 @@ public class Paquete {
 			switch(tipo) {
 				case HOLA:
 					out.writeUTF(nombre);
-					out.writeInt(color);
+					out.writeInt(color.getRGB());
 					System.out.println("hola_send");
 					break;
 				case ADIOS:
@@ -150,7 +151,7 @@ public class Paquete {
 	 * Metodo para establecer el color de un paquete tipo HOLA.
 	 * @param color El color a enviar
 	 */
-	public void setColor(int color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 	
@@ -158,7 +159,7 @@ public class Paquete {
 	 * Metodo para devolver el color de un paquete HOLA.
 	 * @return El color del paquete.
 	 */
-	public int getColor() {
+	public Color getColor() {
 		return color;
 	}
 	

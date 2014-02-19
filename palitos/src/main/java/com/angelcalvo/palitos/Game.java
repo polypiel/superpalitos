@@ -17,27 +17,12 @@ import java.util.Vector;
  * 
  * @author Angel Calvo
  */
-public class Game extends Thread {
-  /** Modo 1 jugador */
-  public final static int _1P = 0;
-  /** Modo 2 jugadores */
-  public final static int _2P = 1;
-  /** Modo PalitosNet */
-  public final static int _MP = 2;
-  
-  public final static int BLUE_COLOR = 0;
-  public final static int BLACK_COLOR = 1;
-  public final static int RED_COLOR = 2;
-  public final static int GREEN_COLOR = 3;
-  
-  private static final int TURN_DELAY = 500;
-  //private static long ID_CONT;
-  
+public class Game {
   private GameState state;
   
-  private boolean turno;
-  private Player j1, j2;
-  private Board tablero;
+  private boolean turn;
+  private Player p1, p2;
+  private Board board;
   private Vector<GameListener> partidaListeners;
   
   /**
@@ -49,10 +34,10 @@ public class Game extends Thread {
    */
   public Game(Player j1, Player j2, Board tablero, boolean turno) {
     state = new GameState();
-    this.tablero = tablero;
-    this.j1 = j1;
-    this.j2 = j2;
-    this.turno = turno;
+    this.board = tablero;
+    this.p1 = j1;
+    this.p2 = j2;
+    this.turn = turno;
     
     partidaListeners = new Vector<GameListener>();
   }
@@ -65,49 +50,39 @@ public class Game extends Thread {
      partidaListeners.addElement(partidaListener);
   }
   
-  @Override
-  public void run() {
-    Player j = null;
-    Move jug = null;
+  public void play() {
+    Player player = null;
+    Move move = null;
     
-    tablero.started();
+    board.started();
     
     while(!isFinished()) {
-      j = (turno) ? j1 : j2;
-      fireCambiaTurnoEvent(j.getName());
+    	// Turn
+      player = (turn) ? p1 : p2;
+      fireCambiaTurnoEvent(player);
 
-      j.update(jug, state);
+      // updates player state
+      player.update(move, state);
       
+      // Checks move is valid
+      // TODO fix
       do {
-        jug = j.move();
-        if(jug == null) {
-          return;
-        }
-      } while(!state.isValid(jug));
+        move = player.move();
+      } while(!state.isValid(move));
       
-      state.move(jug);
+      // applays move
+      state.move(move);
+      board.move(player, move);
       
-      // TODO change!S
-      if(jug.isCoord()) {   
-        tablero.drawLine(jug.getX1(), jug.getY1(), jug.getX2(), jug.getY2(), j.getColor());
-      } else {
-        tablero.drawLine(jug.getHInicio(), jug.getHFin(), j.getColor());
-      }
-      
-      turno = !turno;
-      
-      try {
-        Thread.sleep(TURN_DELAY);
-      } catch(InterruptedException e) {
-        e.printStackTrace();
-      }
+      // Changes move
+      turn = !turn;
     }
-    Player per = (turno) ? j1 : j2;
-    per.update(jug, state);
+    Player per = (turn) ? p1 : p2;
+    per.update(move, state);
     
-    tablero.finished();
+    board.finished();
     
-    fireFinPartidaEvent(j == j1);
+    fireFinPartidaEvent(player);
   }
   
   /**
@@ -122,8 +97,7 @@ public class Game extends Thread {
    * Finaliza la partida bruscamente.
    */
   public void finish() {
-    tablero.finished();
-    this.interrupt();
+    board.finished();
   }
   
   /**
@@ -131,7 +105,7 @@ public class Game extends Thread {
    * @return El jugador 1
    */
   public Player getPlayerOne() {
-    return j1;
+    return p1;
   }
   
   /**
@@ -139,20 +113,18 @@ public class Game extends Thread {
    * @return El jugador 2
    */
   public Player getPlayerTwo() {
-    return j2;
+    return p2;
   }
 
-  private void fireCambiaTurnoEvent(String jug) {
-  	for(int i = 0; i < partidaListeners.size(); i++) {
-  		GameListener listener = (GameListener) partidaListeners.elementAt(i);
-  		listener.cambiaTurno(jug);
+  private void fireCambiaTurnoEvent(Player player) {
+  	for(GameListener listener: partidaListeners) {
+  		listener.newTurn(player);
   	}
   }
 
-  private void fireFinPartidaEvent(boolean j1Winner) {
-  	for(int i = 0; i < partidaListeners.size(); i++) {
-  		GameListener listener = (GameListener) partidaListeners.elementAt(i);
-  		listener.finPartida(j1Winner);
+  private void fireFinPartidaEvent(Player player) {
+  	for(GameListener listener: partidaListeners) {
+  		listener.finish(player);
   	}
   }
 
