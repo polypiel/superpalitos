@@ -17,4 +17,6 @@ The project is developed with Java using Maven. The GUI is written using Swing. 
  * palitos: contains the game logic.
  * desktop-app: a graphical interface.
  
+ ## License
+This software is free and licensed under GPL 2
  
