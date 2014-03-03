@@ -37,7 +37,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import com.angelcalvo.palitos.Board;
 import com.angelcalvo.superpalitos.SuperPalitos;
 import com.angelcalvo.superpalitos.net.ChatComponent;
 import com.angelcalvo.superpalitos.net.SPChat;
@@ -276,10 +275,10 @@ public class SPFrame extends JFrame {
   
   // Actions ------------------------------------------------------------------
   private void nuevaPartida_ActionPerformed(ActionEvent e) {
-    NewGameDialog dialog = new NewGameDialog(this, true);
+    NewGameDialog dialog = new NewGameDialog(this);
     dialog.setVisible(true);
-    if(dialog.getReturnStatus() == NewGameDialog.RET_OK) {
-      sp.nuevaPartida(dialog.getMode(), null, true);
+    if(dialog.isAccepted()) {
+      sp.nuevaPartida(dialog.getGameMode(), null, true);
     }
   }
   

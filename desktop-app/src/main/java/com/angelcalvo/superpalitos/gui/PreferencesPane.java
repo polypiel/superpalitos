@@ -61,7 +61,6 @@ public class PreferencesPane extends javax.swing.JPanel {
    */
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
-    bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
     conf = sp.getConf() ;
     jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -100,11 +99,6 @@ public class PreferencesPane extends javax.swing.JPanel {
 
     j1NameTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-		org.jdesktop.beansbinding.Binding<Object, Object, Object, Object> binding = org.jdesktop.beansbinding.Bindings
-				.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, conf,
-						org.jdesktop.beansbinding.ELProperty.create("${j1Name}"), j1NameTF,
-						org.jdesktop.beansbinding.BeanProperty.create("text_ON_ACTION_OR_FOCUS_LOST"));
-		bindingGroup.addBinding(binding);
 
     javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
     jPanel4.setLayout(jPanel4Layout);
@@ -141,8 +135,6 @@ public class PreferencesPane extends javax.swing.JPanel {
 
     j2NameTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-    binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, conf, org.jdesktop.beansbinding.ELProperty.create("${j2Name}"), j2NameTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
-    bindingGroup.addBinding(binding);
 
     javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
     jPanel5.setLayout(jPanel5Layout);
@@ -199,8 +191,7 @@ public class PreferencesPane extends javax.swing.JPanel {
 
     portTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-    binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, conf, org.jdesktop.beansbinding.ELProperty.create("${port}"), portTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
-    bindingGroup.addBinding(binding);
+
 
     javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
     jPanel2.setLayout(jPanel2Layout);
@@ -229,13 +220,10 @@ public class PreferencesPane extends javax.swing.JPanel {
 
     animsCheck.setText(bundle.getString("prefsDialog.anims")); // NOI18N
 
-    binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, conf, org.jdesktop.beansbinding.ELProperty.create("${anims}"), animsCheck, org.jdesktop.beansbinding.BeanProperty.create("selected"));
-    bindingGroup.addBinding(binding);
 
     soundCheck.setText(bundle.getString("prefsDialog.sound")); // NOI18N
 
-    binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, conf, org.jdesktop.beansbinding.ELProperty.create("${sound}"), soundCheck, org.jdesktop.beansbinding.BeanProperty.create("selected"));
-    bindingGroup.addBinding(binding);
+
 
     jLabel2.setText(bundle.getString("prefsDialog.language")); // NOI18N
 
@@ -314,7 +302,6 @@ public class PreferencesPane extends javax.swing.JPanel {
         .addContainerGap())
     );
 
-    bindingGroup.bind();
   }// </editor-fold>//GEN-END:initComponents
 
   private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -381,7 +368,6 @@ public class PreferencesPane extends javax.swing.JPanel {
   private javax.swing.JComboBox<String> lnfCB;
   private javax.swing.JTextField portTF;
   private javax.swing.JCheckBox soundCheck;
-  private org.jdesktop.beansbinding.BindingGroup bindingGroup;
   // End of variables declaration//GEN-END:variables
   
 }

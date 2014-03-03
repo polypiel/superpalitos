@@ -15,8 +15,9 @@ V 3.1
  - Better GUI (wip)
  - Refactoring and cleaning of core (done)
  - Highligh gap when hovering
- - Fill README.md
- - Get rid of beansbinding dependency
+ - Fill README.md (done)
+ - Get rid of beansbinding dependency (done)
+
   
 V 3.2
 -----

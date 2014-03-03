@@ -21,18 +21,18 @@ public class NewGameDialog extends javax.swing.JDialog {
   public static final int RET_OK = 1;
   
   /** Creates new form NewGameDialog */
-  public NewGameDialog(java.awt.Frame parent, boolean modal) {
-    super(parent, modal);
+  public NewGameDialog(java.awt.Frame parent) {
+    super(parent, true);
     initComponents();
     setLocationRelativeTo(parent);
   }
   
   /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
-  public int getReturnStatus() {
-    return returnStatus;
+  public boolean isAccepted() {
+    return returnStatus == RET_OK;
   }
   
-  public int getMode() {
+  public int getGameMode() {
     if(onePlayerRB.isSelected() && easyRB.isSelected()) {
       return SuperPalitos.JUEGO_1J_FACIL;
     }
@@ -67,7 +67,7 @@ public class NewGameDialog extends javax.swing.JDialog {
     jSeparator1 = new javax.swing.JSeparator();
 
     java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle"); // NOI18N
-    setTitle(bundle.getString("newDialog.tittle")); // NOI18N
+    setTitle(bundle.getString("newDialog.title")); // NOI18N
     setModal(true);
     setResizable(false);
     addWindowListener(new java.awt.event.WindowAdapter() {

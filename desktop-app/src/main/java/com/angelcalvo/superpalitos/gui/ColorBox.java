@@ -25,7 +25,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
 /**
- * @author Angel Luis Calvo Ortega
+ * @author Angel Calvo
  */
 public class ColorBox extends JComboBox<Color> {
 	private static final long serialVersionUID = 3546083536269357619L;
@@ -70,7 +70,7 @@ public class ColorBox extends JComboBox<Color> {
   static class ColorBoxRenderer extends JPanel implements ListCellRenderer<Color> {
 		private static final long serialVersionUID = 3904964131575575092L;
 		private Color color = Color.black;
-    private Color focusColor = (Color)UIManager.get(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("List.selectionBackground"));
+    private Color focusColor = (Color)UIManager.get("List.selectionBackground");
     private Color nonFocusColor = Color.white;
     
     @Override
