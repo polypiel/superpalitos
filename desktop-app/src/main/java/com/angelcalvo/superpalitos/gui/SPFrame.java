@@ -57,29 +57,6 @@ public class SPFrame extends JFrame {
     II_CLOSE_24, II_CONNECT, II_DISCONNECT, II_EXIT, II_HELP, II_LICENSE,
     II_NEW, II_OPTIONS, II_PAUSE, II_PNCHAT, II_PNNEW, II_PNSERVER, II_PLAY,
     II_PVS, II_REPEAT, II_SP, II_SP32, II_STOP;
-  /*public static final ImageIcon II_ABOUT = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/about.png"));
-  public static final ImageIcon II_ACCEPT =new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/apply.png"));
-  public static final ImageIcon II_BLANK = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/blank.png"));
-  public static final ImageIcon II_CANCEL = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/cancel.png"));
-  public static final ImageIcon II_CLOSE_16 = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/close16.png"));
-  public static final ImageIcon II_CLOSE_24 = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/close24.png"));
-  public static final ImageIcon II_CONNECT = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/connect.png"));
-  public static final ImageIcon II_DISCONNECT = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/disconnect.png"));
-  public static final ImageIcon II_EXIT = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/exit.png"));
-  public static final ImageIcon II_HELP= new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/help.png"));
-  public static final ImageIcon II_LICENSE = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/license.png"));
-  public static final ImageIcon II_NEW = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/new.png"));
-  public static final ImageIcon II_OPTIONS = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/options.png"));
-  public static final ImageIcon II_PAUSE = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/pause.png"));
-  public static final ImageIcon II_PNCHAT = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/chat.png"));
-  public static final ImageIcon II_PNNEW = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/pnnew.png"));
-  public static final ImageIcon  II_PNSERVER = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/pnserver.png"));
-  public static final ImageIcon  II_PLAY = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/play.png"));
-  public static final ImageIcon II_PVS = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/pvs.png"));
-  public static final ImageIcon II_REPEAT = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/refresh.png"));
-  public static final ImageIcon II_SP = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/sp.png"));
-  public static final ImageIcon II_SP32 = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/sp32.png"));
-  public static final ImageIcon II_STOP = new ImageIcon(JFrame.class.getResource("/com/angelcalvo/resources/stop.png"));*/
   
   /** Constante para identificar el color azul */
   public static final int AZUL = 0;
@@ -91,7 +68,6 @@ public class SPFrame extends JFrame {
   public static final int VERDE = 3;
   
   public static final Color[] COLORS = {new Color(723857), new Color(197379), new Color(15073280), new Color(1951517)};
-  //private static final String[] colorsTags = {"Azul", "Negro", "Rojo", "Verde"};
   
   private static final String WELCOME_TAB = "welcome";
   private static final String MATCH_TAB = "match";
@@ -122,14 +98,13 @@ public class SPFrame extends JFrame {
    * Crea la ventana principal
    */
   public SPFrame() {
-    super("Super Palitos 3 M3");
+    super("Super Palitos 3.M3");
     
     loadResources();
     
     setResizable(false);
     setIconImage(II_SP.getImage());
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-    //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     JPanel p = new JPanel();
     
@@ -259,12 +234,12 @@ public class SPFrame extends JFrame {
    * M&eacute;todo que termina una partida bruscamente.
    */
   public void showAbortPartidaMsg() {
-    JOptionPane.showMessageDialog(this, "Partida_Abortada", "Fin_de_partida", JOptionPane.INFORMATION_MESSAGE, II_SP32);
+    JOptionPane.showMessageDialog(this, "Partida Abortada", "Fin de la partida", JOptionPane.INFORMATION_MESSAGE, II_SP32);
   }
   
   public boolean showConfirmarTerminarJuegoMsg() {
     return JOptionPane.showConfirmDialog(this,
-		    "¿Estas_seguro_de_que_quieres_terminar_la_partida_actual?",
+		    "¿Estas seguro de que quieres terminar la partida actual?",
 		    "Nueva_Partida", JOptionPane.YES_NO_OPTION,
 		    JOptionPane.QUESTION_MESSAGE, II_SP32) != 0;
   }
@@ -289,7 +264,7 @@ public class SPFrame extends JFrame {
   private void cerrar_ActionPerformed() {
     int cerrar = JOptionPane.showConfirmDialog(this,
 				"¿Realmente_quieres_cerrar_SuperPalitos?", "Salir",
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
 				II_SP32);
 		if(cerrar == JOptionPane.OK_OPTION) {
       sp.salir();
@@ -365,10 +340,10 @@ public class SPFrame extends JFrame {
    * @return La aceptaci&oacute;n de la partida o no.
    */
   public boolean showNewConnMsg(String nick, String ip, Color c) {
-  	String mensaje = "<html>¿Quieres_jugar_con_" /* + "<font-color=\"#"
+  	String mensaje = "<html>¿Quieres jugar con " /* + "<font-color=\"#"
 				+ Integer.toHexString(c.getRGB() & 0x00FFFFFF)*/ + "\"><b>" + nick
 				+ "</b></font>_[" + ip + "]?";
-    return JOptionPane.showConfirmDialog(this, mensaje, "Nueva_Partida_PalitosNet",
+    return JOptionPane.showConfirmDialog(this, mensaje, "Nueva Partida PalitosNet",
       JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, II_SP32) == 0;
   }
   

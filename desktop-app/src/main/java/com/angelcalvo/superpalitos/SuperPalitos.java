@@ -50,7 +50,7 @@ public class SuperPalitos {
   /** Opcion terminar en el dialogo fin de partida */
   public static final int FIN_JUEGO_TERMINAR = 2;
   
-  private static final String tags[] = {"vs IA Facil", "vs IA", "vs_IA_Dificil", "vs_2º_Player", "vs_Remote_Player"};
+  private static final String tags[] = {"vs IA Facil", "vs IA", "vs IA Dificil", "vs 2º Player", "vs Remote Player"};
   
   private static final String DEFAULT_J1_NAME = "PlayerOne";
   private static final String DEFAULT_J2_NAME = "PlayerTwo";
@@ -72,7 +72,7 @@ public class SuperPalitos {
   /* Opciones */
   private String j1Name, j2Name;
   private Color j1Color, j2Color;
-  private boolean anim, sound;
+  private boolean sound;
   //
   private SPConf conf;
   
@@ -84,7 +84,6 @@ public class SuperPalitos {
     j2Name = DEFAULT_J2_NAME;
     j1Color = BLUE_COLOR;
     j2Color = RED_COLOR;
-    anim = true;
     sound = true;
     
     conf = new SPConf();
@@ -133,7 +132,7 @@ public class SuperPalitos {
     	j2 = pnPlayer;
     	pnPlayer.setChat(frame.addChat(pnPlayer));
     } else {
-    	return;
+    	throw new IllegalArgumentException("Game type is not valid: " + tipo);
     }
     
 //    PartidaManager pm = new PartidaManager(j1, j2, t, first);
@@ -171,18 +170,11 @@ public class SuperPalitos {
   private void startGui() {
       frame.setVisible(true);
   }
-  /*public void cambiaTurno(String s) {
-    if(s != null && frame != null) {
-      frame.setStatus("Turno de " + s);
-    }
-  }*/
-  
+
   /**
    * Muestra el mensaje de fin de juego
    */
   public int finJuego(String s, long time) {
-    //frame.setStatus("Game Over :: " + s + " ha ganado");
-    //return frame.showFinJuego(s, time);
   	return FinJuegoDialog.showFinJuegoDialog(frame, s, time);
   }
   
@@ -198,9 +190,6 @@ public class SuperPalitos {
   
   private PartidaManager getPartidaManager(long id) {
   	for(PartidaManager p: partidas) {
-    //Iterator it = partidas.iterator();
-    //while(it.hasNext()) {
-    //  PartidaManager p = (PartidaManager)it.next();
       if(p.getId() == id) {
         return p;
       }
@@ -210,9 +199,6 @@ public class SuperPalitos {
   
   private PartidaManager getPartidaManager(Player j) {
   	for(PartidaManager p: partidas) {
-    //Iterator it = partidas.iterator();
-    //while(it.hasNext()) {
-    //  PartidaManager p = (PartidaManager)it.next();
       if(p.estaJugandgo(j)) {
         return p;
       }
@@ -378,8 +364,7 @@ public class SuperPalitos {
     }
     frame.setServer(isServerON());
   }
-  
-  
+
   // Metodso getters y setters ------------------------------------------------
   
   /**
@@ -428,21 +413,6 @@ public class SuperPalitos {
 
 	public void setJ2Color(Color j2Color) {
 		this.j2Color = j2Color;
-	}
-
-	/**
-   * @return Si la animacion esta activada
-   */
-	public boolean isAnim() {
-		return anim;
-	}
-
-	/**
-	 * Establece si estan activadas las animaciones
-	 * @param anim
-	 */
-	public void setAnim(boolean anim) {
-		this.anim = anim;
 	}
 	
 	/**

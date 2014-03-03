@@ -81,7 +81,6 @@ public class PreferencesPane extends javax.swing.JPanel {
     jPanel3 = new javax.swing.JPanel();
     jLabel7 = new javax.swing.JLabel();
     lnfCB = new javax.swing.JComboBox<String>();
-    animsCheck = new javax.swing.JCheckBox();
     soundCheck = new javax.swing.JCheckBox();
     jLabel2 = new javax.swing.JLabel();
     jcbLang = new javax.swing.JComboBox<String>();
@@ -218,7 +217,6 @@ public class PreferencesPane extends javax.swing.JPanel {
 
     jLabel7.setText(bundle.getString("prefsDialog.lnl")); // NOI18N
 
-    animsCheck.setText(bundle.getString("prefsDialog.anims")); // NOI18N
 
 
     soundCheck.setText(bundle.getString("prefsDialog.sound")); // NOI18N
@@ -241,7 +239,6 @@ public class PreferencesPane extends javax.swing.JPanel {
       .addGroup(jPanel3Layout.createSequentialGroup()
         .addContainerGap()
         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(animsCheck)
           .addComponent(soundCheck)
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -267,7 +264,6 @@ public class PreferencesPane extends javax.swing.JPanel {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(soundCheck)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(animsCheck)
         .addContainerGap(95, Short.MAX_VALUE))
     );
 
@@ -315,7 +311,6 @@ public class PreferencesPane extends javax.swing.JPanel {
         sp.setJ2Name(name2);
      //   m.setJ2Color(j2ColorCB.getSelectedColor());
         sp.setPuerto(n3);
-        sp.setAnim(animsCheck.isSelected());
         sp.setSound(soundCheck.isSelected());
         
         if(lnfCB.getSelectedIndex() != currentLaF) {
@@ -343,7 +338,6 @@ public class PreferencesPane extends javax.swing.JPanel {
 
   
   // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JCheckBox animsCheck;
   private com.angelcalvo.superpalitos.SPConf conf;
   private ColorBox j1ColorCB;
   private javax.swing.JTextField j1NameTF;

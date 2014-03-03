@@ -11,11 +11,11 @@ V 3.0
  
 V 3.1
 -----
- - BUG: drawing human player line
+ - BUG: drawing human player line (done)
  - Better GUI (wip)
  - Refactoring and cleaning of core (done)
- - Highligh gap when hovering
- - Fill README.md (done)
+ - Highligh gap when hover
+ - Write README.md (done)
  - Get rid of beansbinding dependency (done)
 
   
@@ -25,8 +25,6 @@ V 3.2
  - store preferences?
  - BUG: scoreboard
  - Status bar
- - Game modes
+ - Game modes?
  - Stats
  - PNClient bucle para recibir eventos y proceso descentralizado
-
-  

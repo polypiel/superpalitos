@@ -48,7 +48,7 @@ public class TableroPanel extends JPanel implements Board {
   
   private static final int WAITING = 500;
   
-  private static final int ANIM_FRAME = 50;
+  private static final int ANIM_FRAME = 100;
   private static final int XINC = 16;
   private static final int QUAD_DELAY = 60;
   
@@ -155,7 +155,7 @@ public class TableroPanel extends JPanel implements Board {
   	}
   	
     line.setColor(player.getColor());
-    drawLine(line, sp.isAnim());
+    drawLine(line, player != j);
     if(sp.isSound()) {
     	clip.loop();
     	timer.schedule(new StopSound(), (Math.abs(line.getX1() - line.getX2()) / ANCHO) * QUAD_DELAY);

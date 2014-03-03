@@ -72,7 +72,7 @@ public class SPConf {
         LOG.error("Error al abrir el fichero de propiedades", ex);
       } finally {
         try {
-          fis.close();
+          if(fis != null) { fis.close(); }
         } catch (IOException ex) {}
       }
     }
@@ -88,7 +88,7 @@ public class SPConf {
       ex.printStackTrace();
     } finally {
       try {
-        fos.close();
+        if(fos != null) { fos.close(); }
       } catch (IOException ex) {
         ex.printStackTrace();
       }

@@ -82,11 +82,15 @@ public class PartidaManager implements GameListener {
     	partida = new Game(j1, j2, tablero, j1Turn);
     	partida.addGameListener(this);
     	tablero.setScore(j1.getName() + "  " + j1Score + " - " + j2Score + "  " + j2.getName());
-    	// TODO thread
-    	partida.play();
     	time = System.currentTimeMillis();
     	jugando = true;
     	j1Turn = !j1Turn;
+    	
+    	new Thread()  {
+    		@Override public void run() {
+    			partida.play();
+    		}
+    	}.start();
     }
   }
 
