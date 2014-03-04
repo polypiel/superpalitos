@@ -23,22 +23,11 @@
   		<groupId>com.angelcalvo</groupId>
   		<version>3.1</version>
   	</dependency>
-  	
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.6</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <scope>runtime</scope>
-            <version>1.1.1</version>
-        </dependency>
-        <dependency>
-        	<groupId>org.springframework</groupId>
-        	<artifactId>spring-context</artifactId>
-        	<version>4.0.1.RELEASE</version>
-        </dependency>
+
+    <dependency>
+	   	<groupId>org.springframework</groupId>
+	   	<artifactId>spring-context</artifactId>
+	   	<version>4.0.1.RELEASE</version>
+    </dependency>
   </dependencies>
 </project>
