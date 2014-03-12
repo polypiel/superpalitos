@@ -6,6 +6,7 @@
 
 package com.angelcalvo.superpalitos.gui;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import com.angelcalvo.superpalitos.SuperPalitos;
@@ -25,12 +26,17 @@ public class NewConnectionDialog extends javax.swing.JDialog {
   public static final int INICIO = 0;
   public static final int CONECTANDO = 1;
   
+	private ImageIcon okImg, cancelImg;
   private int state, port;
   private SuperPalitos sp;
   
   /** Creates new form NewConnectionDialog */
-  public NewConnectionDialog(java.awt.Frame parent, boolean modal, SuperPalitos sp) {
-    super(parent, modal);
+  public NewConnectionDialog(java.awt.Frame parent, SuperPalitos sp, ImageIcon okImg, ImageIcon cancelImg) {
+    super(parent, true);
+    this.sp = sp;
+  	this.okImg = okImg;
+  	this.cancelImg = cancelImg;
+  	
     initComponents();
     
     portTF.setText(String.valueOf(sp.getPuerto()));
@@ -107,7 +113,7 @@ public class NewConnectionDialog extends javax.swing.JDialog {
       }
     });
 
-    okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/apply.png"))); // NOI18N
+    okButton.setIcon(okImg); // NOI18N
     okButton.setText(bundle.getString("connDialog.ok")); // NOI18N
     okButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,7 +121,7 @@ public class NewConnectionDialog extends javax.swing.JDialog {
       }
     });
 
-    cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/cancel.png"))); // NOI18N
+    cancelButton.setIcon(cancelImg); // NOI18N
     cancelButton.setText(bundle.getString("connDialog.cancel")); // NOI18N
     cancelButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {

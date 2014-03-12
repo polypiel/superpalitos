@@ -170,14 +170,8 @@ public class TableroPanel extends JPanel implements Board {
       }
     });
     
-    /* Inicializa los cursores */
-    /*TableroPanel.cursores = new Cursor[4];
-    TableroPanel.cursores[SPFrame.AZUL] = Toolkit.getDefaultToolkit().createCustomCursor(bolis[SPFrame.AZUL], new Point(0, 0), "Boli Azul");
-    TableroPanel.cursores[SPFrame.NEGRO] = Toolkit.getDefaultToolkit().createCustomCursor(bolis[SPFrame.NEGRO], new Point(0, 0), "Boli Negro");
-    TableroPanel.cursores[SPFrame.ROJO] = Toolkit.getDefaultToolkit().createCustomCursor(bolis[SPFrame.ROJO], new Point(0, 0), "Boli Rojo");
-    TableroPanel.cursores[SPFrame.VERDE] = Toolkit.getDefaultToolkit().createCustomCursor(bolis[SPFrame.VERDE], new Point(0, 0), "Boli Verde");
-    */
     timer = new Timer();
+    // TODO resources manager
     clip = Applet.newAudioClip(getClass().getResource("/com/angelcalvo/superpalitos/gui/boli.wav"));
   }
   

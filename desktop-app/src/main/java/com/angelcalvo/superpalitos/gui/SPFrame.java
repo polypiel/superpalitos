@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import com.angelcalvo.superpalitos.ResourceManager;
 import com.angelcalvo.superpalitos.SuperPalitos;
 import com.angelcalvo.superpalitos.net.ChatComponent;
 import com.angelcalvo.superpalitos.net.SPChat;
@@ -52,12 +53,7 @@ public class SPFrame extends JFrame {
   
   protected static final int WIDTH = 400;
   protected static final int HEIGHT = 300;
-  //TODO mapa de iconos
-  protected static ImageIcon II_ABOUT, II_ACCEPT, II_BLANK, II_CANCEL, II_CLOSE_16,
-    II_CLOSE_24, II_CONNECT, II_DISCONNECT, II_EXIT, II_HELP, II_LICENSE,
-    II_NEW, II_OPTIONS, II_PAUSE, II_PNCHAT, II_PNNEW, II_PNSERVER, II_PLAY,
-    II_PVS, II_REPEAT, II_SP, II_SP32, II_STOP;
-  
+
   /** Constante para identificar el color azul */
   public static final int AZUL = 0;
   /** Constante para identificar el color negro */
@@ -93,17 +89,19 @@ public class SPFrame extends JFrame {
   
   private ChatDialog chatDialog;
   private SuperPalitos sp;
+  private ResourceManager resourceManager;
   
   /**
    * Crea la ventana principal
    */
   public SPFrame() {
-    super("Super Palitos 3.M3");
-    
-    loadResources();
-    
+    super("Super Palitos");
+  }
+  
+  @SuppressWarnings("unused")
+	private void init() {
     setResizable(false);
-    setIconImage(II_SP.getImage());
+    setIconImage(((ImageIcon)resourceManager.getResource(ResourceManager.II_SP)).getImage());
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     
     JPanel p = new JPanel();
@@ -118,9 +116,9 @@ public class SPFrame extends JFrame {
     tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT); 
     
     /* welcome tab */
-    JLabel l = new JLabel(new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/title.png")));
+    JLabel l = new JLabel((ImageIcon)resourceManager.getResource(ResourceManager.II_TITLE));
     l.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-    addTab(l, WELCOME_TAB, "Welcome", II_SP);
+    addTab(l, WELCOME_TAB, "Welcome", (ImageIcon)resourceManager.getResource(ResourceManager.II_SP));
     p.add(tabbedPane);
     
     /* status */
@@ -132,7 +130,8 @@ public class SPFrame extends JFrame {
     status.setFocusable(false);
     p2.add(status);
     
-    cstatus = new ConnectedLabel();
+		cstatus = new ConnectedLabel((ImageIcon) resourceManager.getResource(ResourceManager.II_CONNECT),
+				(ImageIcon) resourceManager.getResource(ResourceManager.II_DISCONNECT));
     p2.add(cstatus);
     p.add(p2);
     
@@ -157,7 +156,7 @@ public class SPFrame extends JFrame {
   public TableroPanel createTablero(String title, Integer tab) {
     TableroPanel spp = new TableroPanel(sp);
     if(tab == null) {
-    	addTab(spp, MATCH_TAB, title, II_SP);
+    	addTab(spp, MATCH_TAB, title, (ImageIcon)resourceManager.getResource(ResourceManager.II_SP));
     } else {
     	tabbedPane.setComponentAt(tab, spp);
     	tabbedPane.setTitleAt(tab, title);
@@ -197,7 +196,7 @@ public class SPFrame extends JFrame {
     comp.setName(name);
     tabbedPane.addTab(title, icono, comp);
     int tabNumber = tabbedPane.getTabCount() - 1;
-    tabbedPane.setTabComponentAt(tabNumber, new SPTabComponent(title, icono)); // title component
+    tabbedPane.setTabComponentAt(tabNumber, new SPTabComponent(title, icono, (ImageIcon)resourceManager.getResource(ResourceManager.II_CLOSE_16))); // title component
     tabbedPane.setSelectedComponent(comp);
     
     ntabs++;
@@ -231,14 +230,14 @@ public class SPFrame extends JFrame {
    * M&eacute;todo que termina una partida bruscamente.
    */
   public void showAbortPartidaMsg() {
-    JOptionPane.showMessageDialog(this, "Partida Abortada", "Fin de la partida", JOptionPane.INFORMATION_MESSAGE, II_SP32);
+    JOptionPane.showMessageDialog(this, "Partida Abortada", "Fin de la partida", JOptionPane.INFORMATION_MESSAGE, (ImageIcon)resourceManager.getResource(ResourceManager.II_SP32));
   }
   
   public boolean showConfirmarTerminarJuegoMsg() {
     return JOptionPane.showConfirmDialog(this,
 		    "¿Estas seguro de que quieres terminar la partida actual?",
 		    "Nueva_Partida", JOptionPane.YES_NO_OPTION,
-		    JOptionPane.QUESTION_MESSAGE, II_SP32) != 0;
+		    JOptionPane.QUESTION_MESSAGE, (ImageIcon)resourceManager.getResource(ResourceManager.II_SP32)) != 0;
   }
   
   public void showErrMsg(String msg) {
@@ -247,8 +246,11 @@ public class SPFrame extends JFrame {
   
   // Actions ------------------------------------------------------------------
   private void nuevaPartida_ActionPerformed(ActionEvent e) {
-  	NewGameDialog gameDialog = new NewGameDialog();
-    final int nTab = addTab(gameDialog, MATCH_TAB, "Super Palitos", II_SP);
+		NewGameDialog gameDialog = new NewGameDialog(
+				(ImageIcon) resourceManager.getResource(ResourceManager.II_ACCEPT),
+				(ImageIcon) resourceManager.getResource(ResourceManager.II_CANCEL));
+		final int nTab = addTab(gameDialog, MATCH_TAB, "Super Palitos",
+				(ImageIcon) resourceManager.getResource(ResourceManager.II_SP));
     
     gameDialog.addDialogListner(new NewGameDialog.DialogListener() {
 			@Override public void cancelled() {
@@ -268,7 +270,7 @@ public class SPFrame extends JFrame {
     int cerrar = JOptionPane.showConfirmDialog(this,
 				"¿Realmente_quieres_cerrar_SuperPalitos?", "Salir",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-				II_SP32);
+				(ImageIcon)resourceManager.getResource(ResourceManager.II_SP32));
 		if(cerrar == JOptionPane.OK_OPTION) {
       sp.salir();
 			System.exit(0);
@@ -286,7 +288,9 @@ public class SPFrame extends JFrame {
   
   private void jugarCon_ActionPerformed(ActionEvent e) {
     //ConectarDialog.iniciar(this);
-    NewConnectionDialog dialog = new NewConnectionDialog(this, true, sp);
+		NewConnectionDialog dialog = new NewConnectionDialog(this, sp,
+				(ImageIcon) resourceManager.getResource(ResourceManager.II_ACCEPT),
+				(ImageIcon) resourceManager.getResource(ResourceManager.II_CANCEL));
     dialog.setVisible(true);
   }
   
@@ -326,7 +330,7 @@ public class SPFrame extends JFrame {
 				+ Integer.toHexString(c.getRGB() & 0x00FFFFFF)*/ + "\"><b>" + nick
 				+ "</b></font>_[" + ip + "]?";
     return JOptionPane.showConfirmDialog(this, mensaje, "Nueva Partida PalitosNet",
-      JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, II_SP32) == 0;
+      JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, (ImageIcon)resourceManager.getResource(ResourceManager.II_SP32)) == 0;
   }
   
   /**
@@ -390,9 +394,9 @@ public class SPFrame extends JFrame {
   public void showPreferences() {
     if(!isPreferencesShowed) {
       if(dPreferencias == null) {
-        dPreferencias = new PreferencesPane(/*COLORS, */sp);
+        dPreferencias = new PreferencesPane(sp, (ImageIcon)resourceManager.getResource(ResourceManager.II_ACCEPT));
       }
-      addTab(dPreferencias, PREFERENCES_TAB, "Preferencias", II_OPTIONS);
+      addTab(dPreferencias, PREFERENCES_TAB, "Preferencias", (ImageIcon)resourceManager.getResource(ResourceManager.II_OPTIONS));
       isPreferencesShowed = true;
     }
   }
@@ -402,7 +406,7 @@ public class SPFrame extends JFrame {
       if(pAyuda == null) {
         pAyuda = new PsHTMLPane("sp.html");
       }
-      addTab(pAyuda, HELP_TAB, "Ayuda", II_HELP);
+      addTab(pAyuda, HELP_TAB, "Ayuda", (ImageIcon)resourceManager.getResource(ResourceManager.II_HELP));
       isHelpShowed = true;
     }
   }
@@ -412,7 +416,7 @@ public class SPFrame extends JFrame {
       if(pLicencia == null) {
         pLicencia = new PsHTMLPane("gpl.html");
       }
-      addTab(pLicencia, LICENSE_TAB, "Licencia", II_LICENSE);
+      addTab(pLicencia, LICENSE_TAB, "Licencia", (ImageIcon)resourceManager.getResource(ResourceManager.II_LICENSE));
       isLicenseShowed = true;
     }
   }
@@ -420,40 +424,13 @@ public class SPFrame extends JFrame {
   public void showAbout() {
     if(!isAboutShowed) {
       if(pAcerca == null) {
-        pAcerca = new AboutPane();
+        pAcerca = new AboutPane((ImageIcon)resourceManager.getResource(ResourceManager.II_PVS));
       }
-      addTab(pAcerca, ABOUT_TAB, "Acerca_de_...", II_ABOUT);
+      addTab(pAcerca, ABOUT_TAB, "Acerca_de_...", (ImageIcon)resourceManager.getResource(ResourceManager.II_ABOUT));
       isAboutShowed = true;
     }
   }
-  
-  private void loadResources() {
-    // Iconos
-    II_ABOUT = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/about.png"));
-    II_ACCEPT =new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/apply.png"));
-    II_BLANK = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/blank.png"));
-    II_CANCEL = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/cancel.png"));
-    II_CLOSE_16 = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/close16.png"));
-    II_CLOSE_24 = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/close24.png"));
-    II_CONNECT = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/connect.png"));
-    II_DISCONNECT = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/disconnect.png"));
-    II_EXIT = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/exit.png"));
-    II_HELP= new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/help.png"));
-    II_LICENSE = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/license.png"));
-    II_NEW = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/new.png"));
-    II_OPTIONS = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/options.png"));
-//    II_PAUSE = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/pause.png"));
-    II_PNCHAT = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/chat.png"));
-    II_PNNEW = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/pnnew.png"));
-    II_PNSERVER = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/pnserver.png"));
-    II_PLAY = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/play.png"));
-    II_PVS = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/pvs.png"));
-    II_REPEAT = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/refresh.png"));
-    II_SP = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/sp.png"));
-    II_SP32 = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/sp32.png"));
-    II_STOP = new ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/stop.png"));
-  }
-  
+ 
   private void initMenu() {
     /* Menu */
     menu = new JMenuBar();
@@ -461,7 +438,7 @@ public class SPFrame extends JFrame {
     // Menu Archivo
     jMArchivo = new JMenu("Archivo");
     jMINuevaPart = new JMenuItem("Nueva_partida...");
-    jMINuevaPart.setIcon(II_NEW);
+    jMINuevaPart.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_NEW));
     jMINuevaPart.setToolTipText("Crea_una_nueva_partida");
     jMINuevaPart.addActionListener(new ActionListener() {
     	@Override
@@ -473,7 +450,7 @@ public class SPFrame extends JFrame {
     jMArchivo.add(jMINuevaPart);
     
     jMIPartRapida = new JMenuItem("Partida_rapida");
-    jMIPartRapida.setIcon(II_NEW);
+    jMIPartRapida.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_NEW));
     jMIPartRapida.setToolTipText("Empieza_una_partida_inmediatamente");
     jMIPartRapida.addActionListener(new ActionListener() {
     	@Override
@@ -486,7 +463,7 @@ public class SPFrame extends JFrame {
     jMArchivo.addSeparator();
     
     jMICerrarPes = new JMenuItem("Cerrar_pestaña");
-    jMICerrarPes.setIcon(II_CLOSE_16);
+    jMICerrarPes.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_CLOSE_16));
     jMICerrarPes.setToolTipText("Cierra_la_pestaña_y/o_termina_la_partida");
     jMICerrarPes.addActionListener(new ActionListener() {
     	@Override
@@ -499,7 +476,7 @@ public class SPFrame extends JFrame {
     
     jMArchivo.addSeparator();
     jMISalir = new JMenuItem("Salir");
-    jMISalir.setIcon(II_EXIT);
+    jMISalir.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_EXIT));
     jMISalir.setToolTipText("Termina_el_programa");
     jMISalir.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -512,7 +489,7 @@ public class SPFrame extends JFrame {
     // Menu PalitosNet
     jMPalitosNet = new JMenu("PalitosNet");
     jMIConectar = new JMenuItem("Iniciar");
-    jMIConectar.setIcon(II_PNSERVER);
+    jMIConectar.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_PNSERVER));
     jMIConectar.addActionListener(new ActionListener() {
     	@Override
       public void actionPerformed(ActionEvent e) {
@@ -522,7 +499,7 @@ public class SPFrame extends JFrame {
     jMPalitosNet.add(jMIConectar);
     //
     jMINuevo = new JMenuItem("Jugar_Con...");
-    jMINuevo.setIcon(II_PNNEW);
+    jMINuevo.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_PNNEW));
     jMINuevo.setEnabled(false);
     jMINuevo.addActionListener(new ActionListener() {
     	@Override
@@ -533,7 +510,7 @@ public class SPFrame extends JFrame {
     jMPalitosNet.add(jMINuevo);
     //
     jMIShowChat = new JMenuItem("Mostrar/Esconder_Chat");
-    jMIShowChat.setIcon(II_PNCHAT);
+    jMIShowChat.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_PNCHAT));
     jMIShowChat.setEnabled(false);
     jMIShowChat.addActionListener(new ActionListener() {
     	@Override
@@ -547,7 +524,7 @@ public class SPFrame extends JFrame {
     //
     jMHerramientas = new JMenu("Opciones");
     jMIOpciones = new JMenuItem("Preferencias...");
-    jMIOpciones.setIcon(II_OPTIONS);
+    jMIOpciones.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_OPTIONS));
     jMIOpciones.setToolTipText("Muestra_el_menú_opciones");
     jMIOpciones.addActionListener(new ActionListener() {
     	@Override
@@ -561,7 +538,7 @@ public class SPFrame extends JFrame {
     // Menu Ayuda
     jMAyuda = new JMenu("Ayuda");
     jMIAyuda = new JMenuItem("Temas_de_Ayuda");
-    jMIAyuda.setIcon(II_HELP);
+    jMIAyuda.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_HELP));
     jMIAyuda.setToolTipText("Muestra_la_ayuda");
     jMIAyuda.addActionListener(new ActionListener() {
     	@Override
@@ -573,7 +550,7 @@ public class SPFrame extends JFrame {
     jMAyuda.add(jMIAyuda);
     //licencia
     jMILicencia = new JMenuItem("Licencia");
-    jMILicencia.setIcon(II_LICENSE);
+    jMILicencia.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_LICENSE));
     jMILicencia.setToolTipText("Muestra_la_licencia_de_SuperPalitos");
     jMILicencia.addActionListener(new ActionListener() {
     	@Override
@@ -584,7 +561,7 @@ public class SPFrame extends JFrame {
     jMAyuda.add(jMILicencia);
     //acerca
     jMIAcerca = new JMenuItem("Acerca_de...");
-    jMIAcerca.setIcon(II_ABOUT);
+    jMIAcerca.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_ABOUT));
     jMIAcerca.setToolTipText("Muestra_información_sobre_SuperPalitos");
     jMIAcerca.addActionListener(new ActionListener() {
     	@Override
@@ -597,7 +574,7 @@ public class SPFrame extends JFrame {
 
     JPanel p1 = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
     p1.setOpaque(false);
-    bCerrarTab = new JButton(II_CLOSE_24);
+    bCerrarTab = new JButton((ImageIcon)resourceManager.getResource(ResourceManager.II_CLOSE_24));
     bCerrarTab.setBorder(null);
     bCerrarTab.setToolTipText("Cerrar_pestaña_actual");
     bCerrarTab.addActionListener(new ActionListener() {
@@ -621,8 +598,16 @@ public class SPFrame extends JFrame {
 	public SuperPalitos getSp() {
 		return sp;
 	}
-
 	public void setSp(SuperPalitos sp) {
 		this.sp = sp;
 	}
+
+	public ResourceManager getResourceManager() {
+		return resourceManager;
+	}
+	public void setResourceManager(ResourceManager resourceManager) {
+		this.resourceManager = resourceManager;
+	}
+	
+	
 }

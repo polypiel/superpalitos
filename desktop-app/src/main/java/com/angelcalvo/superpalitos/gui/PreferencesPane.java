@@ -7,9 +7,10 @@
 package com.angelcalvo.superpalitos.gui;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.angelcalvo.superpalitos.SuperPalitos;
 
@@ -25,10 +26,12 @@ public class PreferencesPane extends javax.swing.JPanel {
   private int currentLaF;
   //private Color[] colors;
   private SuperPalitos sp;
+  private ImageIcon okImg;
+  
   /** Creates new form PreferencesPane2 */
-  public PreferencesPane(/*Color[] colors,*/ SuperPalitos sp) {
+  public PreferencesPane(SuperPalitos sp, ImageIcon okImg) {
   	this.sp = sp;
-    //this.colors = colors;
+  	this.okImg = okImg;
     
   	initComponents();
 
@@ -269,7 +272,7 @@ public class PreferencesPane extends javax.swing.JPanel {
 
     jTabbedPane1.addTab(bundle.getString("prefsDialog.lnl"), jPanel3); // NOI18N
 
-    jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/apply.png"))); // NOI18N
+    jButton1.setIcon(okImg); // NOI18N
     jButton1.setText(bundle.getString("prefsDialog.apply")); // NOI18N
     jButton1.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -337,8 +340,8 @@ public class PreferencesPane extends javax.swing.JPanel {
   }//GEN-LAST:event_jComboBox1ActionPerformed
 
   
-  // Variables declaration - do not modify//GEN-BEGIN:variables
   private com.angelcalvo.superpalitos.SPConf conf;
+  // Variables declaration - do not modify//GEN-BEGIN:variables
   private ColorBox j1ColorCB;
   private javax.swing.JTextField j1NameTF;
   private ColorBox j2ColorCB;

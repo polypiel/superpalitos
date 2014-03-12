@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import com.angelcalvo.superpalitos.SuperPalitos;
@@ -20,6 +21,7 @@ import com.angelcalvo.superpalitos.SuperPalitos;
  */
 public class NewGameDialog extends JPanel {
 	private static final long serialVersionUID = -5859808805533620435L;
+  private ImageIcon okImg, cancelImg;
   
   public static interface DialogListener {
   	void accepted(int mode);
@@ -28,7 +30,10 @@ public class NewGameDialog extends JPanel {
   private Collection<DialogListener> listeners;
   
   /** Creates new form NewGameDialog */
-  public NewGameDialog() {
+  public NewGameDialog(ImageIcon okImg, ImageIcon cancelImg) {
+  	this.okImg = okImg;
+  	this.cancelImg = cancelImg;
+  	
   	setOpaque(true);
   	listeners = new ArrayList<DialogListener>();
     initComponents();
@@ -76,7 +81,7 @@ public class NewGameDialog extends JPanel {
     java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle"); // NOI18N
 
 
-    okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/apply.png"))); // NOI18N
+    okButton.setIcon(okImg); // NOI18N
     okButton.setText(bundle.getString("newDialog.ok")); // NOI18N
     okButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,7 +89,7 @@ public class NewGameDialog extends JPanel {
       }
     });
 
-    cancelButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/cancel.png"))); // NOI18N
+    cancelButton.setIcon(cancelImg); // NOI18N
     cancelButton.setText(bundle.getString("newDialog.cancel")); // NOI18N
     cancelButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {

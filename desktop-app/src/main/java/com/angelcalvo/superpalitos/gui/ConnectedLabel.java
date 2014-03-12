@@ -10,6 +10,7 @@
  * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
  */
 package com.angelcalvo.superpalitos.gui;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
@@ -17,18 +18,21 @@ import javax.swing.JLabel;
  */
 public class ConnectedLabel extends JLabel {
 	private static final long serialVersionUID = 8682498738153835670L;
-
+	private ImageIcon connectImg, disconnectImg;
+	
 	/** Creates a new instance of ConnectedLabel */
-  public ConnectedLabel() {
+  public ConnectedLabel(ImageIcon connectImg, ImageIcon disconnectImg) {
+  	this.connectImg = connectImg;
+  	this.disconnectImg = disconnectImg;
     setConnected(false);
   }
   
   public void setConnected(boolean connected) {
     if(connected) {
-      setIcon(SPFrame.II_CONNECT);
+      setIcon(connectImg);
       setToolTipText("Conectado");
     } else {
-      setIcon(SPFrame.II_DISCONNECT);
+      setIcon(disconnectImg);
       setToolTipText("Desconectado");
     }
   }

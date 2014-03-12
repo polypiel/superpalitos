@@ -12,9 +12,14 @@
 			<ref bean="frame" />
 		</property>
 	</bean>
-	<bean id="frame" class="com.angelcalvo.superpalitos.gui.SPFrame">
+	<bean id="resourceManager" class="com.angelcalvo.superpalitos.ResourceManager">
+	</bean>
+	<bean id="frame" class="com.angelcalvo.superpalitos.gui.SPFrame" init-method="init">
 		<property name="sp">
 			<ref bean="sp"/>
+		</property>
+		<property name="resourceManager">
+			<ref bean="resourceManager"/>
 		</property>
 	</bean>
 </beans>

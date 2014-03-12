@@ -19,12 +19,12 @@ public class SPTabComponent extends javax.swing.JPanel {
 	 */
 	private static final long serialVersionUID = 3661600911878981508L;
 	/** Creates new form SPTabComponent */
-  public SPTabComponent(String title, ImageIcon icon) {
+  public SPTabComponent(String title, ImageIcon icon, ImageIcon closeImg) {
   	setOpaque(false);
     initComponents();
     titleLabel.setText(title);
     titleLabel.setIcon(icon);
-    closeButton.setIcon(SPFrame.II_CLOSE_16);
+    closeButton.setIcon(closeImg);
   }
   
   /** This method is called from within the constructor to

@@ -12,6 +12,7 @@ package com.angelcalvo.superpalitos.gui;
 import java.awt.Color;
 import java.awt.GridLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -23,13 +24,13 @@ import javax.swing.JPanel;
 public class AboutPane extends JPanel {
 	private static final long serialVersionUID = 3977019539542128438L;
 	private static final String TEXT = "<html><font_color=\"#FFFF00\"_size=\"6\"_face=\"courier\"><center>Super_Palitos_v3.0_M3<p>Pollo_Verde_Software_2006</center></font><font_size=\"5\"_color=\"#00FF00\"_face=\"sans\"><p><br>Todo_hecho_por:<br>&Aacute;ngel_Luis_Calvo_Ortega</font>";
-
-	public AboutPane() {
+	
+	public AboutPane(ImageIcon pvsImg) {
 		super(new GridLayout(2, 1, 10, 10));
-
+	
 		// jPane.setAlignmentX(JPanel.CENTER_ALIGNMENT);
 		setBackground(Color.BLACK);
-		JLabel img = new JLabel(SPFrame.II_PVS);
+		JLabel img = new JLabel(pvsImg);
 		add(img);
 		JLabel cred = new JLabel();
 		cred.setHorizontalAlignment(JLabel.CENTER);
