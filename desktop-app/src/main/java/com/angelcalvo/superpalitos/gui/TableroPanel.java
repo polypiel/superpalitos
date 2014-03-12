@@ -61,7 +61,7 @@ public class TableroPanel extends JPanel implements Board {
   private static final int QUAD_DELAY = 60;
   
   private static final String IMAGE_FILE = "/com/angelcalvo/superpalitos/gui/fondo.png";
-  private static final Image FONDO = Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource(IMAGE_FILE));
+  protected static final Image FONDO = Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource(IMAGE_FILE));
 
   private static final int huecos[][] = {
     {176, 81}, {208, 81}, {161, 113}, {192, 113}, {224, 113}, {145, 144},

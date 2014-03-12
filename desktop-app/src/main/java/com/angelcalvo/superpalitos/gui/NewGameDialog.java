@@ -6,33 +6,40 @@
 
 package com.angelcalvo.superpalitos.gui;
 
+import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.swing.JPanel;
+
 import com.angelcalvo.superpalitos.SuperPalitos;
 
 /**
  *
- * @author  angel
+ * @author Angel Calvo
  */
-public class NewGameDialog extends javax.swing.JDialog {
+public class NewGameDialog extends JPanel {
 	private static final long serialVersionUID = -5859808805533620435L;
-	
-	/** A return status code - returned if Cancel button has been pressed */
-  public static final int RET_CANCEL = 0;
-  /** A return status code - returned if OK button has been pressed */
-  public static final int RET_OK = 1;
+  
+  public static interface DialogListener {
+  	void accepted(int mode);
+  	void cancelled();
+  }
+  private Collection<DialogListener> listeners;
   
   /** Creates new form NewGameDialog */
-  public NewGameDialog(java.awt.Frame parent) {
-    super(parent, true);
+  public NewGameDialog() {
+  	setOpaque(true);
+  	listeners = new ArrayList<DialogListener>();
     initComponents();
-    setLocationRelativeTo(parent);
   }
   
-  /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
-  public boolean isAccepted() {
-    return returnStatus == RET_OK;
+  public void addDialogListner(DialogListener listener) {
+  	listeners.add(listener);
   }
   
-  public int getGameMode() {
+  
+  private int getGameMode() {
     if(onePlayerRB.isSelected() && easyRB.isSelected()) {
       return SuperPalitos.JUEGO_1J_FACIL;
     }
@@ -67,14 +74,7 @@ public class NewGameDialog extends javax.swing.JDialog {
     jSeparator1 = new javax.swing.JSeparator();
 
     java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle"); // NOI18N
-    setTitle(bundle.getString("newDialog.title")); // NOI18N
-    setModal(true);
-    setResizable(false);
-    addWindowListener(new java.awt.event.WindowAdapter() {
-      public void windowClosing(java.awt.event.WindowEvent evt) {
-        closeDialog(evt);
-      }
-    });
+
 
     okButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/angelcalvo/superpalitos/gui/apply.png"))); // NOI18N
     okButton.setText(bundle.getString("newDialog.ok")); // NOI18N
@@ -125,8 +125,8 @@ public class NewGameDialog extends javax.swing.JDialog {
     difficultyBG.add(hardRB);
     hardRB.setText(bundle.getString("newDialog.hard")); // NOI18N
 
-    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-    getContentPane().setLayout(layout);
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+    setLayout(layout);
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
@@ -181,23 +181,20 @@ public class NewGameDialog extends javax.swing.JDialog {
           .addComponent(okButton))
         .addContainerGap())
     );
-
-    pack();
   }// </editor-fold>//GEN-END:initComponents
   
   private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-    doClose(RET_OK);
+    for(DialogListener listener: listeners) {
+    	listener.accepted(getGameMode());
+    }
   }//GEN-LAST:event_okButtonActionPerformed
   
   private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-    doClose(RET_CANCEL);
+    for(DialogListener listener: listeners) {
+    	listener.cancelled();
+    }
   }//GEN-LAST:event_cancelButtonActionPerformed
   
-  /** Closes the dialog */
-  private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
-    doClose(RET_CANCEL);
-  }//GEN-LAST:event_closeDialog
-
   private void onePlayerRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onePlayerRBActionPerformed
     easyRB.setEnabled(true);
     normalRB.setEnabled(true);
@@ -209,13 +206,7 @@ public class NewGameDialog extends javax.swing.JDialog {
     normalRB.setEnabled(false);
     hardRB.setEnabled(false);
   }//GEN-LAST:event_twoPlayersRBActionPerformed
-  
-  private void doClose(int retStatus) {
-    returnStatus = retStatus;
-    setVisible(false);
-    dispose();
-  }
-  
+
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton cancelButton;
   private javax.swing.ButtonGroup difficultyBG;
@@ -231,5 +222,10 @@ public class NewGameDialog extends javax.swing.JDialog {
   private javax.swing.JRadioButton twoPlayersRB;
   // End of variables declaration//GEN-END:variables
   
-  private int returnStatus = RET_CANCEL;
+  // TODO
+  @Override
+  protected void paintComponent(Graphics g) {
+  	g.drawImage(TableroPanel.FONDO, 0, 0, null);
+    super.paintComponent(g);
+  }
 }

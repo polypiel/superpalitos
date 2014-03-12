@@ -66,9 +66,9 @@ public class SPFrame extends JFrame {
   public static final int ROJO = 2;
   /** Constante para identificar el color verde */
   public static final int VERDE = 3;
-  
   public static final Color[] COLORS = {new Color(723857), new Color(197379), new Color(15073280), new Color(1951517)};
   
+  // Tab ids
   private static final String WELCOME_TAB = "welcome";
   private static final String MATCH_TAB = "match";
   private static final String PREFERENCES_TAB = "preferences";
@@ -79,7 +79,7 @@ public class SPFrame extends JFrame {
   private JTabbedPane tabbedPane;
   private JMenuBar menu;
   private JMenu jMArchivo, jMPalitosNet, jMHerramientas, jMAyuda;
-  private JMenuItem jMINuevaPart, jMIPartRapida, jMICerrarPes, /*jMIRepetir,*/ jMISalir,
+  private JMenuItem jMINuevaPart, jMIPartRapida, jMICerrarPes, jMISalir,
   		jMIConectar, jMINuevo, jMIShowChat, jMIOpciones, jMIAyuda, jMILicencia, jMIAcerca;
   private JTextField status;
   private ConnectedLabel cstatus;
@@ -113,19 +113,6 @@ public class SPFrame extends JFrame {
     /* Menu */
     initMenu();
     
-    /* opciones de tabs */
-    /*JPanel p1 = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-    bCerrarTab = new JButton(II_CLOSE_24);
-    bCerrarTab.setBorder(null);
-    bCerrarTab.setToolTipText("Cerrar pesta\u00F1a actual");
-    bCerrarTab.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        cerrarTab_ActionPerformed(e);
-      }
-    });
-    p1.add(bCerrarTab);
-    p.add(p1);*/
-    
     /* tabs */
     tabbedPane = new JTabbedPane();
     tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT); 
@@ -152,7 +139,6 @@ public class SPFrame extends JFrame {
     getContentPane().add(p, BorderLayout.CENTER);
     
     addWindowListener(new WindowAdapter() {
-      //public void windowOpened(WindowEvent e) {}
     	@Override
       public void windowClosing(WindowEvent e) {
         cerrar_ActionPerformed();
@@ -168,9 +154,14 @@ public class SPFrame extends JFrame {
    * v 3.0
    * @return
    */
-  public TableroPanel createTablero(String title) {
+  public TableroPanel createTablero(String title, Integer tab) {
     TableroPanel spp = new TableroPanel(sp);
-    addTab(spp, MATCH_TAB, title, II_SP);
+    if(tab == null) {
+    	addTab(spp, MATCH_TAB, title, II_SP);
+    } else {
+    	tabbedPane.setComponentAt(tab, spp);
+    	tabbedPane.setTitleAt(tab, title);
+    }
     return spp;
   }
   
@@ -202,33 +193,39 @@ public class SPFrame extends JFrame {
   	}
   }
   
-  private void addTab(JComponent comp, String name, String title, ImageIcon icono) {
+  private int addTab(JComponent comp, String name, String title, ImageIcon icono) {
     comp.setName(name);
     tabbedPane.addTab(title, icono, comp);
-    tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, new SPTabComponent(title, icono));
+    int tabNumber = tabbedPane.getTabCount() - 1;
+    tabbedPane.setTabComponentAt(tabNumber, new SPTabComponent(title, icono)); // title component
     tabbedPane.setSelectedComponent(comp);
     
     ntabs++;
     bCerrarTab.setEnabled(ntabs > 0);
     jMICerrarPes.setEnabled(ntabs > 0);
+    
+    return tabNumber;
   }
-  
-  /**
-   * Metodo para indicar que una partida a terminado.
-   * @param quien El jugador ganador.
-   */
-  /*public int showFinJuego(String quien, long cuanto) {
-    int opcion = JOptionPane.showOptionDialog(this, "<html><h3>" + quien
-      + "   WINS!!!</h3><br>En " + cuanto/60000 + ":" + cuanto%60000 + "s" , "GAME OVER", JOptionPane.DEFAULT_OPTION,
-      JOptionPane.INFORMATION_MESSAGE, II_SP32, options, options[0]);
-    if(opcion == 0) {
-      return SuperPalitos.FIN_JUEGO_CONTINUAR;
+  private void closeTab(int nTab) {
+    String name = tabbedPane.getSelectedComponent().getName();
+    if(name.equals(ABOUT_TAB)) {
+      isAboutShowed = false;
+    } else if(name.equals(HELP_TAB)) {
+      isHelpShowed = false;
+    } else if(name.equals(LICENSE_TAB)) {
+      isLicenseShowed = false;
+    } else if(name.equals(PREFERENCES_TAB)) {
+      isPreferencesShowed = false;
+    } else if(name.equals(MATCH_TAB)) {
+    	// TODO
+      sp.cerrarPartida(0);
     }
-    if(opcion == 1) {
-      return SuperPalitos.FIN_JUEGO_REPETIR;
-    }
-    return SuperPalitos.FIN_JUEGO_TERMINAR;
-  }*/
+    tabbedPane.removeTabAt(nTab);
+    
+    ntabs--;
+    bCerrarTab.setEnabled(ntabs > 0);
+    jMICerrarPes.setEnabled(ntabs > 0);
+  }
   
   /**
    * M&eacute;todo que termina una partida bruscamente.
@@ -250,11 +247,17 @@ public class SPFrame extends JFrame {
   
   // Actions ------------------------------------------------------------------
   private void nuevaPartida_ActionPerformed(ActionEvent e) {
-    NewGameDialog dialog = new NewGameDialog(this);
-    dialog.setVisible(true);
-    if(dialog.isAccepted()) {
-      sp.nuevaPartida(dialog.getGameMode(), null, true);
-    }
+  	NewGameDialog gameDialog = new NewGameDialog();
+    final int nTab = addTab(gameDialog, MATCH_TAB, "Super Palitos", II_SP);
+    
+    gameDialog.addDialogListner(new NewGameDialog.DialogListener() {
+			@Override public void cancelled() {
+				closeTab(nTab);
+			}
+			@Override	public void accepted(int mode) {
+				sp.nuevaPartida(mode, null, true, nTab);
+			}
+		});
   }
   
   private void partidaRapida_ActionPerformed(ActionEvent e) {
@@ -308,30 +311,9 @@ public class SPFrame extends JFrame {
   }
   
   private void cerrarTab_ActionPerformed(ActionEvent e) {
-    String name = tabbedPane.getSelectedComponent().getName();
-    if(name.equals(ABOUT_TAB)) {
-      isAboutShowed = false;
-    } else if(name.equals(HELP_TAB)) {
-      isHelpShowed = false;
-    } else if(name.equals(LICENSE_TAB)) {
-      isLicenseShowed = false;
-    } else if(name.equals(PREFERENCES_TAB)) {
-      isPreferencesShowed = false;
-    } else if(name.equals(MATCH_TAB)) {
-    	// TODO
-      sp.cerrarPartida(0);
-    }
-    tabbedPane.removeTabAt(tabbedPane.getSelectedIndex());
-    
-    ntabs--;
-    bCerrarTab.setEnabled(ntabs > 0);
-    jMICerrarPes.setEnabled(ntabs > 0);
+  	closeTab(tabbedPane.getSelectedIndex());
   }
-  
-  /*private void repetir_ActionPerformed(ActionEvent e) {
-  	SuperPalitos.getInstance().repetirCmd(getTableroId());
-  }*/
-  
+
   // PalitosNet ---------------------------------------------------------------
   /**
    * M&eacute;todo para indicar una petici&oacute;n de conexi&oacute;n.
@@ -514,17 +496,6 @@ public class SPFrame extends JFrame {
     });
     jMICerrarPes.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_MASK));
     jMArchivo.add(jMICerrarPes);
-    
-    /*jMIRepetir = new JMenuItem("Repetir");
-    jMIRepetir.setIcon(II_REPEAT);
-    jMIRepetir.setToolTipText("Crea un juego nuevo");
-    jMIRepetir.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        repetir_ActionPerformed(e);
-      }
-    });
-    jMIRepetir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0, false));
-    jMArchivo.add(jMIRepetir);*/
     
     jMArchivo.addSeparator();
     jMISalir = new JMenuItem("Salir");

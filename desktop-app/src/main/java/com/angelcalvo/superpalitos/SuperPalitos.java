@@ -106,7 +106,7 @@ public class SuperPalitos {
    *
    */
   public void nuevaPartida() {
-    nuevaPartida(DEFAULT_TIPO_JUEGO, null, true);
+    nuevaPartida(DEFAULT_TIPO_JUEGO, null, true, null);
   }
   
   /**
@@ -115,8 +115,8 @@ public class SuperPalitos {
    * @param pnPlayer
    * @param first
    */
-  public void nuevaPartida(int tipo, PNClient pnPlayer, boolean first) {
-    TableroPanel t = frame.createTablero(tags[tipo]);
+  public void nuevaPartida(int tipo, PNClient pnPlayer, boolean first, Integer tab) {
+    TableroPanel t = frame.createTablero(tags[tipo], tab);
     Player j1 = t.createPlayer(j1Name, j1Color);
     Player j2 = null;
     if(tipo == JUEGO_1J_FACIL) {						// FACIL
@@ -264,7 +264,7 @@ public class SuperPalitos {
    */
   public boolean aceptarConexion(PNClient pnClient, String ip) {
     if(frame.showNewConnMsg(pnClient.getName(), ip, pnClient.getColor())) {
-    	nuevaPartida(JUEGO_MJ, pnClient, true);
+    	nuevaPartida(JUEGO_MJ, pnClient, true, null);
       return true;
     }
     return false;
@@ -320,7 +320,7 @@ public class SuperPalitos {
    */
   public void confirmarConexion(PNClient pnClient) {
     frame.endsConectar();
-    nuevaPartida(JUEGO_MJ, pnClient, false);
+    nuevaPartida(JUEGO_MJ, pnClient, false, null);
   }
   
   /*
