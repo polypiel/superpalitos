@@ -7,4 +7,5 @@ release.properties
 .classpath
 *~
 .settings/
+.directory/
 *.bak
