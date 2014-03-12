@@ -64,8 +64,6 @@ public class PreferencesPane extends javax.swing.JPanel {
    */
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
-
-    conf = sp.getConf() ;
     jTabbedPane1 = new javax.swing.JTabbedPane();
     jPanel1 = new javax.swing.JPanel();
     jPanel4 = new javax.swing.JPanel();
@@ -340,7 +338,6 @@ public class PreferencesPane extends javax.swing.JPanel {
   }//GEN-LAST:event_jComboBox1ActionPerformed
 
   
-  private com.angelcalvo.superpalitos.SPConf conf;
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private ColorBox j1ColorCB;
   private javax.swing.JTextField j1NameTF;

@@ -44,15 +44,14 @@ public class PartidaManager implements GameListener {
   
   private boolean jugando, j1Turn;
   private LinkedList<GameListener> partidaListeners;
-  private SuperPalitos sp;
   
   /**
    * @param j1 Jugador uno
    * @param j2 Jugador dos
    * @param tablero El tablero
    */
-  public PartidaManager(Player j1, Player j2, TableroPanel tablero, SuperPalitos sp) {
-  	this(j1, j2, tablero, true, sp);
+  public PartidaManager(Player j1, Player j2, TableroPanel tablero) {
+  	this(j1, j2, tablero, true);
 	}
   
   /**
@@ -61,14 +60,13 @@ public class PartidaManager implements GameListener {
    * @param tablero El tablero
    * @param j1Turn Indica si mueve el jugador uno primero
    */
-  public PartidaManager(Player j1, Player j2, TableroPanel tablero, boolean j1Turn, SuperPalitos sp) {
+  public PartidaManager(Player j1, Player j2, TableroPanel tablero, boolean j1Turn) {
   	id = ID_COUNT++;
   	
     this.j1 = j1;
     this.j2 = j2;
     this.tablero = tablero;
     this.j1Turn = j1Turn;
-    this.sp = sp;
     
     partidaListeners = new LinkedList<GameListener>();
     jugando = false;

@@ -272,13 +272,11 @@ public class SPFrame extends JFrame {
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
 				(ImageIcon)resourceManager.getResource(ResourceManager.II_SP32));
 		if(cerrar == JOptionPane.OK_OPTION) {
-      sp.salir();
 			System.exit(0);
     }
   }
   
   private void salir_ActionPerformed() {
-    sp.salir();
   	System.exit(0);
   }
   

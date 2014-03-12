@@ -54,9 +54,6 @@ public class SuperPalitos {
   private static final String DEFAULT_J1_NAME = "PlayerOne";
   private static final String DEFAULT_J2_NAME = "PlayerTwo";
   
-  private static final String PROPS_NAME = ".superpalitos";
-  private static final String PROPS_FILE = System.getProperty("user.home") + "/" + PROPS_NAME;
-  
   public final static Color BLUE_COLOR = Color.BLUE;
   public final static Color BLACK_COLOR = Color.BLACK;
   public final static Color RED_COLOR = Color.RED;
@@ -72,8 +69,6 @@ public class SuperPalitos {
   private String j1Name, j2Name;
   private Color j1Color, j2Color;
   private boolean sound;
-  //
-  private SPConf conf;
   
   private SuperPalitos() {
     partidas = new LinkedList<PartidaManager>();
@@ -84,9 +79,6 @@ public class SuperPalitos {
     j1Color = BLUE_COLOR;
     j2Color = RED_COLOR;
     sound = true;
-    
-    conf = new SPConf();
-    conf.read(PROPS_FILE);
   }
   
   /**
@@ -142,7 +134,7 @@ public class SuperPalitos {
   }
   
   private PartidaManager createPM(Player j1, Player j2, TableroPanel t, boolean first) {
-    PartidaManager pm = new PartidaManager(j1, j2, t, first, this);
+    PartidaManager pm = new PartidaManager(j1, j2, t, first);
     partidas.addLast(pm);
     return pm;
   }
@@ -221,10 +213,6 @@ public class SuperPalitos {
    */
   public void changeLaF() {
     frame.changeLaF();
-  }
-  
-  public void salir() {
-    conf.write(PROPS_FILE);
   }
   
   // PalitosNet ---------------------------------------------------------------
@@ -419,15 +407,10 @@ public class SuperPalitos {
 	public void setSound(boolean sound) {
 		this.sound = sound;
 	}
-  
-  public SPConf getConf() {
-    return conf;
-  }
 
 	public SPFrame getFrame() {
 		return frame;
 	}
-
 	public void setFrame(SPFrame frame) {
 		this.frame = frame;
 	}

@@ -23,7 +23,7 @@ V 3.1
 V 3.2
 -----
  - multi-idioma (wip)
- - store preferences?
+ - delete options menu
  - BUG: scoreboard
  - Status bar
  - Game modes?
