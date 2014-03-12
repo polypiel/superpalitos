@@ -14,10 +14,10 @@ V 3.1
  - BUG: drawing human player line (done)
  - Better GUI (wip)
  - Refactoring and cleaning of core (done)
- - Highligh gap when hover
+ - Highligh gap when hover (done)
  - Write README.md (done)
  - Get rid of beansbinding dependency (done)
-
+ - Less dialogs
   
 V 3.2
 -----

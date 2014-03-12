@@ -19,7 +19,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.angelcalvo.palitos.Player;
 import com.angelcalvo.palitos.PlayerAI;
-import com.angelcalvo.superpalitos.gui.FinJuegoDialog;
 import com.angelcalvo.superpalitos.gui.SPFrame;
 import com.angelcalvo.superpalitos.gui.TableroPanel;
 import com.angelcalvo.superpalitos.net.PNClient;
@@ -172,13 +171,6 @@ public class SuperPalitos {
   }
 
   /**
-   * Muestra el mensaje de fin de juego
-   */
-  public int finJuego(String s, long time) {
-  	return FinJuegoDialog.showFinJuegoDialog(frame, s, time);
-  }
-  
-  /**
    * Se ha pulsado el boton repetir
    * @param id El identficador del tablero
    */
@@ -221,7 +213,6 @@ public class SuperPalitos {
    */
   public void cerrarPartida(long id) {
   	PartidaManager pm = getPartidaManager(id);
-  	pm.end();
   	partidas.remove(pm);
   }
   
@@ -303,7 +294,6 @@ public class SuperPalitos {
   public void desconectado(Player j) {
     PartidaManager pm = getPartidaManager(j);
   	frame.destroyTablero(pm.getId());
-  	pm.end();
   	partidas.remove(pm);
     frame.showAbortPartidaMsg();
     //TODO cerrar tab del chat

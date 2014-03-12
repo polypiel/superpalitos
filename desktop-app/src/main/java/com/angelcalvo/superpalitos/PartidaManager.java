@@ -113,14 +113,6 @@ public class PartidaManager implements GameListener {
     } else {
     	j2Score++;
     }
-    
-    int opt = sp.finJuego(winner.getName(), time);
-    if(opt == SuperPalitos.FIN_JUEGO_CONTINUAR) {
-    	replay();
-    } else if(opt == SuperPalitos.FIN_JUEGO_TERMINAR) {
-    	sp.removePartida(this);
-    	end();
-    }
   }
   
   /**
@@ -130,15 +122,6 @@ public class PartidaManager implements GameListener {
   	if(!jugando) {
   		play();
   	}
-  }
-  
-  /**
-   * Termina la partida
-   */
-  public void end() {
-  	j1.finish();
-  	j2.finish();
-  	tablero.finished();
   }
   
   public void addPartidaListener(GameListener partidaListener) {

@@ -10,20 +10,28 @@
 package com.angelcalvo.superpalitos.gui;
 import java.applet.Applet;
 import java.applet.AudioClip;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.angelcalvo.palitos.Board;
@@ -62,21 +70,46 @@ public class TableroPanel extends JPanel implements Board {
     {240, 207}, {272, 207}
   };
   private static final int ANCHO = 16;
+  
   private int state;
   private LinkedList<Line> lineas;
   private Humano j;
   
-  private final static Image[] bolis = {
-  	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliAzul.png")),
-  	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliNegro.png")),
-  	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliRojo.png")),
-  	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliVerde.png"))
+  private final static Image[][] PEN_CURSORS = {
+  	{
+  		Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliAzul.png")),
+  		Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliAzul-sel.png"))},
+  	{
+  		Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliNegro.png")),
+  		Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliNegro-sel.png")),
+  	},
+  	{
+  		Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliRojo.png")),
+    	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliRojo-sel.png")),
+  	},
+  	{
+  		Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliVerde.png")),
+    	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliVerde-sel.png"))
+
+  	}
   };
-  private final static Cursor[] cursores = {
-    Toolkit.getDefaultToolkit().createCustomCursor(bolis[SPFrame.AZUL], new Point(0, 0), "Boli Azul"),
-    Toolkit.getDefaultToolkit().createCustomCursor(bolis[SPFrame.NEGRO], new Point(0, 0), "Boli Negro"),
-    Toolkit.getDefaultToolkit().createCustomCursor(bolis[SPFrame.ROJO], new Point(0, 0), "Boli Rojo"),
-    Toolkit.getDefaultToolkit().createCustomCursor(bolis[SPFrame.VERDE], new Point(0, 0), "Boli Verde")
+  private final static Cursor[][] CURSORS = {
+  	{
+  		Toolkit.getDefaultToolkit().createCustomCursor(PEN_CURSORS[SPFrame.AZUL][0], new Point(0, 0), "Boli Azul"),
+  		Toolkit.getDefaultToolkit().createCustomCursor(PEN_CURSORS[SPFrame.AZUL][1], new Point(0, 0), "Boli Azul Sel"),
+  	},
+    {
+    	Toolkit.getDefaultToolkit().createCustomCursor(PEN_CURSORS[SPFrame.NEGRO][0], new Point(0, 0), "Boli Negro"),
+    	Toolkit.getDefaultToolkit().createCustomCursor(PEN_CURSORS[SPFrame.NEGRO][1], new Point(0, 0), "Boli Negro Sel"),
+    },
+    {
+    	Toolkit.getDefaultToolkit().createCustomCursor(PEN_CURSORS[SPFrame.ROJO][0], new Point(0, 0), "Boli Rojo"),
+    	Toolkit.getDefaultToolkit().createCustomCursor(PEN_CURSORS[SPFrame.ROJO][1], new Point(0, 0), "Boli Rojo Sel"),
+    },
+    {
+    	Toolkit.getDefaultToolkit().createCustomCursor(PEN_CURSORS[SPFrame.VERDE][0], new Point(0, 0), "Boli Verde"),
+    	Toolkit.getDefaultToolkit().createCustomCursor(PEN_CURSORS[SPFrame.VERDE][1], new Point(0, 0), "Boli Verde Sel")
+    }
   };
   
   private int boli;
@@ -85,17 +118,40 @@ public class TableroPanel extends JPanel implements Board {
   private Timer timer;
   private String marcador;
   private SuperPalitos sp;
+  private JButton newGameButton;
+  private JLabel msgLabel;
+  private GameState gameState;
   
   /**
    * Crea un TableroPanel
    */
-  public TableroPanel(SuperPalitos sp) {
+  public TableroPanel(final SuperPalitos sp) {
   	this.sp = sp;
     lineas = new LinkedList<Line>();
     state = STATE_OFF;
     boli = -1;
     
     setPreferredSize(new Dimension(FONDO.getWidth(null), FONDO.getHeight(null)));
+    
+    setLayout(new BorderLayout());
+    
+    msgLabel = new JLabel();
+  	msgLabel.setForeground(SPFrame.COLORS[SPFrame.AZUL]);
+    msgLabel.setFont(getFont().deriveFont(Font.BOLD, 20));
+    JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 10));
+    panel.add(msgLabel);
+    add(panel, BorderLayout.NORTH);
+    
+    newGameButton = new JButton("Jugar de nuevo");
+    newGameButton.setVisible(false);
+    newGameButton.addActionListener(new ActionListener() {
+			@Override	public void actionPerformed(ActionEvent arg0) {
+				sp.repetirCmd(0); // TODO
+			}
+		});
+    panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 10));
+    panel.add(newGameButton);
+    add(panel, BorderLayout.SOUTH);
     
     addMouseListener(new MouseAdapter() {
     	@Override
@@ -128,19 +184,29 @@ public class TableroPanel extends JPanel implements Board {
   
   // Metodos de Tablero -------------------------------------------------------
   @Override
-  public void started() {
+  public void started(GameState gameState) {
+  	this.gameState = gameState;
     clear();
-    setCursor(cursores[color2index(sp.getJ1Color())]);
   }
   
   @Override
-  public void finished() {
+  public void finished(Player winner) {
     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    if(winner == null) {
+    	msgLabel.setText("Fin de la partida");
+    } else if(j == winner) {
+    	msgLabel.setText("¡Has ganado!");
+    } else {
+    	msgLabel.setText("Has perdido :(");
+    }
+    newGameButton.setVisible(true);
+    repaint();
   }
   
   
   @Override
-	public void move(Player player, Move move) {
+	public void move(Player player, Move move, GameState state) {
+  	gameState = state;
   	Line line = null;
   	
   	if(move instanceof XyMove) {
@@ -160,6 +226,8 @@ public class TableroPanel extends JPanel implements Board {
     	clip.loop();
     	timer.schedule(new StopSound(), (Math.abs(line.getX1() - line.getX2()) / ANCHO) * QUAD_DELAY);
     }
+    
+    setCursor(player != j ? CURSORS[color2index(sp.getJ1Color())][0] : new Cursor(Cursor.DEFAULT_CURSOR));
 	}
 
   public Player createPlayer(String name, Color c) {
@@ -176,13 +244,13 @@ public class TableroPanel extends JPanel implements Board {
     if(state == STATE_READY) {
       j.x1 = e.getX();
       j.y1 = e.getY();
-      if((j.h1 = cursorIn(j.x1, j.y1)) != -1 && j.s.getGap(j.h1)) {
+      if((j.h1 = cursorIn(j.x1, j.y1)) != -1 && gameState.getGap(j.h1)) {
         state = STATE_1ST_CLICK;
       }
     } else if(state == STATE_1ST_CLICK) {
       j.x2 = e.getX();
       j.y2 = e.getY();
-      if((j.h2 = cursorIn(j.x2, j.y2)) != -1 && j.s.getGap(j.h2)) {
+      if((j.h2 = cursorIn(j.x2, j.y2)) != -1 && gameState.getGap(j.h2)) {
         if(j.h1 != j.h2 && huecos[j.h1][1] == huecos[j.h2][1] && j.s.isValid(new Move(j.h1, j.h2, Move.HUECO))) {
           state = STATE_2ND_CLICK;
           //despertar();
@@ -208,6 +276,15 @@ public class TableroPanel extends JPanel implements Board {
       lineas.addLast(l);
       repaint();
     }
+    if(state == STATE_READY) {
+    	int gap = cursorIn(e.getX(), e.getY());
+    	int cursor = gap != -1 && gameState.getGap(gap) ? 1 : 0;
+    	setCursor(CURSORS[color2index(sp.getJ1Color())][cursor]);
+    } else if(state == STATE_1ST_CLICK) {
+    	int gap = cursorIn(e.getX(), e.getY());
+    	int cursor = gap != -1 && gameState.isValid(new Move(j.h1, gap, Move.HUECO)) ? 1 : 0;
+    	setCursor(CURSORS[color2index(sp.getJ1Color())][cursor]);
+    }
   }
   
   private int cursorIn(int x, int y) {
@@ -220,25 +297,31 @@ public class TableroPanel extends JPanel implements Board {
   
   @Override
   public void paint(Graphics g) {
+  	super.paint(g);
+  	
     //Graphics2D g2d = (Graphics2D)g;
     Graphics g2d = g;
     g2d.drawImage(FONDO, 0, 0, null);
     
+    ArrayList<Line> toRemove = new ArrayList<Line>(lineas.size());
     for(Line l: lineas) {
       g2d.setColor(l.getColor());
       g2d.drawLine(l.getX1(), l.getY1(), l.getX2(), l.getY2());
       
-      if(boli != -1) {
-      	g2d.drawImage(bolis[boli], boliX, boliY, null);
-      }
-      
-      if(marcador != null) {
-      	g2d.setColor(SPFrame.COLORS[SPFrame.AZUL]);
-      	g2d.drawString(marcador, SPFrame.WIDTH / 2, 10);
-      }
       if(l.isVolatil()) {
-      	lineas.remove(l);
+      	toRemove.add(l);
       }
+    }
+    lineas.removeAll(toRemove);
+    
+    if(boli != -1) {
+    	g2d.drawImage(PEN_CURSORS[boli][0], boliX, boliY, null);
+    }
+    
+    if(marcador != null) {
+    	g2d.setColor(SPFrame.COLORS[SPFrame.AZUL]);
+    	g2d.setFont(getFont());
+    	g2d.drawString(marcador, SPFrame.WIDTH / 2, 10);
     }
   }
 
@@ -276,6 +359,8 @@ public class TableroPanel extends JPanel implements Board {
    */
   public void clear() {
     lineas.clear();
+   	msgLabel.setText("");
+    newGameButton.setVisible(false);
     repaint();
   }
   

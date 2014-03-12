@@ -18,9 +18,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.angelcalvo.superpalitos.gui.SPFrame;
 
 /**
@@ -28,8 +25,6 @@ import com.angelcalvo.superpalitos.gui.SPFrame;
  * @author angel
  */
 public class SPConf {
-  private static final Logger LOG = LoggerFactory.getLogger(SPConf.class);
-  
   private static final String J1_NAME_PROP = "player.j1.name";
   private static final String J1_COLOR_PROP = "player.j1.color";
   private static final String J2_NAME_PROP = "player.j2.name";
@@ -69,7 +64,7 @@ public class SPConf {
         fis = new FileInputStream(file);
         props.load(fis);
       } catch (IOException ex) {
-        LOG.error("Error al abrir el fichero de propiedades", ex);
+      	ex.printStackTrace();
       } finally {
         try {
           if(fis != null) { fis.close(); }

@@ -54,7 +54,7 @@ public class Game {
     Player player = null;
     Move move = null;
     
-    board.started();
+    board.started(state);
     
     while(!isFinished()) {
     	// Turn
@@ -72,15 +72,17 @@ public class Game {
       
       // applays move
       state.move(move);
-      board.move(player, move);
+      // notifies board
+      board.move(player, move, state);
       
       // Changes move
       turn = !turn;
     }
     Player per = (turn) ? p1 : p2;
+    Player winner = (turn) ? p2 : p1;
     per.update(move, state);
     
-    board.finished();
+    board.finished(winner);
     
     fireFinPartidaEvent(player);
   }
@@ -97,7 +99,7 @@ public class Game {
    * Finaliza la partida bruscamente.
    */
   public void finish() {
-    board.finished();
+    board.finished(null);
   }
   
   /**

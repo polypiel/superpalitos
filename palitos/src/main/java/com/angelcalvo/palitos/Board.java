@@ -19,12 +19,12 @@ public interface Board {
   /**
    * Indica al tablero que la partida se ha iniciado
    */
-  void started();
+  void started(GameState gameState);
   
   /**
    * Indica al tablero que la partidad ha terminado
    */
-  void finished();
+  void finished(Player winner);
   
 
   /**
@@ -32,5 +32,5 @@ public interface Board {
    * @param player
    * @param move
    */
-  void move(Player player, Move move);
+  void move(Player player, Move move, GameState gameState);
 }

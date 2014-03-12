@@ -23,7 +23,7 @@ public class Move {
   protected static final int H2PD[] = {0, -1, 1, 2, -1, 3, 4, 5, -1, 6, 7, 8, 9, -1, 10, 11, 12, 13, 14, -1};
   /** Transformacion de hueco al palito de la izquierda */
   protected static final int H2PI[] = {-1, 0, -1, 1, 2, -1, 3, 4, 5, -1, 6, 7, 8, 9, -1, 10, 11, 12, 13, 14};
-  
+    
 	/** Indica que la jugada se crea indicando los numeros de los palitos */
   public static final int PALITO = 0;
 	/** Indica que la jugada se crea indicando los numeros de los huecos */
@@ -105,4 +105,17 @@ public class Move {
   public int getLon() {
     return lon;
   }
+
+	@Override
+	public String toString() {
+		return "Move [pInicio=" + pInicio + ", pFin=" + pFin + ", hInicio=" + hInicio + ", hFin="
+				+ hFin + "]";
+	}
+
+	public boolean isValid() {
+
+		return false;
+	}
+  
+  
 }

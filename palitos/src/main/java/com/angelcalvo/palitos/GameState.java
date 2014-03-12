@@ -1,7 +1,7 @@
 package com.angelcalvo.palitos;
 
 public class GameState {
-	private static final int STICKS_ROWS[] = { 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4 };
+  private static final int STICKS_ROWS[] = { 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4 };
 	//private static final int GAPS_ROWS[] = { 0, 0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4 };
 	/** Indica si el hueco es exterior (true) o interior (false) */
 	private static final boolean GAPS_BOUNDS[] = { true, true, true, false, true, true, false, false,
@@ -66,15 +66,6 @@ public class GameState {
       crossGap(j.getHFin());
     }
   }
-  /**
-   * Obtiene la variable y del palito, que representa la fila. La fila superior
-   * es la numero 0 y la inferior es la numero 4.
-   * @param indice El palito del que se desea obtener la fila
-   * @return La fila del palito
-   */
-  private int getStickRow(int indice) {
-    return STICKS_ROWS[indice];
-  }
   
   /**
    * Number of uncrossed sticks
@@ -101,7 +92,16 @@ public class GameState {
   	if(j == null) {
   		return false;
   	}
-    if(getStickRow(j.getPInicio()) != getStickRow(j.getPFin())) {
+		if(j.getPFin() < 0 || j.getPInicio() < 0 || j.getHFin() < 0 || j.getHInicio() < 0) {
+			return false;
+		}
+		if(j.getPFin() >= NSTICKS || j.getPInicio() >= NSTICKS || j.getHFin() >= NGAPS || j.getHInicio() >= NGAPS) {
+			return false;
+		}
+		if(j.getLon() == 0) {
+			return false;
+		}
+    if(STICKS_ROWS[j.getPInicio()] != STICKS_ROWS[j.getPFin()]) {
       return false;
     }
     for(int i = 0; i < j.getLon(); i++) {
@@ -109,6 +109,7 @@ public class GameState {
         return false;
       }
     }
+    // it wouldn't left sticks left
     if(alive() - j.getLon() == 0) {
       return false;
     }
