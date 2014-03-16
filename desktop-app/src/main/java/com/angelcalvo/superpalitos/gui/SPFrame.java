@@ -43,6 +43,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.angelcalvo.superpalitos.ConfManager;
 import com.angelcalvo.superpalitos.ResourceManager;
 import com.angelcalvo.superpalitos.SuperPalitos;
 import com.angelcalvo.superpalitos.net.ChatComponent;
@@ -93,7 +94,7 @@ public class SPFrame extends JFrame {
   private ChatDialog chatDialog;
   private SuperPalitos sp;
   private ResourceManager resourceManager;
-
+  private ConfManager confManager;
   
   /**
    * Crea la ventana principal
@@ -101,8 +102,9 @@ public class SPFrame extends JFrame {
   public SPFrame() {
     super("Super Palitos");
   }
-  
-  @SuppressWarnings("unused")
+
+
+	@SuppressWarnings("unused")
 	private void init() {
     setResizable(false);
     setIconImage(((ImageIcon)resourceManager.getResource(ResourceManager.II_SP)).getImage());
@@ -158,7 +160,7 @@ public class SPFrame extends JFrame {
    * @return
    */
   public TableroPanel createTablero(String title, Integer tab) {
-    TableroPanel spp = new TableroPanel(sp);
+    TableroPanel spp = new TableroPanel(sp, confManager);
     if(tab == null) {
     	addTab(spp, MATCH_TAB, title, (ImageIcon)resourceManager.getResource(ResourceManager.II_SP));
     } else {
@@ -550,7 +552,13 @@ public class SPFrame extends JFrame {
     }
     jMHerramientas.add(lafMenu);
     
-    JCheckBoxMenuItem soundMenuItem = new JCheckBoxMenuItem("Sonido");
+    final JCheckBoxMenuItem soundMenuItem = new JCheckBoxMenuItem("Sonido");
+    soundMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				confManager.save(ConfManager.SOUND_OPT, soundMenuItem.isSelected());
+			}
+		});
     soundMenuItem.setSelected(true);
     jMHerramientas.add(soundMenuItem);
     menu.add(jMHerramientas);
@@ -644,5 +652,11 @@ public class SPFrame extends JFrame {
 		this.resourceManager = resourceManager;
 	}
 	
-	
+  
+  public ConfManager getConfManager() {
+		return confManager;
+	}
+	public void setConfManager(ConfManager confManager) {
+		this.confManager = confManager;
+	}
 }

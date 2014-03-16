@@ -38,6 +38,7 @@ import com.angelcalvo.palitos.Board;
 import com.angelcalvo.palitos.GameState;
 import com.angelcalvo.palitos.Move;
 import com.angelcalvo.palitos.Player;
+import com.angelcalvo.superpalitos.ConfManager;
 import com.angelcalvo.superpalitos.SuperPalitos;
 import com.angelcalvo.superpalitos.XyMove;
 
@@ -117,16 +118,20 @@ public class TableroPanel extends JPanel implements Board {
   private AudioClip clip;
   private Timer timer;
   private String marcador;
-  private SuperPalitos sp;
   private JButton newGameButton;
   private JLabel msgLabel;
   private GameState gameState;
   
+  private SuperPalitos sp;
+  private ConfManager confManager;
+  
   /**
    * Crea un TableroPanel
    */
-  public TableroPanel(final SuperPalitos sp) {
+  public TableroPanel(final SuperPalitos sp, ConfManager confManager) {
   	this.sp = sp;
+  	this.confManager = confManager;
+  	
     lineas = new LinkedList<Line>();
     state = STATE_OFF;
     boli = -1;
@@ -216,7 +221,7 @@ public class TableroPanel extends JPanel implements Board {
   	
     line.setColor(player.getColor());
     drawLine(line, player != j);
-    if(sp.isSound()) {
+    if(confManager.getBoolean(ConfManager.SOUND_OPT)) {
     	clip.loop();
     	timer.schedule(new StopSound(), (Math.abs(line.getX1() - line.getX2()) / ANCHO) * QUAD_DELAY);
     }

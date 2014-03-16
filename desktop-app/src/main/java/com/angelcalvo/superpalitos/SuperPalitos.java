@@ -64,34 +64,27 @@ public class SuperPalitos {
   
   private LinkedList<PartidaManager> partidas; // De PartidaManager
   private SPFrame frame;
-
+  private ConfManager confManager;
+  
   /* Opciones */
   private String j1Name, j2Name;
   private Color j1Color, j2Color;
-  private boolean sound;
   
   private SuperPalitos() {
     partidas = new LinkedList<PartidaManager>();
     pnServer = new PNServer(this);
     
+    // TODO conf manager
     j1Name = DEFAULT_J1_NAME;
     j2Name = DEFAULT_J2_NAME;
     j1Color = BLUE_COLOR;
     j2Color = RED_COLOR;
-    sound = true;
+
   }
   
-  /**
-   * Metodo que devuelve la instancia de la clase.
-   * @return La &uacute;nica instancia de Main.
-   */
-  /*
-  public static SuperPalitos getInstance() {
-    if(instance == null) {
-      instance = new SuperPalitos();
-    }
-    return instance;
-  }*/
+  public void init() {
+    confManager.save(ConfManager.SOUND_OPT, true);
+  }
   
   /**
    * LLama a jugar con el modo de partida por defecto.
@@ -384,21 +377,6 @@ public class SuperPalitos {
 	public void setJ2Color(Color j2Color) {
 		this.j2Color = j2Color;
 	}
-	
-	/**
-	 * @return Si el sonido esta activado
-	 */
-	public boolean isSound() {
-		return sound;
-	}
-	
-	/**
-	 * Establece si esta activado el sonido
-	 * @param sound
-	 */
-	public void setSound(boolean sound) {
-		this.sound = sound;
-	}
 
 	public SPFrame getFrame() {
 		return frame;
@@ -406,4 +384,13 @@ public class SuperPalitos {
 	public void setFrame(SPFrame frame) {
 		this.frame = frame;
 	}
+
+	public ConfManager getConfManager() {
+		return confManager;
+	}
+	public void setConfManager(ConfManager confManager) {
+		this.confManager = confManager;
+	}
+	
+	
 }
