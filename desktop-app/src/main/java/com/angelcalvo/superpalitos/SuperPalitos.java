@@ -207,14 +207,6 @@ public class SuperPalitos {
   	PartidaManager pm = getPartidaManager(id);
   	partidas.remove(pm);
   }
-  
-  /**
-   * Cambia el L&f
-   */
-  public void changeLaF() {
-    frame.changeLaF();
-  }
-  
   // PalitosNet ---------------------------------------------------------------
   
   /**

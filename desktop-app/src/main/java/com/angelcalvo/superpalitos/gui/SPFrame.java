@@ -22,8 +22,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,10 +34,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.angelcalvo.superpalitos.ResourceManager;
 import com.angelcalvo.superpalitos.SuperPalitos;
@@ -67,29 +73,27 @@ public class SPFrame extends JFrame {
   // Tab ids
   private static final String WELCOME_TAB = "welcome";
   private static final String MATCH_TAB = "match";
-  private static final String PREFERENCES_TAB = "preferences";
+  //private static final String PREFERENCES_TAB = "preferences";
   private static final String HELP_TAB = "help";
   private static final String ABOUT_TAB = "about";
   private static final String LICENSE_TAB = "license";
   
   private JTabbedPane tabbedPane;
-  private JMenuBar menu;
-  private JMenu jMArchivo, jMPalitosNet, jMHerramientas, jMAyuda;
-  private JMenuItem jMINuevaPart, jMIPartRapida, jMICerrarPes, jMISalir,
-  		jMIConectar, jMINuevo, jMIShowChat, jMIOpciones, jMIAyuda, jMILicencia, jMIAcerca;
+  private JMenuItem jMICerrarPes, jMIConectar, jMINuevo, jMIShowChat;
   private JTextField status;
   private ConnectedLabel cstatus;
-  private PreferencesPane dPreferencias;
+  //private PreferencesPane dPreferencias;
   private PsHTMLPane pAyuda, pLicencia;
   private AboutPane pAcerca;
   
-  private boolean isPreferencesShowed, isHelpShowed, isLicenseShowed, isAboutShowed;
+  private boolean isHelpShowed, isLicenseShowed, isAboutShowed;
   private JButton bCerrarTab;
   private int ntabs;
   
   private ChatDialog chatDialog;
   private SuperPalitos sp;
   private ResourceManager resourceManager;
+
   
   /**
    * Crea la ventana principal
@@ -213,8 +217,10 @@ public class SPFrame extends JFrame {
       isHelpShowed = false;
     } else if(name.equals(LICENSE_TAB)) {
       isLicenseShowed = false;
+      /*
     } else if(name.equals(PREFERENCES_TAB)) {
       isPreferencesShowed = false;
+      */
     } else if(name.equals(MATCH_TAB)) {
     	// TODO
       sp.cerrarPartida(0);
@@ -294,10 +300,6 @@ public class SPFrame extends JFrame {
   
   private void showChat_ActionPerformed(ActionEvent e) {
   	showChat(false);
-  }
-  
-  private void prefs_ActionPerformed(ActionEvent e) {
-    showPreferences();
   }
   
   private void ayuda_ActionPerformed(ActionEvent e) {
@@ -388,7 +390,7 @@ public class SPFrame extends JFrame {
   	}
   	chatDialog.setVisible(show?true:!chatDialog.isVisible());
   }
-  
+  /*
   public void showPreferences() {
     if(!isPreferencesShowed) {
       if(dPreferencias == null) {
@@ -397,7 +399,7 @@ public class SPFrame extends JFrame {
       addTab(dPreferencias, PREFERENCES_TAB, "Preferencias", (ImageIcon)resourceManager.getResource(ResourceManager.II_OPTIONS));
       isPreferencesShowed = true;
     }
-  }
+  }*/
   
   public void showHelp() {
     if(!isHelpShowed) {
@@ -431,11 +433,11 @@ public class SPFrame extends JFrame {
  
   private void initMenu() {
     /* Menu */
-    menu = new JMenuBar();
+    JMenuBar menu = new JMenuBar();
     
     // Menu Archivo
-    jMArchivo = new JMenu("Archivo");
-    jMINuevaPart = new JMenuItem("Nueva_partida...");
+    JMenu jMArchivo = new JMenu("Archivo");
+    JMenuItem jMINuevaPart = new JMenuItem("Nueva_partida...");
     jMINuevaPart.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_NEW));
     jMINuevaPart.setToolTipText("Crea_una_nueva_partida");
     jMINuevaPart.addActionListener(new ActionListener() {
@@ -447,7 +449,7 @@ public class SPFrame extends JFrame {
     jMINuevaPart.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK));
     jMArchivo.add(jMINuevaPart);
     
-    jMIPartRapida = new JMenuItem("Partida_rapida");
+    JMenuItem jMIPartRapida = new JMenuItem("Partida_rapida");
     jMIPartRapida.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_NEW));
     jMIPartRapida.setToolTipText("Empieza_una_partida_inmediatamente");
     jMIPartRapida.addActionListener(new ActionListener() {
@@ -473,7 +475,7 @@ public class SPFrame extends JFrame {
     jMArchivo.add(jMICerrarPes);
     
     jMArchivo.addSeparator();
-    jMISalir = new JMenuItem("Salir");
+    JMenuItem jMISalir = new JMenuItem("Salir");
     jMISalir.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_EXIT));
     jMISalir.setToolTipText("Termina_el_programa");
     jMISalir.addActionListener(new ActionListener() {
@@ -485,7 +487,7 @@ public class SPFrame extends JFrame {
     menu.add(jMArchivo);
     
     // Menu PalitosNet
-    jMPalitosNet = new JMenu("PalitosNet");
+    JMenu jMPalitosNet = new JMenu("PalitosNet");
     jMIConectar = new JMenuItem("Iniciar");
     jMIConectar.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_PNSERVER));
     jMIConectar.addActionListener(new ActionListener() {
@@ -519,23 +521,43 @@ public class SPFrame extends JFrame {
     jMPalitosNet.add(jMIShowChat);
     //
     menu.add(jMPalitosNet);
-    //
-    jMHerramientas = new JMenu("Opciones");
-    jMIOpciones = new JMenuItem("Preferencias...");
-    jMIOpciones.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_OPTIONS));
-    jMIOpciones.setToolTipText("Muestra_el_menú_opciones");
-    jMIOpciones.addActionListener(new ActionListener() {
-    	@Override
-      public void actionPerformed(ActionEvent e) {
-        prefs_ActionPerformed(e);
-      }
-    });
-    jMHerramientas.add(jMIOpciones);
+    
+    // Menu Opciones
+    JMenu jMHerramientas = new JMenu("Opciones");
+    JMenu langMenu = new JMenu("Idioma");
+    ButtonGroup group = new ButtonGroup();
+    JRadioButtonMenuItem spaMenuItem = new JRadioButtonMenuItem("Español");
+    spaMenuItem.setSelected(true);
+    JRadioButtonMenuItem engMenuItem = new JRadioButtonMenuItem("Ingles");
+    group.add(spaMenuItem);
+    group.add(engMenuItem);
+    langMenu.add(spaMenuItem);
+    langMenu.add(engMenuItem);
+    jMHerramientas.add(langMenu);
+    
+    JMenu lafMenu = new JMenu("Apariencia");
+    ButtonGroup group2 = new ButtonGroup();
+    for(final LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
+    	JRadioButtonMenuItem lafMenuItem = new JRadioButtonMenuItem(laf.getName());
+    	lafMenuItem.setSelected(laf.getName().equals(UIManager.getLookAndFeel().getName()));
+    	group2.add(lafMenuItem);
+    	lafMenuItem.addActionListener(new ActionListener() {
+    		@Override	public void actionPerformed(ActionEvent e) {
+    			lafChanged(laf.getClassName());
+				}
+			});
+    	lafMenu.add(lafMenuItem);
+    }
+    jMHerramientas.add(lafMenu);
+    
+    JCheckBoxMenuItem soundMenuItem = new JCheckBoxMenuItem("Sonido");
+    soundMenuItem.setSelected(true);
+    jMHerramientas.add(soundMenuItem);
     menu.add(jMHerramientas);
     
     // Menu Ayuda
-    jMAyuda = new JMenu("Ayuda");
-    jMIAyuda = new JMenuItem("Temas_de_Ayuda");
+    JMenu jMAyuda = new JMenu("Ayuda");
+    JMenuItem jMIAyuda = new JMenuItem("Temas_de_Ayuda");
     jMIAyuda.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_HELP));
     jMIAyuda.setToolTipText("Muestra_la_ayuda");
     jMIAyuda.addActionListener(new ActionListener() {
@@ -547,7 +569,7 @@ public class SPFrame extends JFrame {
     jMIAyuda.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
     jMAyuda.add(jMIAyuda);
     //licencia
-    jMILicencia = new JMenuItem("Licencia");
+    JMenuItem jMILicencia = new JMenuItem("Licencia");
     jMILicencia.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_LICENSE));
     jMILicencia.setToolTipText("Muestra_la_licencia_de_SuperPalitos");
     jMILicencia.addActionListener(new ActionListener() {
@@ -558,7 +580,7 @@ public class SPFrame extends JFrame {
     });
     jMAyuda.add(jMILicencia);
     //acerca
-    jMIAcerca = new JMenuItem("Acerca_de...");
+    JMenuItem jMIAcerca = new JMenuItem("Acerca_de...");
     jMIAcerca.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_ABOUT));
     jMIAcerca.setToolTipText("Muestra_información_sobre_SuperPalitos");
     jMIAcerca.addActionListener(new ActionListener() {
@@ -587,11 +609,26 @@ public class SPFrame extends JFrame {
     setJMenuBar(menu);
   }
   
-  public void changeLaF() {
-    SwingUtilities.updateComponentTreeUI(this);
-    bCerrarTab.setBorder(null);
-    pack();
-  }
+  protected void lafChanged(String className) {
+  	try {
+			UIManager.setLookAndFeel(className);
+	    SwingUtilities.updateComponentTreeUI(this);
+	    bCerrarTab.setBorder(null);
+	    pack();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public SuperPalitos getSp() {
 		return sp;

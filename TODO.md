@@ -18,7 +18,7 @@ V 3.1
  - Write README.md (done)
  - Get rid of beansbinding dependency (done)
  - Less dialogs
- - Resource manager
+ - Resource manager (done)
   
 V 3.2
 -----
