@@ -126,7 +126,7 @@ public class PNClient extends Thread implements Player, SPChat {
 				if(state == REQUEST_CONNECTION) {
 					sp.errConn("El_extremo_ha_rechazado_la_partida");
 			  } else {
-					sp.desconectado(this);
+					// TODOsp.desconectado();
 				}
 				state = CLOSE;
 				

@@ -10,6 +10,7 @@
 package com.angelcalvo.superpalitos;
 
 import java.awt.Color;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import javax.swing.SwingUtilities;
@@ -17,6 +18,7 @@ import javax.swing.SwingUtilities;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.angelcalvo.palitos.Board;
 import com.angelcalvo.palitos.Player;
 import com.angelcalvo.palitos.PlayerAI;
 import com.angelcalvo.superpalitos.gui.SPFrame;
@@ -62,7 +64,7 @@ public class SuperPalitos {
   private boolean serverON;
   private PNServer pnServer;
   
-  private LinkedList<PartidaManager> partidas; // De PartidaManager
+  private Collection<PartidaManager> partidas;
   private SPFrame frame;
   private ConfManager confManager;
   
@@ -79,7 +81,6 @@ public class SuperPalitos {
     j2Name = DEFAULT_J2_NAME;
     j1Color = BLUE_COLOR;
     j2Color = RED_COLOR;
-
   }
   
   public void init() {
@@ -93,7 +94,6 @@ public class SuperPalitos {
   public void nuevaPartida() {
     nuevaPartida(DEFAULT_TIPO_JUEGO, null, true, null);
   }
-  
   /**
    * Empieza una partida.
    * @param tipo Tipo de partida
@@ -119,17 +119,10 @@ public class SuperPalitos {
     	throw new IllegalArgumentException("Game type is not valid: " + tipo);
     }
     
-//    PartidaManager pm = new PartidaManager(j1, j2, t, first);
-    //pm.addPartidaListener(this);
-//    partidas.addLast(pm);
-    PartidaManager pm = createPM(j1, j2, t, first);
-    pm.play();
-  }
-  
-  private PartidaManager createPM(Player j1, Player j2, TableroPanel t, boolean first) {
+    // creates the partida manager
     PartidaManager pm = new PartidaManager(j1, j2, t, first);
-    partidas.addLast(pm);
-    return pm;
+    partidas.add(pm);
+    pm.play();
   }
   
   /**
@@ -152,52 +145,32 @@ public class SuperPalitos {
 	}
   
   private void startGui() {
-      frame.setVisible(true);
+     frame.setVisible(true);
   }
 
+  private PartidaManager getPartidaManager(Board board) {
+  	for(PartidaManager pm: partidas) {
+  		if(pm.getBoard().equals(board)) {
+  			return pm;
+  		}
+  	}
+  	return null;
+  }
   /**
    * Se ha pulsado el boton repetir
    * @param id El identficador del tablero
    */
-  public void repetirCmd(long id) {
-  	if(id != -1) {
-  		getPartidaManager(id).replay();
-  	}
+  public void repetirCmd(TableroPanel panel) {
+  	getPartidaManager(panel).replay();
   }
-  
-  private PartidaManager getPartidaManager(long id) {
-  	for(PartidaManager p: partidas) {
-      if(p.getId() == id) {
-        return p;
-      }
-    }
-    return null;
-  }
-  
-  private PartidaManager getPartidaManager(Player j) {
-  	for(PartidaManager p: partidas) {
-      if(p.estaJugandgo(j)) {
-        return p;
-      }
-    }
-    return null;
-  }
-  
-  /**
-   * Utilizado por PartidaManager
-   * @param p El gestor de partidas
-   */
-  public void removePartida(PartidaManager p) {
-  	frame.destroyTablero(p.getId());
-  	partidas.remove(p);
-  }
-  
+
   /**
    * Utilizado por SPFrame
    * @param id El identificador del tablero
    */
-  public void cerrarPartida(long id) {
-  	PartidaManager pm = getPartidaManager(id);
+  public void cerrarPartida(TableroPanel panel) {
+  	PartidaManager pm = getPartidaManager(panel);
+  	pm.finish(null);
   	partidas.remove(pm);
   }
   // PalitosNet ---------------------------------------------------------------
@@ -264,9 +237,8 @@ public class SuperPalitos {
   /**
    * Metodo para indicar que el extremo (jugador contrario) se ha desconectado.
    */
-  public void desconectado(Player j) {
-    PartidaManager pm = getPartidaManager(j);
-  	frame.destroyTablero(pm.getId());
+  public void desconectado(TableroPanel panel) {
+    PartidaManager pm = getPartidaManager(panel);
   	partidas.remove(pm);
     frame.showAbortPartidaMsg();
     //TODO cerrar tab del chat

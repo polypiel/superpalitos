@@ -19,6 +19,7 @@ V 3.1
  - Get rid of beansbinding dependency (done)
  - Less dialogs
  - Resource manager (done)
+ - Fix translation
   
 V 3.2
 -----

@@ -51,9 +51,9 @@ import com.angelcalvo.superpalitos.net.SPChat;
 
 
 /**
- * Ventana principal de la aplicaci&oacute;n
+ * Main window
  * 
- * @author &Aacute;ngel Luis Calvo Ortega
+ * @author Angel Calvo
  */
 public class SPFrame extends JFrame {
   private static final long serialVersionUID = 3834308445011456822L;
@@ -74,20 +74,18 @@ public class SPFrame extends JFrame {
   // Tab ids
   private static final String WELCOME_TAB = "welcome";
   private static final String MATCH_TAB = "match";
-  //private static final String PREFERENCES_TAB = "preferences";
   private static final String HELP_TAB = "help";
   private static final String ABOUT_TAB = "about";
-  private static final String LICENSE_TAB = "license";
   
   private JTabbedPane tabbedPane;
   private JMenuItem jMICerrarPes, jMIConectar, jMINuevo, jMIShowChat;
   private JTextField status;
   private ConnectedLabel cstatus;
   //private PreferencesPane dPreferencias;
-  private PsHTMLPane pAyuda, pLicencia;
+  private PsHTMLPane pAyuda;
   private AboutPane pAcerca;
   
-  private boolean isHelpShowed, isLicenseShowed, isAboutShowed;
+  private boolean isHelpShowed, isAboutShowed;
   private JButton bCerrarTab;
   private int ntabs;
   
@@ -159,6 +157,7 @@ public class SPFrame extends JFrame {
    * v 3.0
    * @return
    */
+   
   public TableroPanel createTablero(String title, Integer tab) {
     TableroPanel spp = new TableroPanel(sp, confManager);
     if(tab == null) {
@@ -168,34 +167,6 @@ public class SPFrame extends JFrame {
     	tabbedPane.setTitleAt(tab, title);
     }
     return spp;
-  }
-  
-  /**
-   * v 3.0
-   * @param id
-   */
-  public void destroyTablero(long id) {
-  	Component[] comps = tabbedPane.getComponents();
-  	Component tab = null;
-  	/*
-  	for(int i = 0; i < comps.length; i++) {
-  		if(comps[i] instanceof TableroPanel) {
-  			TableroPanel t = (TableroPanel)comps[i];
-  			if(t.getId() == id) {
-  				tab = t;
-  				break;
-  			}
-  		}
-  	}
-  	*/
-  	// TODO
-  	if(tab != null) {
-	  	tabbedPane.remove(tab);
-	  	
-	  	ntabs--;
-	    bCerrarTab.setEnabled(ntabs > 0);
-	    jMICerrarPes.setEnabled(ntabs > 0);
-  	}
   }
   
   private int addTab(JComponent comp, String name, String title, ImageIcon icono) {
@@ -213,19 +184,15 @@ public class SPFrame extends JFrame {
   }
   private void closeTab(int nTab) {
     String name = tabbedPane.getSelectedComponent().getName();
-    if(name.equals(ABOUT_TAB)) {
+    if(ABOUT_TAB.equals(name)) {
       isAboutShowed = false;
-    } else if(name.equals(HELP_TAB)) {
+    } else if(HELP_TAB.equals(name)) {
       isHelpShowed = false;
-    } else if(name.equals(LICENSE_TAB)) {
-      isLicenseShowed = false;
-      /*
-    } else if(name.equals(PREFERENCES_TAB)) {
-      isPreferencesShowed = false;
-      */
-    } else if(name.equals(MATCH_TAB)) {
-    	// TODO
-      sp.cerrarPartida(0);
+    } else if(MATCH_TAB.equals(name)) {
+    	Component tab = tabbedPane.getSelectedComponent();
+    	if(tab instanceof TableroPanel) {
+    		sp.cerrarPartida((TableroPanel) tab);
+    	}
     }
     tabbedPane.removeTabAt(nTab);
     
@@ -311,11 +278,7 @@ public class SPFrame extends JFrame {
   private void acerca_ActionPerformed(ActionEvent e) {
     showAbout();
   }
-  
-  private void licencia_ActionPerformed(ActionEvent e) {
-    showLicense();
-  }
-  
+
   private void cerrarTab_ActionPerformed(ActionEvent e) {
   	closeTab(tabbedPane.getSelectedIndex());
   }
@@ -352,7 +315,7 @@ public class SPFrame extends JFrame {
     //ConectarDialog.fin();
   }
   
-  /**
+  /*
    * Indica que se ha terminado la conexi&oacute;n.
    */
   /*public void desconectar() {
@@ -373,7 +336,6 @@ public class SPFrame extends JFrame {
     status.setText(s);
   }
   
-  
   public void setServer(boolean on) {
     jMIConectar.setText(on?"Apagar":"Iniciar");
     jMINuevo.setEnabled(on);
@@ -392,18 +354,8 @@ public class SPFrame extends JFrame {
   	}
   	chatDialog.setVisible(show?true:!chatDialog.isVisible());
   }
-  /*
-  public void showPreferences() {
-    if(!isPreferencesShowed) {
-      if(dPreferencias == null) {
-        dPreferencias = new PreferencesPane(sp, (ImageIcon)resourceManager.getResource(ResourceManager.II_ACCEPT));
-      }
-      addTab(dPreferencias, PREFERENCES_TAB, "Preferencias", (ImageIcon)resourceManager.getResource(ResourceManager.II_OPTIONS));
-      isPreferencesShowed = true;
-    }
-  }*/
   
-  public void showHelp() {
+  protected void showHelp() {
     if(!isHelpShowed) {
       if(pAyuda == null) {
         pAyuda = new PsHTMLPane("sp.html");
@@ -412,18 +364,8 @@ public class SPFrame extends JFrame {
       isHelpShowed = true;
     }
   }
-  
-  public void showLicense() {
-    if(!isLicenseShowed) {
-      if(pLicencia == null) {
-        pLicencia = new PsHTMLPane("gpl.html");
-      }
-      addTab(pLicencia, LICENSE_TAB, "Licencia", (ImageIcon)resourceManager.getResource(ResourceManager.II_LICENSE));
-      isLicenseShowed = true;
-    }
-  }
-  
-  public void showAbout() {
+
+  protected void showAbout() {
     if(!isAboutShowed) {
       if(pAcerca == null) {
         pAcerca = new AboutPane((ImageIcon)resourceManager.getResource(ResourceManager.II_PVS));
@@ -576,17 +518,6 @@ public class SPFrame extends JFrame {
     });
     jMIAyuda.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
     jMAyuda.add(jMIAyuda);
-    //licencia
-    JMenuItem jMILicencia = new JMenuItem("Licencia");
-    jMILicencia.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_LICENSE));
-    jMILicencia.setToolTipText("Muestra_la_licencia_de_SuperPalitos");
-    jMILicencia.addActionListener(new ActionListener() {
-    	@Override
-      public void actionPerformed(ActionEvent e) {
-        licencia_ActionPerformed(e);
-      }
-    });
-    jMAyuda.add(jMILicencia);
     //acerca
     JMenuItem jMIAcerca = new JMenuItem("Acerca_de...");
     jMIAcerca.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_ABOUT));
@@ -623,17 +554,8 @@ public class SPFrame extends JFrame {
 	    SwingUtilities.updateComponentTreeUI(this);
 	    bCerrarTab.setBorder(null);
 	    pack();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
 	}

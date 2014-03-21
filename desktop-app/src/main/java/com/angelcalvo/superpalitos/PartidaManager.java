@@ -13,6 +13,7 @@ package com.angelcalvo.superpalitos;
 
 import java.util.LinkedList;
 
+import com.angelcalvo.palitos.Board;
 import com.angelcalvo.palitos.Game;
 import com.angelcalvo.palitos.GameListener;
 import com.angelcalvo.palitos.Player;
@@ -23,7 +24,6 @@ import com.angelcalvo.superpalitos.gui.TableroPanel;
  * @author Angel Luis Calvo Ortega
  */
 public class PartidaManager implements GameListener {
-	private static long ID_COUNT = 0;
   private static final int TURN_DELAY = 500;
   
 	/* Modo de la partida */
@@ -40,7 +40,6 @@ public class PartidaManager implements GameListener {
   // accounting
   private long time;
   private int j1Score, j2Score;
-  private long id;
   
   private boolean jugando, j1Turn;
   private LinkedList<GameListener> partidaListeners;
@@ -61,8 +60,6 @@ public class PartidaManager implements GameListener {
    * @param j1Turn Indica si mueve el jugador uno primero
    */
   public PartidaManager(Player j1, Player j2, TableroPanel tablero, boolean j1Turn) {
-  	id = ID_COUNT++;
-  	
     this.j1 = j1;
     this.j2 = j2;
     this.tablero = tablero;
@@ -126,26 +123,11 @@ public class PartidaManager implements GameListener {
   	partidaListeners.addLast(partidaListener);
   }
 
-  public long getId() {
-  	return id;
-  }
-  
   public boolean estaJugandgo(Player j) {
   	return j1 == j || j2 == j;
   }
   
-  @Override
-	public boolean equals(Object obj) {
-		if(!(obj instanceof PartidaManager)) {
-			return false;
-		}
-		
-		PartidaManager pm = (PartidaManager)obj;
-		return id == pm.getId();
-	}
-
-  @Override
-	public int hashCode() {
-		return (int)id;
-	}
+  public Board getBoard() {
+  	return tablero;
+  }
 }

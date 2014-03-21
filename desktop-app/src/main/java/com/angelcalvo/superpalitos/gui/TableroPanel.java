@@ -72,10 +72,6 @@ public class TableroPanel extends JPanel implements Board {
   };
   private static final int ANCHO = 16;
   
-  private int state;
-  private LinkedList<Line> lineas;
-  private Humano j;
-  
   private final static Image[][] PEN_CURSORS = {
   	{
   		Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliAzul.png")),
@@ -112,6 +108,10 @@ public class TableroPanel extends JPanel implements Board {
     	Toolkit.getDefaultToolkit().createCustomCursor(PEN_CURSORS[SPFrame.VERDE][1], new Point(0, 0), "Boli Verde Sel")
     }
   };
+  
+  private int state;
+  private LinkedList<Line> lineas;
+  private Humano j;
   
   private int boli;
   private int boliX, boliY;
@@ -151,7 +151,7 @@ public class TableroPanel extends JPanel implements Board {
     newGameButton.setVisible(false);
     newGameButton.addActionListener(new ActionListener() {
 			@Override	public void actionPerformed(ActionEvent arg0) {
-				sp.repetirCmd(0); // TODO
+				sp.repetirCmd(TableroPanel.this);
 			}
 		});
     panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 10));
