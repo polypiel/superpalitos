@@ -173,7 +173,6 @@ public class SPFrame extends JFrame {
     comp.setName(name);
     tabbedPane.addTab(title, icono, comp);
     int tabNumber = tabbedPane.getTabCount() - 1;
-    tabbedPane.setTabComponentAt(tabNumber, new SPTabComponent(title, icono, (ImageIcon)resourceManager.getResource(ResourceManager.II_CLOSE_16))); // title component
     tabbedPane.setSelectedComponent(comp);
     
     ntabs++;
