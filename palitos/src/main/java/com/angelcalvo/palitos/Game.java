@@ -39,7 +39,7 @@ public class Game {
     this.p2 = j2;
     this.turn = turno;
     
-    partidaListeners = new Vector<GameListener>();
+    partidaListeners = new Vector<>();
   }
   
   /**
@@ -119,15 +119,11 @@ public class Game {
   }
 
   private void fireCambiaTurnoEvent(Player player) {
-  	for(GameListener listener: partidaListeners) {
-  		listener.newTurn(player);
-  	}
+  	partidaListeners.forEach(l -> { l.newTurn(player); });
   }
 
   private void fireFinPartidaEvent(Player player) {
-  	for(GameListener listener: partidaListeners) {
-  		listener.finish(player);
-  	}
+  	partidaListeners.forEach(l -> { l.finish(player); });
   }
 
 	@Override

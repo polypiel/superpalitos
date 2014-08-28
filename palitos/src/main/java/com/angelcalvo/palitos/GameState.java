@@ -1,5 +1,6 @@
 package com.angelcalvo.palitos;
 
+
 public class GameState {
   private static final int STICKS_ROWS[] = { 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4 };
 	//private static final int GAPS_ROWS[] = { 0, 0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4 };
@@ -115,17 +116,7 @@ public class GameState {
     }
     return true;
   }
-  
-  /**
-   * Metodo que devuelve la variable y. Fila superior y = 0 y fila inferior y = 4
-   * @param indice El hueco
-   * @return La altura del hueco
-   */
-  /*
-  private int getGapRow(int indice) {
-    return GAPS_ROWS[indice];
-  }
-  */
+
   /**
    * Indica si el hueco es interior o exterior
    * @param index

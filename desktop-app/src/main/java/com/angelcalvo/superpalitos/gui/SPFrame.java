@@ -16,7 +16,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -383,24 +382,14 @@ public class SPFrame extends JFrame {
     JMenuItem jMINuevaPart = new JMenuItem("Nueva_partida...");
     jMINuevaPart.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_NEW));
     jMINuevaPart.setToolTipText("Crea_una_nueva_partida");
-    jMINuevaPart.addActionListener(new ActionListener() {
-    	@Override
-      public void actionPerformed(ActionEvent e) {
-        nuevaPartida_ActionPerformed(e);
-      }
-    });
+    jMINuevaPart.addActionListener(e -> { nuevaPartida_ActionPerformed(e); });
     jMINuevaPart.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK));
     jMArchivo.add(jMINuevaPart);
     
     JMenuItem jMIPartRapida = new JMenuItem("Partida_rapida");
     jMIPartRapida.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_NEW));
     jMIPartRapida.setToolTipText("Empieza_una_partida_inmediatamente");
-    jMIPartRapida.addActionListener(new ActionListener() {
-    	@Override
-      public void actionPerformed(ActionEvent e) {
-        partidaRapida_ActionPerformed(e);
-      }
-    });
+    jMIPartRapida.addActionListener(e -> { partidaRapida_ActionPerformed(e); });
     jMIPartRapida.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
     jMArchivo.add(jMIPartRapida);
     jMArchivo.addSeparator();
@@ -408,12 +397,7 @@ public class SPFrame extends JFrame {
     jMICerrarPes = new JMenuItem("Cerrar_pestaña");
     jMICerrarPes.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_CLOSE_16));
     jMICerrarPes.setToolTipText("Cierra_la_pestaña_y/o_termina_la_partida");
-    jMICerrarPes.addActionListener(new ActionListener() {
-    	@Override
-      public void actionPerformed(ActionEvent e) {
-        cerrarTab_ActionPerformed(e);
-      }
-    });
+    jMICerrarPes.addActionListener(e -> { cerrarTab_ActionPerformed(e); });
     jMICerrarPes.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_MASK));
     jMArchivo.add(jMICerrarPes);
     
@@ -421,11 +405,7 @@ public class SPFrame extends JFrame {
     JMenuItem jMISalir = new JMenuItem("Salir");
     jMISalir.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_EXIT));
     jMISalir.setToolTipText("Termina_el_programa");
-    jMISalir.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        salir_ActionPerformed();
-      }
-    });
+    jMISalir.addActionListener(e -> { salir_ActionPerformed(); });
     jMArchivo.add(jMISalir);
     menu.add(jMArchivo);
     
@@ -433,34 +413,19 @@ public class SPFrame extends JFrame {
     JMenu jMPalitosNet = new JMenu("PalitosNet");
     jMIConectar = new JMenuItem("Iniciar");
     jMIConectar.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_PNSERVER));
-    jMIConectar.addActionListener(new ActionListener() {
-    	@Override
-      public void actionPerformed(ActionEvent e) {
-        conectar_ActionPerformed(e);
-      }
-    });
+    jMIConectar.addActionListener(e -> { conectar_ActionPerformed(e); });
     jMPalitosNet.add(jMIConectar);
     //
     jMINuevo = new JMenuItem("Jugar_Con...");
     jMINuevo.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_PNNEW));
     jMINuevo.setEnabled(false);
-    jMINuevo.addActionListener(new ActionListener() {
-    	@Override
-      public void actionPerformed(ActionEvent e) {
-        jugarCon_ActionPerformed(e);
-      }
-    });
+    jMINuevo.addActionListener(e -> {jugarCon_ActionPerformed(e); });
     jMPalitosNet.add(jMINuevo);
     //
     jMIShowChat = new JMenuItem("Mostrar/Esconder_Chat");
     jMIShowChat.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_PNCHAT));
     jMIShowChat.setEnabled(false);
-    jMIShowChat.addActionListener(new ActionListener() {
-    	@Override
-      public void actionPerformed(ActionEvent e) {
-        showChat_ActionPerformed(e);
-      }
-    });
+    jMIShowChat.addActionListener(e -> {showChat_ActionPerformed(e); });
     jMPalitosNet.add(jMIShowChat);
     //
     menu.add(jMPalitosNet);
@@ -484,22 +449,13 @@ public class SPFrame extends JFrame {
     	JRadioButtonMenuItem lafMenuItem = new JRadioButtonMenuItem(laf.getName());
     	lafMenuItem.setSelected(laf.getName().equals(UIManager.getLookAndFeel().getName()));
     	group2.add(lafMenuItem);
-    	lafMenuItem.addActionListener(new ActionListener() {
-    		@Override	public void actionPerformed(ActionEvent e) {
-    			lafChanged(laf.getClassName());
-				}
-			});
+    	lafMenuItem.addActionListener(e -> { lafChanged(laf.getClassName()); });
     	lafMenu.add(lafMenuItem);
     }
     jMHerramientas.add(lafMenu);
     
     final JCheckBoxMenuItem soundMenuItem = new JCheckBoxMenuItem("Sonido");
-    soundMenuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				confManager.save(ConfManager.SOUND_OPT, soundMenuItem.isSelected());
-			}
-		});
+    soundMenuItem.addActionListener(e -> { confManager.save(ConfManager.SOUND_OPT, soundMenuItem.isSelected()); });
     soundMenuItem.setSelected(true);
     jMHerramientas.add(soundMenuItem);
     menu.add(jMHerramientas);
@@ -509,24 +465,14 @@ public class SPFrame extends JFrame {
     JMenuItem jMIAyuda = new JMenuItem("Temas_de_Ayuda");
     jMIAyuda.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_HELP));
     jMIAyuda.setToolTipText("Muestra_la_ayuda");
-    jMIAyuda.addActionListener(new ActionListener() {
-    	@Override
-      public void actionPerformed(ActionEvent e) {
-        ayuda_ActionPerformed(e);
-      }
-    });
+    jMIAyuda.addActionListener(e -> { ayuda_ActionPerformed(e); });
     jMIAyuda.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
     jMAyuda.add(jMIAyuda);
     //acerca
     JMenuItem jMIAcerca = new JMenuItem("Acerca_de...");
     jMIAcerca.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_ABOUT));
     jMIAcerca.setToolTipText("Muestra_información_sobre_SuperPalitos");
-    jMIAcerca.addActionListener(new ActionListener() {
-    	@Override
-      public void actionPerformed(ActionEvent e) {
-        acerca_ActionPerformed(e);
-      }
-    });
+    jMIAcerca.addActionListener(e -> { acerca_ActionPerformed(e); });
     jMAyuda.add(jMIAcerca);
     menu.add(jMAyuda);
 
@@ -535,12 +481,7 @@ public class SPFrame extends JFrame {
     bCerrarTab = new JButton((ImageIcon)resourceManager.getResource(ResourceManager.II_CLOSE_24));
     bCerrarTab.setBorder(null);
     bCerrarTab.setToolTipText("Cerrar_pestaña_actual");
-    bCerrarTab.addActionListener(new ActionListener() {
-    	@Override
-      public void actionPerformed(ActionEvent e) {
-        cerrarTab_ActionPerformed(e);
-      }
-    });
+    bCerrarTab.addActionListener(e -> { cerrarTab_ActionPerformed(e); });
     p1.add(bCerrarTab);
     menu.add(p1);
     
@@ -559,6 +500,7 @@ public class SPFrame extends JFrame {
 		}
 	}
 
+  // Getters
 	public SuperPalitos getSp() {
 		return sp;
 	}

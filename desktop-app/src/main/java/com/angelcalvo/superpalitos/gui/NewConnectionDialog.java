@@ -115,19 +115,11 @@ public class NewConnectionDialog extends javax.swing.JDialog {
 
     okButton.setIcon(okImg); // NOI18N
     okButton.setText(bundle.getString("connDialog.ok")); // NOI18N
-    okButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        okButtonActionPerformed(evt);
-      }
-    });
+    okButton.addActionListener(e -> { okButtonActionPerformed(e); });
 
     cancelButton.setIcon(cancelImg); // NOI18N
     cancelButton.setText(bundle.getString("connDialog.cancel")); // NOI18N
-    cancelButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        cancelButtonActionPerformed(evt);
-      }
-    });
+    cancelButton.addActionListener(e -> {cancelButtonActionPerformed(e); });
 
     jLabel1.setText(bundle.getString("connDialog.dir")); // NOI18N
 

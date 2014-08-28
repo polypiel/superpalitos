@@ -12,8 +12,6 @@ package com.angelcalvo.superpalitos.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -73,11 +71,7 @@ public class ChatPane extends JPanel implements ChatComponent {
     enviar.setFocusCycleRoot(true);
     //enviar.setCursor(new Curor(Cursor.DEFAULT_CURSOR));
     //enviar.setDefaultCapable(true);
-    enviar.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        enviar();
-      }
-    });
+    enviar.addActionListener(e -> { enviar(); });
     pane.add(enviar, BorderLayout.EAST);
     add(pane, BorderLayout.SOUTH);
     

@@ -35,7 +35,7 @@ public class NewGameDialog extends JPanel {
   	this.cancelImg = cancelImg;
   	
   	setOpaque(true);
-  	listeners = new ArrayList<DialogListener>();
+  	listeners = new ArrayList<>();
     initComponents();
   }
   
@@ -83,19 +83,11 @@ public class NewGameDialog extends JPanel {
 
     okButton.setIcon(okImg); // NOI18N
     okButton.setText(bundle.getString("newDialog.ok")); // NOI18N
-    okButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        okButtonActionPerformed(evt);
-      }
-    });
+    okButton.addActionListener(e -> { okButtonActionPerformed(e); });
 
     cancelButton.setIcon(cancelImg); // NOI18N
     cancelButton.setText(bundle.getString("newDialog.cancel")); // NOI18N
-    cancelButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        cancelButtonActionPerformed(evt);
-      }
-    });
+    cancelButton.addActionListener(e -> { cancelButtonActionPerformed(e); });
 
     jLabel1.setFont(new java.awt.Font("Dialog", 1, 11));
     jLabel1.setText(bundle.getString("newDialog.players")); // NOI18N
@@ -103,19 +95,11 @@ public class NewGameDialog extends JPanel {
     playersBG.add(onePlayerRB);
     onePlayerRB.setSelected(true);
     onePlayerRB.setText(bundle.getString("newDialog.1player")); // NOI18N
-    onePlayerRB.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        onePlayerRBActionPerformed(evt);
-      }
-    });
+    onePlayerRB.addActionListener(e -> { onePlayerRBActionPerformed(e); });
 
     playersBG.add(twoPlayersRB);
     twoPlayersRB.setText(bundle.getString("newDialog.2players")); // NOI18N
-    twoPlayersRB.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        twoPlayersRBActionPerformed(evt);
-      }
-    });
+    twoPlayersRB.addActionListener(e -> { twoPlayersRBActionPerformed(e); });
 
     jLabel2.setFont(new java.awt.Font("Dialog", 1, 11));
     jLabel2.setText(bundle.getString("newDialog.difficulty")); // NOI18N
@@ -189,15 +173,11 @@ public class NewGameDialog extends JPanel {
   }// </editor-fold>//GEN-END:initComponents
   
   private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-    for(DialogListener listener: listeners) {
-    	listener.accepted(getGameMode());
-    }
+  	listeners.forEach(l -> { l.accepted(getGameMode()); });
   }//GEN-LAST:event_okButtonActionPerformed
   
   private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-    for(DialogListener listener: listeners) {
-    	listener.cancelled();
-    }
+  	listeners.forEach(l -> { l.cancelled(); });
   }//GEN-LAST:event_cancelButtonActionPerformed
   
   private void onePlayerRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onePlayerRBActionPerformed

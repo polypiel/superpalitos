@@ -111,11 +111,4 @@ public class Move {
 		return "Move [pInicio=" + pInicio + ", pFin=" + pFin + ", hInicio=" + hInicio + ", hFin="
 				+ hFin + "]";
 	}
-
-	public boolean isValid() {
-
-		return false;
-	}
-  
-  
 }

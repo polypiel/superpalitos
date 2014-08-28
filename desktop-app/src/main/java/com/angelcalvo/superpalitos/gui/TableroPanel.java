@@ -20,8 +20,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -149,11 +147,8 @@ public class TableroPanel extends JPanel implements Board {
     
     newGameButton = new JButton("Jugar de nuevo");
     newGameButton.setVisible(false);
-    newGameButton.addActionListener(new ActionListener() {
-			@Override	public void actionPerformed(ActionEvent arg0) {
-				sp.repetirCmd(TableroPanel.this);
-			}
-		});
+    newGameButton.addActionListener(e -> {sp.repetirCmd(TableroPanel.this); }
+    );
     panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 10));
     panel.add(newGameButton);
     add(panel, BorderLayout.SOUTH);
