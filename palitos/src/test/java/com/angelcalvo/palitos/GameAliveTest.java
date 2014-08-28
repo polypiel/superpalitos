@@ -11,7 +11,7 @@ import org.junit.Test;
  *
  * @author angel
  */
-public class PalitoTest {
+public class GameAliveTest {
       
   @Test
   public void testTacha() {
