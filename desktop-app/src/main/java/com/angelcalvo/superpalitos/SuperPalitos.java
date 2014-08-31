@@ -186,7 +186,7 @@ public class SuperPalitos {
 	    if(pnServer.setON()) {
 	    	serverON = true;
 	    } else {
-	    	frame.showErrMsg(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("No_se_ha_podido_iniciar_el_servidor"));
+	    	frame.showErrMsg("No_se_ha_podido_iniciar_el_servidor");
 	    }
   	}
   }

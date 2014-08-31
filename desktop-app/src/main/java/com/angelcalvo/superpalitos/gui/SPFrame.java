@@ -75,6 +75,9 @@ public class SPFrame extends JFrame {
   private static final String MATCH_TAB = "match";
   private static final String HELP_TAB = "help";
   private static final String ABOUT_TAB = "about";
+  private static final String CHAT_TAB = "chat";
+  
+  private static final String HELP_FILE = "sp.html";
   
   private JTabbedPane tabbedPane;
   private JMenuItem jMICerrarPes, jMIConectar, jMINuevo, jMIShowChat;
@@ -84,11 +87,11 @@ public class SPFrame extends JFrame {
   private PsHTMLPane pAyuda;
   private AboutPane pAcerca;
   
-  private boolean isHelpShowed, isAboutShowed;
+  private boolean isHelpShowed, isAboutShowed, isChatShowed;
   private JButton bCerrarTab;
   private int ntabs;
   
-  private ChatDialog chatDialog;
+  private ChatPane chatPane;
   private SuperPalitos sp;
   private ResourceManager resourceManager;
   private ConfManager confManager;
@@ -191,6 +194,8 @@ public class SPFrame extends JFrame {
     	if(tab instanceof TableroPanel) {
     		sp.cerrarPartida((TableroPanel) tab);
     	}
+    } else if (CHAT_TAB.equals(name)) {
+    	isChatShowed = false;
     }
     tabbedPane.removeTabAt(nTab);
     
@@ -322,8 +327,13 @@ public class SPFrame extends JFrame {
   }*/
   
   public ChatComponent addChat(SPChat spChat) {
-  	showChat(true);
-  	return chatDialog.addChat(spChat);
+  	//showChat(true);
+  	//return chatDialog.addChat(spChat);
+  	if(chatPane == null) {
+  		chatPane = new ChatPane(spChat, sp);
+  	}
+  	addTab(chatPane, CHAT_TAB, "Chat", resourceManager.getIcon(ResourceManager.II_PNCHAT));
+  	return chatPane;
   }
   
   /**
@@ -347,16 +357,13 @@ public class SPFrame extends JFrame {
    * visibilidad
    */
   private void showChat(boolean show) {
-  	if(chatDialog == null) {
-  		chatDialog = new ChatDialog(this, sp);
-  	}
-  	chatDialog.setVisible(show?true:!chatDialog.isVisible());
+  	// TODO
   }
   
   protected void showHelp() {
     if(!isHelpShowed) {
       if(pAyuda == null) {
-        pAyuda = new PsHTMLPane("sp.html");
+        pAyuda = new PsHTMLPane(HELP_FILE);
       }
       addTab(pAyuda, HELP_TAB, "Ayuda", (ImageIcon)resourceManager.getResource(ResourceManager.II_HELP));
       isHelpShowed = true;
@@ -368,7 +375,7 @@ public class SPFrame extends JFrame {
       if(pAcerca == null) {
         pAcerca = new AboutPane((ImageIcon)resourceManager.getResource(ResourceManager.II_PVS));
       }
-      addTab(pAcerca, ABOUT_TAB, "Acerca_de_...", (ImageIcon)resourceManager.getResource(ResourceManager.II_ABOUT));
+      addTab(pAcerca, ABOUT_TAB, "Acerca de", (ImageIcon)resourceManager.getResource(ResourceManager.II_ABOUT));
       isAboutShowed = true;
     }
   }
@@ -379,24 +386,24 @@ public class SPFrame extends JFrame {
     
     // Menu Archivo
     JMenu jMArchivo = new JMenu("Archivo");
-    JMenuItem jMINuevaPart = new JMenuItem("Nueva_partida...");
+    JMenuItem jMINuevaPart = new JMenuItem("Nueva partida...");
     jMINuevaPart.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_NEW));
-    jMINuevaPart.setToolTipText("Crea_una_nueva_partida");
+    jMINuevaPart.setToolTipText("Crea una nueva partida");
     jMINuevaPart.addActionListener(e -> { nuevaPartida_ActionPerformed(e); });
     jMINuevaPart.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK));
     jMArchivo.add(jMINuevaPart);
     
-    JMenuItem jMIPartRapida = new JMenuItem("Partida_rapida");
+    JMenuItem jMIPartRapida = new JMenuItem("Partida rapida");
     jMIPartRapida.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_NEW));
-    jMIPartRapida.setToolTipText("Empieza_una_partida_inmediatamente");
+    jMIPartRapida.setToolTipText("Empieza una partida inmediatamente");
     jMIPartRapida.addActionListener(e -> { partidaRapida_ActionPerformed(e); });
     jMIPartRapida.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
     jMArchivo.add(jMIPartRapida);
     jMArchivo.addSeparator();
     
-    jMICerrarPes = new JMenuItem("Cerrar_pestaña");
+    jMICerrarPes = new JMenuItem("Cerrar pestaña");
     jMICerrarPes.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_CLOSE_16));
-    jMICerrarPes.setToolTipText("Cierra_la_pestaña_y/o_termina_la_partida");
+    jMICerrarPes.setToolTipText("Cierra la pestaña y/o termina la partida");
     jMICerrarPes.addActionListener(e -> { cerrarTab_ActionPerformed(e); });
     jMICerrarPes.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_MASK));
     jMArchivo.add(jMICerrarPes);
@@ -404,7 +411,7 @@ public class SPFrame extends JFrame {
     jMArchivo.addSeparator();
     JMenuItem jMISalir = new JMenuItem("Salir");
     jMISalir.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_EXIT));
-    jMISalir.setToolTipText("Termina_el_programa");
+    jMISalir.setToolTipText("Termina el programa");
     jMISalir.addActionListener(e -> { salir_ActionPerformed(); });
     jMArchivo.add(jMISalir);
     menu.add(jMArchivo);
@@ -416,13 +423,13 @@ public class SPFrame extends JFrame {
     jMIConectar.addActionListener(e -> { conectar_ActionPerformed(e); });
     jMPalitosNet.add(jMIConectar);
     //
-    jMINuevo = new JMenuItem("Jugar_Con...");
+    jMINuevo = new JMenuItem("Jugar con...");
     jMINuevo.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_PNNEW));
     jMINuevo.setEnabled(false);
     jMINuevo.addActionListener(e -> {jugarCon_ActionPerformed(e); });
     jMPalitosNet.add(jMINuevo);
     //
-    jMIShowChat = new JMenuItem("Mostrar/Esconder_Chat");
+    jMIShowChat = new JMenuItem("Mostrar/Esconder chat");
     jMIShowChat.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_PNCHAT));
     jMIShowChat.setEnabled(false);
     jMIShowChat.addActionListener(e -> {showChat_ActionPerformed(e); });
@@ -462,16 +469,16 @@ public class SPFrame extends JFrame {
     
     // Menu Ayuda
     JMenu jMAyuda = new JMenu("Ayuda");
-    JMenuItem jMIAyuda = new JMenuItem("Temas_de_Ayuda");
+    JMenuItem jMIAyuda = new JMenuItem("Temas de ayuda");
     jMIAyuda.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_HELP));
-    jMIAyuda.setToolTipText("Muestra_la_ayuda");
+    jMIAyuda.setToolTipText("Muestra la ayuda");
     jMIAyuda.addActionListener(e -> { ayuda_ActionPerformed(e); });
     jMIAyuda.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
     jMAyuda.add(jMIAyuda);
     //acerca
-    JMenuItem jMIAcerca = new JMenuItem("Acerca_de...");
+    JMenuItem jMIAcerca = new JMenuItem("Acerca de...");
     jMIAcerca.setIcon((ImageIcon)resourceManager.getResource(ResourceManager.II_ABOUT));
-    jMIAcerca.setToolTipText("Muestra_información_sobre_SuperPalitos");
+    jMIAcerca.setToolTipText("Muestra información sobre SuperPalitos");
     jMIAcerca.addActionListener(e -> { acerca_ActionPerformed(e); });
     jMAyuda.add(jMIAcerca);
     menu.add(jMAyuda);
@@ -480,7 +487,7 @@ public class SPFrame extends JFrame {
     p1.setOpaque(false);
     bCerrarTab = new JButton((ImageIcon)resourceManager.getResource(ResourceManager.II_CLOSE_24));
     bCerrarTab.setBorder(null);
-    bCerrarTab.setToolTipText("Cerrar_pestaña_actual");
+    bCerrarTab.setToolTipText("Cerrar pestaña actual");
     bCerrarTab.addActionListener(e -> { cerrarTab_ActionPerformed(e); });
     p1.add(bCerrarTab);
     menu.add(p1);

@@ -37,6 +37,7 @@ import com.angelcalvo.palitos.GameState;
 import com.angelcalvo.palitos.Move;
 import com.angelcalvo.palitos.Player;
 import com.angelcalvo.superpalitos.ConfManager;
+import com.angelcalvo.superpalitos.Line;
 import com.angelcalvo.superpalitos.SuperPalitos;
 import com.angelcalvo.superpalitos.XyMove;
 

@@ -67,7 +67,7 @@ public class NewConnectionDialog extends javax.swing.JDialog {
   private void cancel() {
     if(state == CONECTANDO) {
       state = INICIO;
-      setTitle(java.util.ResourceBundle.getBundle("com/angelcalvo/superpalitos/gui/Bundle").getString("JDConectar"));
+      setTitle("Conectando");
       dirTF.setEnabled(true);
       portTF.setEnabled(true);
       okButton.setEnabled(true);

@@ -11,6 +11,7 @@
  */
 package com.angelcalvo.superpalitos.net;
 import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -23,6 +24,7 @@ import com.angelcalvo.superpalitos.SuperPalitos;
  */
 public class PNServer extends Thread {
 	private static final int DEFAULT_PORT = 11111;
+	private static final int MAX_RETRIES = 3;
   private ServerSocket server;
   private boolean on;
   private int port;
@@ -41,14 +43,27 @@ public class PNServer extends Thread {
    */
   public boolean setON() {
     try {
-			server = new ServerSocket(port);
-	    on = true;
-	    start();
-	    return true;
+    	int retries = 0;
+    	do {
+    		server = createServer(port);
+    		if(server == null) {
+    			port++;
+    		} else {
+    			on = true;
+    			start();
+    		}
+    	} while(server == null && retries < MAX_RETRIES);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return on;
+  }
+  private ServerSocket createServer(int port) throws IOException {
+  	ServerSocket s = null;
+  	try {
+  		s = new ServerSocket(port);
+  	} catch( BindException e) { }
+  	return s;
   }
   
   /**

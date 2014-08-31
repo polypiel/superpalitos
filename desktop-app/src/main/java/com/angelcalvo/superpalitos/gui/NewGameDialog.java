@@ -116,6 +116,9 @@ public class NewGameDialog extends JPanel {
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
     setLayout(layout);
+    
+		//layout.addLayoutComponent(new JLabel("Nueva partida"), null);
+    
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
