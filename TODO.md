@@ -30,3 +30,5 @@ V 3.2
  - Game modes?
  - Stats
  - PNClient bucle para recibir eventos y proceso descentralizado
+ - Chat como una pestaña
+ 
