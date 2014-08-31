@@ -55,4 +55,8 @@ public class ResourceManager {
 		}
 		return resource;
 	}
+	
+	public ImageIcon getIcon(String key) {
+		return (ImageIcon) getResource(key);
+	}
 }
