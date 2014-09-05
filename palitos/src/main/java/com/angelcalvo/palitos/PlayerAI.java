@@ -54,6 +54,8 @@ public class PlayerAI implements Player {
 	 *          La dificultad de la IA
 	 */
 	public PlayerAI(int dificultad, Color color) {
+		assert dificultad >= FACIL && dificultad <= DIFICIL;
+		
 		this.dificultad = dificultad;
 		this.color = color;
 		r = new Random();

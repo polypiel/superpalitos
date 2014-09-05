@@ -34,11 +34,11 @@ public class GameState {
   	return gaps[index];
   }
   
-  public void crossStick(int index) {
+  private void crossStick(int index) {
   	sticks[index] = false;
   }
   
-  public void crossGap(int index) {
+  private void crossGap(int index) {
   	gaps[index] = false;
   }
   
@@ -86,32 +86,27 @@ public class GameState {
    * Comprueba que una jugada es valida, que el palito inicial y final esten en
    * la misma fila, que los palitos no esten tachados ya y que no se tachen
    * todos los palitos.
-   * @param j La jugada a validar
+   * @param move La jugada a validar
    * @return Si la jugada es valida o no
    */
-  public boolean isValid(Move j) {
-  	if(j == null) {
-  		return false;
-  	}
-		if(j.getPFin() < 0 || j.getPInicio() < 0 || j.getHFin() < 0 || j.getHInicio() < 0) {
+  public boolean isValid(Move move) {
+  	assert move != null;
+  	assert move.getPFin() >= 0 && move.getPInicio() >= 0 || move.getHFin() > 0 || move.getHInicio() >= 0;
+  	assert move.getPFin() < NSTICKS && move.getPInicio() < NSTICKS && move.getHFin() < NGAPS && move.getHInicio() < NGAPS;
+
+		if(move.getLon() == 0) {
 			return false;
 		}
-		if(j.getPFin() >= NSTICKS || j.getPInicio() >= NSTICKS || j.getHFin() >= NGAPS || j.getHInicio() >= NGAPS) {
-			return false;
-		}
-		if(j.getLon() == 0) {
-			return false;
-		}
-    if(STICKS_ROWS[j.getPInicio()] != STICKS_ROWS[j.getPFin()]) {
+    if(STICKS_ROWS[move.getPInicio()] != STICKS_ROWS[move.getPFin()]) {
       return false;
     }
-    for(int i = 0; i < j.getLon(); i++) {
-      if(!sticks[j.getPInicio() + i]) {
+    for(int i = 0; i < move.getLon(); i++) {
+      if(!sticks[move.getPInicio() + i]) {
         return false;
       }
     }
     // it wouldn't left sticks left
-    if(alive() - j.getLon() == 0) {
+    if(alive() - move.getLon() == 0) {
       return false;
     }
     return true;

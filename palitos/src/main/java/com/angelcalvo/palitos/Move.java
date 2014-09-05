@@ -42,6 +42,11 @@ public class Move {
    * @param modo palito o hueco
    */
   public Move(int c1, int c2, int modo) {
+  	assert c1 >= 0 && c2 >= 0;
+  	assert modo == Move.PALITO || modo == Move.HUECO;
+  	assert (c1 < GameState.NSTICKS && modo == Move.PALITO) || (c1 < GameState.NGAPS && modo == Move.HUECO);
+  	assert (c2 < GameState.NSTICKS && modo == Move.PALITO) || (c2 < GameState.NGAPS && modo == Move.HUECO);
+  	
     if(modo == PALITO) {
       if(c1 > c2) {
         pInicio = c2;
