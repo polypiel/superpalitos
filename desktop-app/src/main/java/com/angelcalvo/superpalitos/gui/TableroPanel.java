@@ -246,7 +246,7 @@ public class TableroPanel extends JPanel implements Board {
       j.x2 = e.getX();
       j.y2 = e.getY();
       if((j.h2 = cursorIn(j.x2, j.y2)) != -1 && gameState.getGap(j.h2)) {
-        if(j.h1 != j.h2 && huecos[j.h1][1] == huecos[j.h2][1] && j.s.isValid(Move.fromGaps(j.h1, j.h2))) {
+        if(j.h1 != j.h2 && huecos[j.h1][1] == huecos[j.h2][1] && j.s.areValidGaps(j.h1, j.h2)) {
           state = STATE_2ND_CLICK;
           //despertar();
           //super.notifyAll();
@@ -277,7 +277,7 @@ public class TableroPanel extends JPanel implements Board {
     	setCursor(CURSORS[color2index(sp.getJ1Color())][cursor]);
     } else if(state == STATE_1ST_CLICK) {
     	int gap = cursorIn(e.getX(), e.getY());
-    	int cursor = gap != -1 && gameState.isValid(Move.fromGaps(j.h1, gap)) ? 1 : 0;
+    	int cursor = gap != -1 && gameState.areValidGaps(j.h1, gap) ? 1 : 0;
     	setCursor(CURSORS[color2index(sp.getJ1Color())][cursor]);
     }
   }

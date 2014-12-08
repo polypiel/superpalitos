@@ -21,7 +21,7 @@ package com.angelcalvo.palitos;
 
 public class GameState {
   private static final int STICKS_ROWS[] = { 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4 };
-	//private static final int GAPS_ROWS[] = { 0, 0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4 };
+	private static final int GAPS_ROWS[] = { 0, 0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4 };
 	/** Indica si el hueco es exterior (true) o interior (false) */
 	private static final boolean GAPS_BOUNDS[] = { true, true, true, false, true, true, false, false,
 			true, true, false, false, false, true, true, false, false, false, false, true };
@@ -112,24 +112,52 @@ public class GameState {
   	if (move == null) {
   		return false;
   	}
+  	
 		if(move.length() == 0) {
 			return false;
 		}
-    if(STICKS_ROWS[move.getStartStick()] != STICKS_ROWS[move.getEndStick()]) {
-      return false;
-    }
+
     for(int i = 0; i < move.length(); i++) {
-      if(!sticks[move.getStartStick() + i]) {
+      if(isCrossed(move.getStartStick() + i)) {
         return false;
       }
     }
-    // it wouldn't left sticks left
+
     if(alive() - move.length() == 0) {
       return false;
     }
-    return true;
+    
+  	return true;
   }
-
+  
+  public boolean areValidGaps(int gap1, int gap2) {
+  	if (gap1 < 0 || gap2 < 0 || gap1 >= NGAPS || gap2 >= NGAPS || gap1 == gap2) {
+  		return false;
+  	}
+  	
+  	if(GAPS_ROWS[gap1] != GAPS_ROWS[gap1]) {
+  		return false;
+  	}
+  	
+  	return isValid(Move.fromGaps(gap1, gap2));
+  }
+  
+  public boolean areValidSticks(int stick1, int stick2) {
+  	if (stick1 < 0 || stick2 < 0 || stick1 >= NSTICKS || stick2 >= NSTICKS) {
+  		return false;
+  	}
+  	
+  	if(STICKS_ROWS[stick1] != STICKS_ROWS[stick2]) {
+  		return false;
+  	}
+  	
+  	return isValid(Move.fromSticks(stick1, stick2));
+  }
+  
+  private boolean isCrossed(int stick) {
+  	return !sticks[stick];
+  }
+  
   /**
    * Indica si el hueco es interior o exterior
    * @param index

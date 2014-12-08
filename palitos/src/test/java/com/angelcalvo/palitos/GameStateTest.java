@@ -39,17 +39,17 @@ public class GameStateTest {
 	
   @Test
   public void testIsValid() {
-  	assertTrue(state.isValid(Move.fromSticks(0, 0)));
+  	assertTrue(state.areValidSticks(0, 0));
   }
   
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void thatGapsCannotBeEquals() {
-  	Move.fromGaps(2, 2);
+  	assertFalse(state.areValidGaps(2, 2));
   }
   
   @Test
   public void thatSticksHavetoBeInTheSameRow() {
-  	assertFalse(state.isValid(Move.fromSticks(0, 1)));
+  	assertFalse(state.areValidSticks(0, 1));
   }
   
   @Test
@@ -58,7 +58,7 @@ public class GameStateTest {
   	state.move(Move.fromSticks(3, 5));
   	state.move(Move.fromSticks(6, 9));
   	state.move(Move.fromSticks(10, 14));
-  	assertFalse(state.isValid(Move.fromGaps(0, 1)));
+  	assertFalse(state.areValidGaps(0, 1));
   }
   @Test
   public void testCantCrossAlreadyCrossed() {

@@ -8,7 +8,7 @@ public class XyMove extends Move {
 	
 	public static XyMove fromGaps(int stick1, int stick2) {
 		Move m1 = Move.fromGaps(stick1, stick2);
-		return new XyMove(m1.getStartGap(), m1.getEndStick());
+		return new XyMove(m1.getStartStick(), m1.getEndStick());
 	}
 	
 	protected XyMove(int c1, int c2) {
