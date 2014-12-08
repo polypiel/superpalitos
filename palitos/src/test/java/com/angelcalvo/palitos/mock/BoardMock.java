@@ -17,40 +17,22 @@
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.angelcalvo.palitos;
+package com.angelcalvo.palitos.mock;
 
-import static org.junit.Assert.*;
+import com.angelcalvo.palitos.Board;
+import com.angelcalvo.palitos.GameState;
+import com.angelcalvo.palitos.Move;
+import com.angelcalvo.palitos.Player;
 
-import java.awt.Color;
+public class BoardMock implements Board {
 
-import org.junit.Before;
-import org.junit.Test;
+	@Override
+	public void started(GameState gameState) {}
 
-public class PlayerIATest {
-	GameState state;
-	Player player;
-	
-	@Before
-	public void setUp() {
-		state = new GameState();
-		player = new PlayerAI(PlayerAI.NORMAL, Color.BLACK);
-		player.update(null, state);
-	}
-	
-	@Test
-	public void testMove() {		
-		assertTrue(state.isValid(player.move()));
-	}
-	
-	@Test
-	public void testUpdate() {
-		Move m1 = Move.fromSticks(10, 14);
-		state.move(m1);
-		player.update(m1, state);
-		for(int i = 0; i < 1000; i++) {
-			Move move = player.move();
-			assertTrue(move.getStartStick() < 14);
-		}
-	}
+	@Override
+	public void finished(Player winner) {}
+
+	@Override
+	public void move(Player player, Move move, GameState gameState) {}
 
 }

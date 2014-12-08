@@ -208,10 +208,10 @@ public class TableroPanel extends JPanel implements Board {
   		XyMove xyMove = (XyMove) move;
       line = new Line(xyMove.getX1(), xyMove.getY1(), xyMove.getX2(), xyMove.getY2(), false);
   	} else {
-      int x1Aux = huecos[move.getHInicio()][0] + Math.round((float)Math.random() * ANCHO);
-      int y1Aux = huecos[move.getHInicio()][1] + Math.round((float)Math.random() * ANCHO);
-      int x2Aux = huecos[move.getHFin()][0] + Math.round((float)Math.random() * ANCHO);
-      int y2Aux = huecos[move.getHFin()][1] + Math.round((float)Math.random() * ANCHO);
+      int x1Aux = huecos[move.getStartGap()][0] + Math.round((float)Math.random() * ANCHO);
+      int y1Aux = huecos[move.getStartGap()][1] + Math.round((float)Math.random() * ANCHO);
+      int x2Aux = huecos[move.getEndGap()][0] + Math.round((float)Math.random() * ANCHO);
+      int y2Aux = huecos[move.getEndGap()][1] + Math.round((float)Math.random() * ANCHO);
       line = new Line(x1Aux, y1Aux, x2Aux, y2Aux, false);
   	}
   	
@@ -246,7 +246,7 @@ public class TableroPanel extends JPanel implements Board {
       j.x2 = e.getX();
       j.y2 = e.getY();
       if((j.h2 = cursorIn(j.x2, j.y2)) != -1 && gameState.getGap(j.h2)) {
-        if(j.h1 != j.h2 && huecos[j.h1][1] == huecos[j.h2][1] && j.s.isValid(new Move(j.h1, j.h2, Move.HUECO))) {
+        if(j.h1 != j.h2 && huecos[j.h1][1] == huecos[j.h2][1] && j.s.isValid(Move.fromGaps(j.h1, j.h2))) {
           state = STATE_2ND_CLICK;
           //despertar();
           //super.notifyAll();
@@ -277,7 +277,7 @@ public class TableroPanel extends JPanel implements Board {
     	setCursor(CURSORS[color2index(sp.getJ1Color())][cursor]);
     } else if(state == STATE_1ST_CLICK) {
     	int gap = cursorIn(e.getX(), e.getY());
-    	int cursor = gap != -1 && gameState.isValid(new Move(j.h1, gap, Move.HUECO)) ? 1 : 0;
+    	int cursor = gap != -1 && gameState.isValid(Move.fromGaps(j.h1, gap)) ? 1 : 0;
     	setCursor(CURSORS[color2index(sp.getJ1Color())][cursor]);
     }
   }
@@ -416,7 +416,7 @@ public class TableroPanel extends JPanel implements Board {
         return null;
       }
       state = STATE_OFF;
-      XyMove jug = new XyMove(h1, h2, Move.HUECO);
+      XyMove jug = XyMove.fromGaps(h1, h2);
       jug.setCoords(x1, y1, x2, y2);
       return jug;
     }

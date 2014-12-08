@@ -1,5 +1,23 @@
-package com.angelcalvo.palitos;
+/*
+ * Pollo Verde Software 2006-2014
+ * 
+ * This file is part of SuperPalitos.
+ * 
+ * SuperPalitos is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
+ * SuperPalitos is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.angelcalvo.palitos;
 
 public class GameState {
   private static final int STICKS_ROWS[] = { 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4 };
@@ -48,23 +66,23 @@ public class GameState {
    */
   // Move to Game state
   public void move(Move j) {
-    for(int i = 0; i < j.getLon(); i++) {
-      crossStick(j.getPInicio() + i);
+    for(int i = 0; i < j.length(); i++) {
+      crossStick(j.getStartStick() + i);
     }
-    for(int i = 1; i < j.getLon(); i++) {
-      crossGap(j.getHInicio() + i);
-    }
-    
-    if(isBoundaryGap(j.getHInicio())) {
-      crossGap(j.getHInicio());
-    } else if(!sticks[j.getPInicio() - 1]) {
-      crossGap(j.getHInicio());
+    for(int i = 1; i < j.length(); i++) {
+      crossGap(j.getStartGap() + i);
     }
     
-    if(isBoundaryGap(j.getHFin())) {
-      crossGap(j.getHFin());
-    } else if(!sticks[j.getPFin() + 1]) {
-      crossGap(j.getHFin());
+    if(isBoundaryGap(j.getStartGap())) {
+      crossGap(j.getStartGap());
+    } else if(!sticks[j.getStartStick() - 1]) {
+      crossGap(j.getStartGap());
+    }
+    
+    if(isBoundaryGap(j.getEndGap())) {
+      crossGap(j.getEndGap());
+    } else if(!sticks[j.getEndStick() + 1]) {
+      crossGap(j.getEndGap());
     }
   }
   
@@ -89,24 +107,24 @@ public class GameState {
    * @param move La jugada a validar
    * @return Si la jugada es valida o no
    */
+  // TODO move -> params
   public boolean isValid(Move move) {
-  	assert move != null;
-  	assert move.getPFin() >= 0 && move.getPInicio() >= 0 || move.getHFin() > 0 || move.getHInicio() >= 0;
-  	assert move.getPFin() < NSTICKS && move.getPInicio() < NSTICKS && move.getHFin() < NGAPS && move.getHInicio() < NGAPS;
-
-		if(move.getLon() == 0) {
+  	if (move == null) {
+  		return false;
+  	}
+		if(move.length() == 0) {
 			return false;
 		}
-    if(STICKS_ROWS[move.getPInicio()] != STICKS_ROWS[move.getPFin()]) {
+    if(STICKS_ROWS[move.getStartStick()] != STICKS_ROWS[move.getEndStick()]) {
       return false;
     }
-    for(int i = 0; i < move.getLon(); i++) {
-      if(!sticks[move.getPInicio() + i]) {
+    for(int i = 0; i < move.length(); i++) {
+      if(!sticks[move.getStartStick() + i]) {
         return false;
       }
     }
     // it wouldn't left sticks left
-    if(alive() - move.getLon() == 0) {
+    if(alive() - move.length() == 0) {
       return false;
     }
     return true;

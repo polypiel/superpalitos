@@ -4,12 +4,16 @@ import com.angelcalvo.palitos.Move;
 
 public class XyMove extends Move {
 	
-	public XyMove(int c1, int c2, int modo) {
-		super(c1, c2, modo);
-	}
-
 	private int x1, y1, x2, y2;
 	
+	public static XyMove fromGaps(int stick1, int stick2) {
+		Move m1 = Move.fromGaps(stick1, stick2);
+		return new XyMove(m1.getStartGap(), m1.getEndStick());
+	}
+	
+	protected XyMove(int c1, int c2) {
+		super(c1, c2);
+	}	
 
   /**
    * Metodo que establece que la jugada guarda las coordenadas.

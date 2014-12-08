@@ -1,18 +1,26 @@
 /*
- * Jugada
+ * Pollo Verde Software 2006-2014
  * 
- * Pollo Verde Software 2006
+ * This file is part of SuperPalitos.
  * 
- * Este programa se distribuye segun la licencia GPL v.2 o posteriores y no
- * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
- * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
+ * SuperPalitos is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * SuperPalitos is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.angelcalvo.palitos;
 
 /**
  * Esta clase representa una jugada.
- * 
- * @author Angel Luis Calvo Ortega
  */
 public class Move {
   /** Transformacion de palito al hueco de la izquierda */
@@ -23,97 +31,84 @@ public class Move {
   protected static final int H2PD[] = {0, -1, 1, 2, -1, 3, 4, 5, -1, 6, 7, 8, 9, -1, 10, 11, 12, 13, 14, -1};
   /** Transformacion de hueco al palito de la izquierda */
   protected static final int H2PI[] = {-1, 0, -1, 1, 2, -1, 3, 4, 5, -1, 6, 7, 8, 9, -1, 10, 11, 12, 13, 14};
-    
-	/** Indica que la jugada se crea indicando los numeros de los palitos */
-  public static final int PALITO = 0;
-	/** Indica que la jugada se crea indicando los numeros de los huecos */
-  public static final int HUECO = 1;
   
-  protected int pInicio;
-  protected int pFin;
-  protected int hInicio;
-  protected int hFin;
-  protected int lon;
+  protected int startStick;
+  protected int endStick;
+  protected int startGap;
+  protected int endGap;
+  protected int length;
 
-  /**
-   * Constructor que crea una jugada.
-   * @param c1 cosa1
-   * @param c2 cosa2
-   * @param modo palito o hueco
-   */
-  public Move(int c1, int c2, int modo) {
-  	assert c1 >= 0 && c2 >= 0;
-  	assert modo == Move.PALITO || modo == Move.HUECO;
-  	assert (c1 < GameState.NSTICKS && modo == Move.PALITO) || (c1 < GameState.NGAPS && modo == Move.HUECO);
-  	assert (c2 < GameState.NSTICKS && modo == Move.PALITO) || (c2 < GameState.NGAPS && modo == Move.HUECO);
+  public static Move fromSticks(int stick1, int stick2) {
+  	if (stick1 < 0 || stick2 < 0 || stick1 >= GameState.NSTICKS || stick2 >= GameState.NSTICKS) {
+  		throw new IllegalArgumentException();
+  	}
   	
-    if(modo == PALITO) {
-      if(c1 > c2) {
-        pInicio = c2;
-        pFin = c1;
-      } else {
-        pInicio = c1;
-        pFin = c2;
-      }
-      hInicio = P2HI[pInicio];
-      hFin = P2HD[pFin];
-    } else if(modo == HUECO) {
-      if(c1 > c2) {
-        hInicio = c2;
-        hFin = c1;
-      } else {
-        hInicio = c1;
-        hFin = c2;
-      }
-      pInicio = H2PD[hInicio];
-      pFin = H2PI[hFin];
-    }
-    lon = hFin - hInicio;
+  	return stick1 < stick2 ? new Move(stick1, stick2) : new Move(stick2, stick1);
+  }
+  
+  public static Move fromGaps(int gap1, int gap2) {
+  	if (gap1 < 0 || gap2 < 0 || gap1 >= GameState.NGAPS || gap2 >= GameState.NGAPS) {
+  		throw new IllegalArgumentException();
+  	}
+  	
+  	int stick1 = H2PD[gap1 < gap2 ? gap1 : gap2];
+  	int stick2 = H2PI[gap1 < gap2 ? gap2 : gap1];
+
+  	return new Move(stick1, stick2);
+  }
+  
+  protected Move(int startStick, int endStick) {
+  	this.startStick = startStick;
+  	this.endStick = endStick;
+  	
+    startGap = P2HI[startStick];
+    endGap = P2HD[endStick];
+    
+    length = endGap - startGap;
   }
 
   /**
    * Metodo que devuelve el 1er palito de la jugada.
    * @return Devuelve el 1er palito de la jugada.
    */
-  public int getPInicio() {
-    return pInicio;
+  public int getStartStick() {
+    return startStick;
   }
 
   /**
    * Metodo que devuelve el ultimo palito de la jugada.
    * @return Devuelve el ultimo palito de la jugada.
    */
-  public int getPFin() {
-    return pFin;
+  public int getEndStick() {
+    return endStick;
   }
 
   /**
    * Metodo que devuelve el 1er hueco de la jugada.
    * @return Devuelve el 1er huecoo de la jugada.
    */
-  public int getHInicio() {
-    return hInicio;
+  public int getStartGap() {
+    return startGap;
   }
 
   /**
    * Metodo que devuelve el ultimo hueco de la jugada.
    * @return Devuelve el ultimo hueco de la jugada.
    */
-  public int getHFin() {
-    return hFin;
+  public int getEndGap() {
+    return endGap;
   }
 
   /**
    * Metodo que devuelve el numero de palitos tachados en la jugada.
    * @return La  longitud del la jugada.
    */
-  public int getLon() {
-    return lon;
+  public int length() {
+    return length;
   }
 
 	@Override
 	public String toString() {
-		return "Move [pInicio=" + pInicio + ", pFin=" + pFin + ", hInicio=" + hInicio + ", hFin="
-				+ hFin + "]";
+		return "Move [Sticks: " + startStick + "-" + endStick + "; gaps=" + startGap + "-"	+ endGap + "]";
 	}
 }

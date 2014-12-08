@@ -1,24 +1,36 @@
 /*
- * Partida
+ * Pollo Verde Software 2006-2014
  * 
- * Pollo Verde Software 2006
+ * This file is part of SuperPalitos.
  * 
- * Este programa se distribuye segun la licencia GPL v.2 o posteriores y no
- * tiene garantias de ningun tipo. Puede obtener una copia de la licencia GPL o
- * ponerse en contacto con la Free Software Foundation en http://www.gnu.org
+ * SuperPalitos is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * SuperPalitos is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.angelcalvo.palitos;
 
 import java.util.Vector;
 
-
 /**
  * Clase que maneja una partida.
- * 
- * @author Angel Calvo
  */
 public class Game {
+	private static final int STANDBY_STATE = 0;
+	private static final int PLAYING_STATE = 1;
+	private static final int FINISHED_STATE = 2;
+	
   private GameState state;
+  private int playingState;
   
   private boolean turn;
   private Player p1, p2;
@@ -34,6 +46,7 @@ public class Game {
    */
   public Game(Player j1, Player j2, Board tablero, boolean turno) {
     state = new GameState();
+    playingState = STANDBY_STATE;
     this.board = tablero;
     this.p1 = j1;
     this.p2 = j2;
@@ -53,10 +66,11 @@ public class Game {
   public void play() {
     Player player = null;
     Move move = null;
+    playingState = PLAYING_STATE;
     
     board.started(state);
     
-    while(!isFinished()) {
+    while(!isFinished() && playingState == PLAYING_STATE) {
     	// Turn
       player = (turn) ? p1 : p2;
       fireCambiaTurnoEvent(player);
@@ -78,6 +92,7 @@ public class Game {
       // Changes move
       turn = !turn;
     }
+    playingState = FINISHED_STATE;
     Player per = (turn) ? p1 : p2;
     Player winner = (turn) ? p2 : p1;
     per.update(move, state);
@@ -92,14 +107,17 @@ public class Game {
    * @return Si la partida ha terminado o sigue.
    */
   public boolean isFinished() {
-    return state.alive() == 1;
+    return playingState == FINISHED_STATE;
   }
   
   /**
    * Finaliza la partida bruscamente.
+   * Signals the board and the players.
    */
   public void finish() {
+  	playingState = FINISHED_STATE;
     board.finished(null);
+    fireFinPartidaEvent(null);
   }
   
   /**

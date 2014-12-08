@@ -73,7 +73,7 @@ public class Paquete {
 					int p1 = in.readInt();
 					int p2 = in.readInt();
 					System.out.println("jugada_received_(" + p1 + "," + p2 + ")");     
-					paquete.setJugada(new Move(p1, p2, Move.PALITO));
+					paquete.setJugada(Move.fromSticks(p1, p2));
 					break;
         case CHAT:
           String msj = in.readUTF();
@@ -108,9 +108,9 @@ public class Paquete {
 					System.out.println("adios_send");
 					break;
 				case JUGADA:
-					out.writeInt(jugada.getPInicio());
-					out.writeInt(jugada.getPFin());
-					System.out.println("jugada_send_(" + jugada.getPInicio() +"," + jugada.getPFin() + ")");
+					out.writeInt(jugada.getStartStick());
+					out.writeInt(jugada.getEndStick());
+					System.out.println("jugada_send_(" + jugada.getStartStick() +"," + jugada.getEndStick() + ")");
 					break;
         case CHAT:
           System.out.println("chat_received");
