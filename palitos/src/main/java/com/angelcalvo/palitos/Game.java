@@ -82,7 +82,7 @@ public class Game {
       // TODO fix
       do {
         move = player.move();
-      } while(!state.areValidSticks(move.getStartStick(), move.getEndStick()));
+      } while(!state.isValid(move));
       
       // applays move
       state.move(move);
