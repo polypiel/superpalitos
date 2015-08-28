@@ -22,34 +22,21 @@ package com.angelcalvo.palitos;
 import java.awt.Color;
 
 /**
- * Interfaz de un jugador
- * 
- * @author Angel Luis Calvo Ortega
+ * Player model
  */
 public interface Player {
 	/**
-	 * Metodo por el cual el jugador realiza una jugada.
-	 * @return La jugada realizada.
+   * Makes a move
 	 */
   Move move();
   
   /**
-   * Metodo por el cual un jugador es notificado del movimiento del contrario.
-   * @param move La jugada realizada.
-   * @param state El estado actual de los palitos.
+   * Sees contrary movement
    */
   void update(Move move, GameState state);
-  
-  /**
-   * Metodo para conseguir el color de un jugador.
-   * @return El color del jugador.
-   */
+
   Color getColor();
-  
-  /**
-   * Metodo para conseguir el nombre de un jugador.
-   * @return El nombre del jugador.
-   */
+
   String getName();
   
   /**

@@ -19,48 +19,41 @@
 
 package com.angelcalvo.palitos;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
- * Clase que maneja una partida.
+ * Game abstraction
  */
 public class Game {
-	private static final int STANDBY_STATE = 0;
-	private static final int PLAYING_STATE = 1;
-	private static final int FINISHED_STATE = 2;
+  private static final int STANDBY_STATE = 0;
+  private static final int PLAYING_STATE = 1;
+  private static final int FINISHED_STATE = 2;
 	
   private GameState state;
   private int playingState;
   
-  private boolean turn;
-  private Player p1, p2;
+  private boolean isPlayerOneTurn;
+  private Player pOne, pTwo;
   private Board board;
-  private Vector<GameListener> partidaListeners;
+  private Collection<GameListener> gameListeners;
   
   /**
-   * Constructor, crea una nueva partida.
-   * @param j1 Primer jugador.
-   * @param j2 Segundo jugador.
-   * @param tablero El Tablero
-   * @param turno Indica si j1 es el primero en jugar
+   * @param isPlayerOneTurn true if player one starts, false if player two stars.
    */
-  public Game(Player j1, Player j2, Board tablero, boolean turno) {
+  public Game(Player pOne, Player pTwo, Board board, boolean isPlayerOneTurn) {
     state = new GameState();
     playingState = STANDBY_STATE;
-    this.board = tablero;
-    this.p1 = j1;
-    this.p2 = j2;
-    this.turn = turno;
+    this.board = board;
+    this.pOne = pOne;
+    this.pTwo = pTwo;
+    this.isPlayerOneTurn = isPlayerOneTurn;
     
-    partidaListeners = new Vector<>();
+    gameListeners = new ArrayList<>();
   }
-  
-  /**
-   * Metodo para establecer el partidaListener de la partida.
-   * @param partidaListener El partidaListener.
-   */
+
   public void addGameListener(GameListener partidaListener) {
-     partidaListeners.addElement(partidaListener);
+     gameListeners.add(partidaListener);
   }
   
   public void play() {
@@ -72,8 +65,8 @@ public class Game {
     
     while(!isFinished() && playingState == PLAYING_STATE) {
     	// Turn
-      player = (turn) ? p1 : p2;
-      fireCambiaTurnoEvent(player);
+      player = (isPlayerOneTurn) ? pOne : pTwo;
+      fireMoveEvent(player);
 
       // updates player state
       player.update(move, state);
@@ -90,62 +83,49 @@ public class Game {
       board.move(player, move, state);
       
       // Changes move
-      turn = !turn;
+      isPlayerOneTurn = !isPlayerOneTurn;
     }
     playingState = FINISHED_STATE;
-    Player per = (turn) ? p1 : p2;
-    Player winner = (turn) ? p2 : p1;
+    Player per = (isPlayerOneTurn) ? pOne : pTwo;
+    Player winner = (isPlayerOneTurn) ? pTwo : pOne;
     per.update(move, state);
     
     board.finished(winner);
     
-    fireFinPartidaEvent(player);
+    fireGameEndEvent(player);
   }
-  
-  /**
-   * Metodo que dice si la partida a llegado a su fin.
-   * @return Si la partida ha terminado o sigue.
-   */
+
   public boolean isFinished() {
     return playingState == FINISHED_STATE;
   }
   
   /**
-   * Finaliza la partida bruscamente.
-   * Signals the board and the players.
+   * Finishes the game immediately and notifies the board and the players.
    */
   public void finish() {
   	playingState = FINISHED_STATE;
     board.finished(null);
-    fireFinPartidaEvent(null);
+    fireGameEndEvent(null);
   }
-  
-  /**
-   * Devuelve el primer jugador
-   * @return El jugador 1
-   */
+
   public Player getPlayerOne() {
-    return p1;
+    return pOne;
   }
-  
-  /**
-   * Devuelve el segundo jugador
-   * @return El jugador 2
-   */
+
   public Player getPlayerTwo() {
-    return p2;
+    return pTwo;
   }
 
-  private void fireCambiaTurnoEvent(Player player) {
-  	partidaListeners.forEach(l -> { l.newTurn(player); });
+  private void fireMoveEvent(Player player) {
+  	gameListeners.forEach(l -> { l.newTurn(player); });
   }
 
-  private void fireFinPartidaEvent(Player player) {
-  	partidaListeners.forEach(l -> { l.finish(player); });
+  private void fireGameEndEvent(Player player) {
+  	gameListeners.forEach(l -> { l.finish(player); });
   }
 
-	@Override
-	public String toString() {
-		return state.toString();
-	}
+  @Override
+  public String toString() {
+	return state.toString();
+  }
 }

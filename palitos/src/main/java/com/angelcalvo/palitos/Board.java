@@ -20,25 +20,22 @@
 package com.angelcalvo.palitos;
 
 /**
- * Representa un tablero donde se pueden dibujar las lineas del
- * (tachones) juego.
+ * Board model
  */
 public interface Board {
   /**
-   * Indica al tablero que la partida se ha iniciado
+   * Notifies the board that the game has started
    */
   void started(GameState gameState);
   
   /**
-   * Indica al tablero que la partidad ha terminado
+   * Notifies the board that the game has finished
    */
   void finished(Player winner);
   
 
   /**
-   * Dibuja una l&iacute;nea desde un hueco a otro.
-   * @param player
-   * @param move
+   * Notifies a new movement
    */
   void move(Player player, Move move, GameState gameState);
 }

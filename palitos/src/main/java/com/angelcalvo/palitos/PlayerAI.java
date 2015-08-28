@@ -25,9 +25,7 @@ import java.util.Random;
 import java.util.Vector;
 
 /**
- * Esta clase implementa a un contrario
- * 
- * @author Angel Luis Calvo Ortega
+ * AI player that uses a mini-max backtracking algorithm
  */
 public class PlayerAI implements Player {
 	/** Modo facil de la IA */
@@ -40,10 +38,8 @@ public class PlayerAI implements Player {
 	/** Jugadas ganadoras */
 	private static final int[][][] WINNER_MOVES = {
 			{ { 1, 0, 0, 0, 0 }, { 3, 0, 0, 0, 0 }, { 0, 2, 0, 0, 0 } },
-			{ { 5, 0, 0, 0, 0 }, { 7, 0, 0, 0, 0 }, { 2, 2, 0, 0, 0 }, { 1, 1, 1, 0, 0 },
-					{ 0, 0, 2, 0, 0 } },
-			{ { 9, 0, 0, 0, 0 }, { 0, 4, 0, 0, 0 }, { 2, 0, 2, 0, 0 }, { 0, 0, 0, 2, 0 },
-					{ 2, 0, 0, 2, 0 } } };
+			{ { 5, 0, 0, 0, 0 }, { 7, 0, 0, 0, 0 }, { 2, 2, 0, 0, 0 }, { 1, 1, 1, 0, 0 }, { 0, 0, 2, 0, 0 } },
+			{ { 9, 0, 0, 0, 0 }, { 0, 4, 0, 0, 0 }, { 2, 0, 2, 0, 0 }, { 0, 0, 0, 2, 0 }, { 2, 0, 0, 2, 0 } } };
 
 	private static final String s[] = { "facil", "normal", "dificil" };
 
@@ -51,22 +47,22 @@ public class PlayerAI implements Player {
 	protected final static int MIN = -1000;
 	protected final static int MAX = 1000;
 
-	private int dificultad;
+	private int level;
 	private Color color;
-	private String nombre = "IA";
+	private String name = "IA";
 	private Random r;
 	private GameState state;
 	
 	/**
-	 * M&eacute;todo para establecer la dificultad de la IA.
+	 * M&eacute;todo para establecer la level de la IA.
 	 * 
-	 * @param dificultad
-	 *          La dificultad de la IA
+	 * @param level
+	 *          La level de la IA
 	 */
-	public PlayerAI(int dificultad, Color color) {
-		assert dificultad >= FACIL && dificultad <= DIFICIL;
+	public PlayerAI(int level, Color color) {
+		assert level >= FACIL && level <= DIFICIL;
 		
-		this.dificultad = dificultad;
+		this.level = level;
 		this.color = color;
 		r = new Random();
 		r.setSeed(System.currentTimeMillis());
@@ -103,7 +99,7 @@ public class PlayerAI implements Player {
 
 	@Override
 	public String getName() {
-		return nombre + "(" + s[dificultad] + ")";
+		return name + "(" + s[level] + ")";
 	}
 
 	@Override
@@ -112,9 +108,9 @@ public class PlayerAI implements Player {
 	private int backtraking(SimpleGameState sig, int nivel) {
 		int max = MIN;
 		int min = MAX;
-		int v = sig.value(dificultad);
+		int v = sig.value(level);
 
-		if (v != 0 || nivel == dificultad) {
+		if (v != 0 || nivel == level) {
 			return v;
 		}
 		for (SimpleGameState aux : sig.children()) {
@@ -181,7 +177,7 @@ public class PlayerAI implements Player {
 		 * 0 => regular
 		 * 
 		 * @param dif
-		 *          La dificultad del contrario.
+		 *          La level del contrario.
 		 * @return La optimidad del estado.
 		 */
 		protected int value(int dif) {
