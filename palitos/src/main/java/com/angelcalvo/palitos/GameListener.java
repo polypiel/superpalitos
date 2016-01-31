@@ -28,11 +28,13 @@ public interface GameListener {
    * New turn event
    * @param player who moves
    */
-  void newTurn(Player player);
+  void onMoved(Player player, Move move, GameState state);
   
   /**
    * The game end event
    * @param player The winner
    */
-  void finish(Player player);
+  void onGameFinished(Player winner);
+
+	void onGameStarted(GameState state);
 }

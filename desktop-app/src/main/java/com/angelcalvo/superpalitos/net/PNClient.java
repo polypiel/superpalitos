@@ -18,6 +18,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import com.angelcalvo.palitos.GameListener;
 import com.angelcalvo.palitos.GameState;
 import com.angelcalvo.palitos.Move;
 import com.angelcalvo.palitos.Player;
@@ -28,7 +29,7 @@ import com.angelcalvo.superpalitos.SuperPalitos;
  *
  *  @author Angel Luis Calvo Ortega
  */
-public class PNClient extends Thread implements Player, SPChat {
+public class PNClient extends Thread implements Player, SPChat, GameListener {
 	private final static int REQUEST_CONNECTION = 0;
 	private final static int CONNECTED = 1;
 	private final static int PLAYING = 2;
@@ -173,7 +174,7 @@ public class PNClient extends Thread implements Player, SPChat {
 
 	/* Metodos de la interfaz Jugador */
 	@Override
-	public synchronized Move move() {
+	public synchronized Move move(GameState s) {
 		try {
 			wait();
 		} catch(InterruptedException e) {
@@ -183,7 +184,7 @@ public class PNClient extends Thread implements Player, SPChat {
 	}
 
 	@Override
-	public void update(Move j, GameState s) {
+	public void onMoved(Player p, Move j, GameState state) {
 		if(j != null) { // para palitosNet
 			Paquete paq = new Paquete(Paquete.JUGADA);
 			paq.setJugada(j);
@@ -197,10 +198,14 @@ public class PNClient extends Thread implements Player, SPChat {
 	}
 
 	@Override
-	public void finish() {
+	public void onGameFinished(Player winner) {
 		state = CLOSE;
 		Paquete p = new Paquete(Paquete.ADIOS);
 		p.send(out);
 		interrupt();
+	}
+
+	@Override
+	public void onGameStarted(GameState state) {
 	}
 }

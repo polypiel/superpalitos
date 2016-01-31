@@ -25,23 +25,8 @@ import java.awt.Color;
  * Player model
  */
 public interface Player {
-	/**
-   * Makes a move
-	 */
-  Move move();
-  
-  /**
-   * Sees contrary movement
-   */
-  void update(Move move, GameState state);
+  Move move(GameState state);
 
   Color getColor();
-
   String getName();
-  
-  /**
-   * Metodo para avisar al jugador que se ha terminado la partida
-   *
-   */
-  void finish();
 }

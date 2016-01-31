@@ -160,8 +160,8 @@ public class SPFrame extends JFrame {
    * @return
    */
    
-  public TableroPanel createTablero(String title, Integer tab) {
-    TableroPanel spp = new TableroPanel(sp, confManager);
+  public BoardPanel createTablero(String title, Integer tab) {
+    BoardPanel spp = new BoardPanel(sp, confManager);
     if(tab == null) {
     	addTab(spp, MATCH_TAB, title, (ImageIcon)resourceManager.getResource(ResourceManager.II_SP));
     } else {
@@ -191,8 +191,8 @@ public class SPFrame extends JFrame {
       isHelpShowed = false;
     } else if(MATCH_TAB.equals(name)) {
     	Component tab = tabbedPane.getSelectedComponent();
-    	if(tab instanceof TableroPanel) {
-    		sp.cerrarPartida((TableroPanel) tab);
+    	if(tab instanceof BoardPanel) {
+    		sp.cerrarPartida((BoardPanel) tab);
     	}
     } else if (CHAT_TAB.equals(name)) {
     	isChatShowed = false;

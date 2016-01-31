@@ -26,6 +26,8 @@ import java.awt.Color;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.angelcalvo.palitos.PlayerAI.AiLevel;
+
 public class PlayerIATest {
 	GameState state;
 	Player player;
@@ -33,22 +35,20 @@ public class PlayerIATest {
 	@Before
 	public void setUp() {
 		state = new GameState();
-		player = new PlayerAI(PlayerAI.NORMAL, Color.BLACK);
-		player.update(null, state);
+		player = new PlayerAI(AiLevel.NORMAL, Color.BLACK);
 	}
 	
 	@Test
 	public void testMove() {		
-		assertTrue(state.isValid(player.move()));
+		assertTrue(state.isValid(player.move(state)));
 	}
 	
 	@Test
 	public void testUpdate() {
 		Move m1 = Move.fromSticks(10, 14);
 		state.move(m1);
-		player.update(m1, state);
 		for(int i = 0; i < 1000; i++) {
-			Move move = player.move();
+			Move move = player.move(state);
 			assertTrue(move.getStartStick() < 14);
 		}
 	}

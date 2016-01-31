@@ -13,11 +13,12 @@ package com.angelcalvo.superpalitos;
 
 import java.util.LinkedList;
 
-import com.angelcalvo.palitos.Board;
 import com.angelcalvo.palitos.Game;
 import com.angelcalvo.palitos.GameListener;
+import com.angelcalvo.palitos.GameState;
+import com.angelcalvo.palitos.Move;
 import com.angelcalvo.palitos.Player;
-import com.angelcalvo.superpalitos.gui.TableroPanel;
+import com.angelcalvo.superpalitos.gui.BoardPanel;
 
 /**
  * 
@@ -32,7 +33,7 @@ public class PartidaManager implements GameListener {
   public static final int PARTIDA_2 = 2;
   
   private Player j1, j2;
-  private TableroPanel tablero;
+  private BoardPanel tablero;
   //private int type;
   // private int mode;
   private Game partida;
@@ -49,7 +50,7 @@ public class PartidaManager implements GameListener {
    * @param j2 Jugador dos
    * @param tablero El tablero
    */
-  public PartidaManager(Player j1, Player j2, TableroPanel tablero) {
+  public PartidaManager(Player j1, Player j2, BoardPanel tablero) {
   	this(j1, j2, tablero, true);
 	}
   
@@ -59,7 +60,7 @@ public class PartidaManager implements GameListener {
    * @param tablero El tablero
    * @param j1Turn Indica si mueve el jugador uno primero
    */
-  public PartidaManager(Player j1, Player j2, TableroPanel tablero, boolean j1Turn) {
+  public PartidaManager(Player j1, Player j2, BoardPanel tablero, boolean j1Turn) {
     this.j1 = j1;
     this.j2 = j2;
     this.tablero = tablero;
@@ -74,8 +75,9 @@ public class PartidaManager implements GameListener {
    */
   public void play() {
     if(!jugando) {
-    	partida = new Game(j1, j2, tablero, j1Turn);
+    	partida = new Game(j1, j2, j1Turn);
     	partida.addGameListener(this);
+    	partida.addGameListener(tablero);
     	tablero.setScore(j1.getName() + "  " + j1Score + " - " + j2Score + "  " + j2.getName());
     	time = System.currentTimeMillis();
     	jugando = true;
@@ -90,7 +92,7 @@ public class PartidaManager implements GameListener {
   }
 
   @Override
-  public void newTurn(Player player) {
+  public void onMoved(Player player, Move move, GameState gameState) {
   	// Adds delay
     try {
       Thread.sleep(TURN_DELAY);
@@ -100,7 +102,7 @@ public class PartidaManager implements GameListener {
   }
 
   @Override
-  public void finish(Player winner) {
+  public void onGameFinished(Player winner) {
     time = System.currentTimeMillis() - time;
     jugando = false;
     if(j1.equals(winner)) {
@@ -126,8 +128,13 @@ public class PartidaManager implements GameListener {
   public boolean estaJugandgo(Player j) {
   	return j1 == j || j2 == j;
   }
-  
-  public Board getBoard() {
-  	return tablero;
-  }
+
+	@Override
+	public void onGameStarted(GameState state) {
+
+	}
+	
+	public BoardPanel getBoard() {
+		return tablero;
+	}
 }

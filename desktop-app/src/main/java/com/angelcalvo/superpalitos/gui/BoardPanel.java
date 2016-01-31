@@ -32,7 +32,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.angelcalvo.palitos.Board;
+import com.angelcalvo.palitos.GameListener;
 import com.angelcalvo.palitos.GameState;
 import com.angelcalvo.palitos.Move;
 import com.angelcalvo.palitos.Player;
@@ -41,12 +41,7 @@ import com.angelcalvo.superpalitos.Line;
 import com.angelcalvo.superpalitos.SuperPalitos;
 import com.angelcalvo.superpalitos.XyMove;
 
-/**
- * El panel con el tablero
- * 
- * @author Angel Calvo
- */
-public class TableroPanel extends JPanel implements Board {
+public class BoardPanel extends JPanel implements GameListener {
   private static final long serialVersionUID = 3616447899681305654L;
   
   private static final int STATE_OFF = 0;
@@ -61,7 +56,7 @@ public class TableroPanel extends JPanel implements Board {
   private static final int QUAD_DELAY = 60;
   
   private static final String IMAGE_FILE = "/com/angelcalvo/superpalitos/gui/fondo.png";
-  protected static final Image FONDO = Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource(IMAGE_FILE));
+  protected static final Image FONDO = Toolkit.getDefaultToolkit().getImage(BoardPanel.class.getResource(IMAGE_FILE));
 
   private static final int huecos[][] = {
     {176, 81}, {208, 81}, {161, 113}, {192, 113}, {224, 113}, {145, 144},
@@ -73,19 +68,19 @@ public class TableroPanel extends JPanel implements Board {
   
   private final static Image[][] PEN_CURSORS = {
   	{
-  		Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliAzul.png")),
-  		Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliAzul-sel.png"))},
+  		Toolkit.getDefaultToolkit().getImage(BoardPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliAzul.png")),
+  		Toolkit.getDefaultToolkit().getImage(BoardPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliAzul-sel.png"))},
   	{
-  		Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliNegro.png")),
-  		Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliNegro-sel.png")),
+  		Toolkit.getDefaultToolkit().getImage(BoardPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliNegro.png")),
+  		Toolkit.getDefaultToolkit().getImage(BoardPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliNegro-sel.png")),
   	},
   	{
-  		Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliRojo.png")),
-    	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliRojo-sel.png")),
+  		Toolkit.getDefaultToolkit().getImage(BoardPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliRojo.png")),
+    	Toolkit.getDefaultToolkit().getImage(BoardPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliRojo-sel.png")),
   	},
   	{
-  		Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliVerde.png")),
-    	Toolkit.getDefaultToolkit().getImage(TableroPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliVerde-sel.png"))
+  		Toolkit.getDefaultToolkit().getImage(BoardPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliVerde.png")),
+    	Toolkit.getDefaultToolkit().getImage(BoardPanel.class.getResource("/com/angelcalvo/superpalitos/gui/boliVerde-sel.png"))
 
   	}
   };
@@ -127,7 +122,7 @@ public class TableroPanel extends JPanel implements Board {
   /**
    * Crea un TableroPanel
    */
-  public TableroPanel(final SuperPalitos sp, ConfManager confManager) {
+  public BoardPanel(final SuperPalitos sp, ConfManager confManager) {
   	this.sp = sp;
   	this.confManager = confManager;
   	
@@ -148,7 +143,7 @@ public class TableroPanel extends JPanel implements Board {
     
     newGameButton = new JButton("Jugar de nuevo");
     newGameButton.setVisible(false);
-    newGameButton.addActionListener(e -> {sp.repetirCmd(TableroPanel.this); }
+    newGameButton.addActionListener(e -> {sp.repetirCmd(BoardPanel.this); }
     );
     panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 10));
     panel.add(newGameButton);
@@ -179,13 +174,13 @@ public class TableroPanel extends JPanel implements Board {
   
   // Metodos de Tablero -------------------------------------------------------
   @Override
-  public void started(GameState gameState) {
-  	this.gameState = gameState;
+  public void onGameStarted(GameState state) {
+  	gameState = state;
     clear();
   }
   
   @Override
-  public void finished(Player winner) {
+  public void onGameFinished(Player winner) {
     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     if(winner == null) {
     	msgLabel.setText("Fin de la partida");
@@ -200,7 +195,7 @@ public class TableroPanel extends JPanel implements Board {
   
   
   @Override
-	public void move(Player player, Move move, GameState state) {
+	public void onMoved(Player player, Move move, GameState state) {
   	gameState = state;
   	Line line = null;
   	
@@ -385,7 +380,7 @@ public class TableroPanel extends JPanel implements Board {
    * @version 1.0
    */
   private class Humano implements Player {
-    private GameState s;
+  	private GameState s;
     private Color color;
     private String nombre;
     private int h1, h2;
@@ -402,7 +397,8 @@ public class TableroPanel extends JPanel implements Board {
     }
     
     @Override
-    public Move move() {
+    public Move move(GameState s) {
+    	this.s = s;
       repaint();
       j = this;
       state = STATE_READY;
@@ -430,14 +426,6 @@ public class TableroPanel extends JPanel implements Board {
     public String getName() {
       return nombre;
     }
-    
-    @Override
-    public void update(Move j, GameState s) {
-      this.s = s;
-    }
-    
-    @Override
-    public void finish() {}
   }
   
   /**

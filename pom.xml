@@ -5,7 +5,7 @@
   <artifactId>superpalitos</artifactId>
   <name>SuperPalitos</name>
   <packaging>pom</packaging>
-  <version>3.1</version>
+  <version>3.2</version>
   <description>'Palitos' paper and pencil game written in Java</description>
   <url>http://angelcalvo.com/project.html?p=sp</url>
 
@@ -37,7 +37,7 @@
   		<plugin>
   			<groupId>org.apache.maven.plugins</groupId>
   			<artifactId>maven-compiler-plugin</artifactId>
-  			<version>3.1</version>
+  			<version>3.5</version>
   			<configuration>
   				<source>1.8</source>
   				<target>1.8</target>

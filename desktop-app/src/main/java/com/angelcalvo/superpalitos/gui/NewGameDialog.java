@@ -213,7 +213,7 @@ public class NewGameDialog extends JPanel {
   // TODO
   @Override
   protected void paintComponent(Graphics g) {
-  	g.drawImage(TableroPanel.FONDO, 0, 0, null);
+  	g.drawImage(BoardPanel.FONDO, 0, 0, null);
     super.paintComponent(g);
   }
 }

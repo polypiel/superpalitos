@@ -18,11 +18,11 @@ import javax.swing.SwingUtilities;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.angelcalvo.palitos.Board;
 import com.angelcalvo.palitos.Player;
 import com.angelcalvo.palitos.PlayerAI;
+import com.angelcalvo.palitos.PlayerAI.AiLevel;
+import com.angelcalvo.superpalitos.gui.BoardPanel;
 import com.angelcalvo.superpalitos.gui.SPFrame;
-import com.angelcalvo.superpalitos.gui.TableroPanel;
 import com.angelcalvo.superpalitos.net.PNClient;
 import com.angelcalvo.superpalitos.net.PNServer;
 
@@ -101,15 +101,15 @@ public class SuperPalitos {
    * @param first
    */
   public void nuevaPartida(int tipo, PNClient pnPlayer, boolean first, Integer tab) {
-    TableroPanel t = frame.createTablero(tags[tipo], tab);
+    BoardPanel t = frame.createTablero(tags[tipo], tab);
     Player j1 = t.createPlayer(j1Name, j1Color);
     Player j2 = null;
     if(tipo == JUEGO_1J_FACIL) {						// FACIL
-      j2 = new PlayerAI(PlayerAI.FACIL, BLACK_COLOR);
+      j2 = new PlayerAI(AiLevel.EASY, BLACK_COLOR);
     } else if(tipo == JUEGO_1J_NORMAL) {		// NORMAL
-      j2 = new PlayerAI(PlayerAI.NORMAL, BLACK_COLOR);
+      j2 = new PlayerAI(AiLevel.NORMAL, BLACK_COLOR);
     } else if(tipo == JUEGO_1J_DIFICIL) {	 // DIFICIL
-      j2 = new PlayerAI(PlayerAI.DIFICIL, BLACK_COLOR);
+      j2 = new PlayerAI(AiLevel.HARD, BLACK_COLOR);
     } else if(tipo == JUEGO_2J) {					 // 2 JUGADORES
       j2 = t.createPlayer(j2Name, j2Color);
     } else if(tipo == JUEGO_MJ) {
@@ -148,7 +148,7 @@ public class SuperPalitos {
      frame.setVisible(true);
   }
 
-  private PartidaManager getPartidaManager(Board board) {
+  private PartidaManager getPartidaManager(BoardPanel board) {
   	for(PartidaManager pm: partidas) {
   		if(pm.getBoard().equals(board)) {
   			return pm;
@@ -160,7 +160,7 @@ public class SuperPalitos {
    * Se ha pulsado el boton repetir
    * @param id El identficador del tablero
    */
-  public void repetirCmd(TableroPanel panel) {
+  public void repetirCmd(BoardPanel panel) {
   	getPartidaManager(panel).replay();
   }
 
@@ -168,9 +168,9 @@ public class SuperPalitos {
    * Utilizado por SPFrame
    * @param id El identificador del tablero
    */
-  public void cerrarPartida(TableroPanel panel) {
+  public void cerrarPartida(BoardPanel panel) {
   	PartidaManager pm = getPartidaManager(panel);
-  	pm.finish(null);
+  	pm.onGameFinished(null);
   	partidas.remove(pm);
   }
   // PalitosNet ---------------------------------------------------------------
@@ -237,7 +237,7 @@ public class SuperPalitos {
   /**
    * Metodo para indicar que el extremo (jugador contrario) se ha desconectado.
    */
-  public void desconectado(TableroPanel panel) {
+  public void desconectado(BoardPanel panel) {
     PartidaManager pm = getPartidaManager(panel);
   	partidas.remove(pm);
     frame.showAbortPartidaMsg();

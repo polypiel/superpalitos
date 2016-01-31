@@ -19,20 +19,21 @@
 
 package com.angelcalvo.palitos;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 
 import org.junit.Test;
 
-import com.angelcalvo.palitos.mock.BoardMock;
+import com.angelcalvo.palitos.PlayerAI.AiLevel;
 
 public class GameTest {
 
 	@Test
 	public void test() {
-		Game game = new Game(new PlayerAI(PlayerAI.FACIL, Color.BLACK), new PlayerAI(PlayerAI.DIFICIL,
-						Color.RED), new BoardMock(), true);
+		Game game = new Game(new PlayerAI(AiLevel.EASY, Color.BLACK), new PlayerAI(AiLevel.HARD,
+						Color.RED), true);
 		assertFalse(game.isFinished());
 
 		game.finish();

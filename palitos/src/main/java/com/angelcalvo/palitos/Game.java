@@ -35,16 +35,14 @@ public class Game {
   
   private boolean isPlayerOneTurn;
   private Player pOne, pTwo;
-  private Board board;
   private Collection<GameListener> gameListeners;
   
   /**
    * @param isPlayerOneTurn true if player one starts, false if player two stars.
    */
-  public Game(Player pOne, Player pTwo, Board board, boolean isPlayerOneTurn) {
+  public Game(Player pOne, Player pTwo, boolean isPlayerOneTurn) {
     state = new GameState();
     playingState = STANDBY_STATE;
-    this.board = board;
     this.pOne = pOne;
     this.pTwo = pTwo;
     this.isPlayerOneTurn = isPlayerOneTurn;
@@ -61,38 +59,32 @@ public class Game {
     Move move = null;
     playingState = PLAYING_STATE;
     
-    board.started(state);
+    fireGameStartEvent(state);
     
     while(!isFinished() && playingState == PLAYING_STATE) {
     	// Turn
       player = (isPlayerOneTurn) ? pOne : pTwo;
-      fireMoveEvent(player);
 
       // updates player state
-      player.update(move, state);
+      // player.update(move, state);
       
       // Checks move is valid
       // TODO fix
       do {
-        move = player.move();
+        move = player.move(state);
       } while(!state.isValid(move));
       
-      // applays move
+      // applys move
       state.move(move);
-      // notifies board
-      board.move(player, move, state);
+      
+      fireMoveEvent(player, move, state);
       
       // Changes move
       isPlayerOneTurn = !isPlayerOneTurn;
     }
     playingState = FINISHED_STATE;
-    Player per = (isPlayerOneTurn) ? pOne : pTwo;
     Player winner = (isPlayerOneTurn) ? pTwo : pOne;
-    per.update(move, state);
-    
-    board.finished(winner);
-    
-    fireGameEndEvent(player);
+    fireGameEndEvent(winner);
   }
 
   public boolean isFinished() {
@@ -104,7 +96,6 @@ public class Game {
    */
   public void finish() {
   	playingState = FINISHED_STATE;
-    board.finished(null);
     fireGameEndEvent(null);
   }
 
@@ -115,13 +106,17 @@ public class Game {
   public Player getPlayerTwo() {
     return pTwo;
   }
+  
+  private void fireGameStartEvent(GameState state) {
+  	gameListeners.forEach(l -> { l.onGameStarted(state); });
+  }
 
-  private void fireMoveEvent(Player player) {
-  	gameListeners.forEach(l -> { l.newTurn(player); });
+  private void fireMoveEvent(Player player, Move move, GameState state) {
+  	gameListeners.forEach(l -> { l.onMoved(player, move, state); });
   }
 
   private void fireGameEndEvent(Player player) {
-  	gameListeners.forEach(l -> { l.finish(player); });
+  	gameListeners.forEach(l -> { l.onGameFinished(player); });
   }
 
   @Override

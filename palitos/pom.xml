@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.angelcalvo</groupId>
 		<artifactId>superpalitos</artifactId>
-		<version>3.1</version>
+		<version>3.2</version>
 	</parent>
 	<packaging>jar</packaging>
 	<artifactId>palitos</artifactId>
@@ -14,7 +14,7 @@
 		<dependency>
 			<artifactId>junit</artifactId>
 			<groupId>junit</groupId>
-			<version>4.11</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

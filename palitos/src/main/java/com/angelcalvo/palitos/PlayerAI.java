@@ -19,7 +19,7 @@
 
 package com.angelcalvo.palitos;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Collection;
 import java.util.Random;
 import java.util.Vector;
@@ -28,53 +28,47 @@ import java.util.Vector;
  * AI player that uses a mini-max backtracking algorithm
  */
 public class PlayerAI implements Player {
-	/** Modo facil de la IA */
-	public static final int FACIL = 0;
-	/** Modo normal de la IA */
-	public static final int NORMAL = 1;
-	/** Modo dificil de la IA */
-	public static final int DIFICIL = 2;
+	public enum AiLevel {
+		EASY (0),
+		NORMAL (1),
+		HARD (2);
+		
+		private int backLevel;
+		
+		private AiLevel(int backLevel) {
+			this.backLevel = backLevel;
+		}
 
-	/** Jugadas ganadoras */
+		public int getBackLevel() {
+			return backLevel;
+		}
+	}
+
 	private static final int[][][] WINNER_MOVES = {
 			{ { 1, 0, 0, 0, 0 }, { 3, 0, 0, 0, 0 }, { 0, 2, 0, 0, 0 } },
 			{ { 5, 0, 0, 0, 0 }, { 7, 0, 0, 0, 0 }, { 2, 2, 0, 0, 0 }, { 1, 1, 1, 0, 0 }, { 0, 0, 2, 0, 0 } },
 			{ { 9, 0, 0, 0, 0 }, { 0, 4, 0, 0, 0 }, { 2, 0, 2, 0, 0 }, { 0, 0, 0, 2, 0 }, { 2, 0, 0, 2, 0 } } };
 
-	private static final String s[] = { "facil", "normal", "dificil" };
-
 	protected static final double COTA = 0.1;
 	protected final static int MIN = -1000;
 	protected final static int MAX = 1000;
 
-	private int level;
-	private Color color;
-	private String name = "IA";
-	private Random r;
+	private final AiLevel aiLevel;
+	private final Color color;
+	private final String name = "AI";
+	private final Random r;
 	private GameState state;
-	
-	/**
-	 * M&eacute;todo para establecer la level de la IA.
-	 * 
-	 * @param level
-	 *          La level de la IA
-	 */
-	public PlayerAI(int level, Color color) {
-		assert level >= FACIL && level <= DIFICIL;
-		
-		this.level = level;
+
+	public PlayerAI(AiLevel level, Color color) {
+		this.aiLevel = level;
 		this.color = color;
 		r = new Random();
 		r.setSeed(System.currentTimeMillis());
 	}
 
 	@Override
-	public void update(Move j, GameState state) {
+	public Move move(GameState state) {
 		this.state = state;
-	}
-
-	@Override
-	public Move move() {
 		int max = MIN;
 		SimpleGameState resultado = null;
 
@@ -99,18 +93,15 @@ public class PlayerAI implements Player {
 
 	@Override
 	public String getName() {
-		return name + "(" + s[level] + ")";
+		return name + "(" + aiLevel.name() + ")";
 	}
-
-	@Override
-	public void finish() {}
 
 	private int backtraking(SimpleGameState sig, int nivel) {
 		int max = MIN;
 		int min = MAX;
-		int v = sig.value(level);
+		int v = sig.value(aiLevel);
 
-		if (v != 0 || nivel == level) {
+		if (v != 0 || aiLevel.getBackLevel() == nivel) {
 			return v;
 		}
 		for (SimpleGameState aux : sig.children()) {
@@ -146,7 +137,7 @@ public class PlayerAI implements Player {
 	}
 
 	/**
-	 * Internal state represantion
+	 * Internal state representation
 	 */
 	static class SimpleGameState implements Cloneable {
 		/** est[i] de longitud i+1 con 0 <= i < 5 */
@@ -176,26 +167,26 @@ public class PlayerAI implements Player {
 		 * <p>
 		 * 0 => regular
 		 * 
-		 * @param dif
+		 * @param aiLevel
 		 *          La level del contrario.
 		 * @return La optimidad del estado.
 		 */
-		protected int value(int dif) {
+		protected int value(AiLevel aiLevel) {
 			int v;
 
-			if ((v = esJugada(dif)) != 0) {
+			if ((v = esJugada(aiLevel)) != 0) {
 				return v;
 			}
-			if ((v = esPreJugada(dif)) != 0) {
+			if ((v = esPreJugada(aiLevel)) != 0) {
 				return v;
 			}
 			return 0;
 		}
 
-		private int esPreJugada(int dif) {
+		private int esPreJugada(AiLevel aiLevel) {
 			int cont;
 
-			for (int i = 0; i <= dif; i++) {
+			for (int i = 0; i <= aiLevel.getBackLevel(); i++) {
 				for (int j = 0; j < WINNER_MOVES[i].length; j++) {
 					cont = 0;
 					for (int k = 0; k < est.length; k++) {
@@ -214,8 +205,8 @@ public class PlayerAI implements Player {
 			return 0;
 		}
 
-		private int esJugada(int dif) {
-			for (int i = 0; i <= dif; i++) {
+		private int esJugada(AiLevel aiLevel) {
+			for (int i = 0; i <= aiLevel.getBackLevel(); i++) {
 				for (int j = 0; j < WINNER_MOVES[i].length; j++) {
 					int cont = 0;
 					for (int k = 0; k < est.length; k++) {
