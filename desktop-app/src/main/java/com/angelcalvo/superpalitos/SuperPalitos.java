@@ -15,9 +15,6 @@ import java.util.LinkedList;
 
 import javax.swing.SwingUtilities;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import com.angelcalvo.palitos.Player;
 import com.angelcalvo.palitos.PlayerAI;
 import com.angelcalvo.palitos.PlayerAI.AiLevel;
@@ -28,8 +25,6 @@ import com.angelcalvo.superpalitos.net.PNServer;
 
 /**
  * Clase controlador
- *
- * @author Angel Luis Calvo Ortega
  */
 public class SuperPalitos {
   /** Tipo un jugador con IA facil */
@@ -65,14 +60,15 @@ public class SuperPalitos {
   private PNServer pnServer;
   
   private Collection<PartidaManager> partidas;
-  private SPFrame frame;
-  private ConfManager confManager;
+  
+  private final SPFrame frame;
   
   /* Opciones */
   private String j1Name, j2Name;
   private Color j1Color, j2Color;
-  
+
   private SuperPalitos() {
+  	frame = new SPFrame(this);
     partidas = new LinkedList<PartidaManager>();
     pnServer = new PNServer(this);
     
@@ -81,10 +77,8 @@ public class SuperPalitos {
     j2Name = DEFAULT_J2_NAME;
     j1Color = BLUE_COLOR;
     j2Color = RED_COLOR;
-  }
-  
-  public void init() {
-    confManager.save(ConfManager.SOUND_OPT, true);
+    
+    ConfManager.get().save(ConfManager.SOUND_OPT, true);
   }
   
   /**
@@ -125,23 +119,13 @@ public class SuperPalitos {
     pm.play();
   }
   
-  /**
-   * Metodo principal, inicia la aplicaci&oacute;n.
-   * @param args Argumentos de entrada.
-   */
   public static void main(String[] args) {
-		@SuppressWarnings("resource")
-		ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-		
-		final SuperPalitos sp = (SuperPalitos) context.getBean("sp");
-
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				sp.startGui();
+				new SuperPalitos().startGui();
 			}
 		});
-		// SuperPalitos.getInstance();
 	}
   
   private void startGui() {
@@ -349,20 +333,5 @@ public class SuperPalitos {
 	public void setJ2Color(Color j2Color) {
 		this.j2Color = j2Color;
 	}
-
-	public SPFrame getFrame() {
-		return frame;
-	}
-	public void setFrame(SPFrame frame) {
-		this.frame = frame;
-	}
-
-	public ConfManager getConfManager() {
-		return confManager;
-	}
-	public void setConfManager(ConfManager confManager) {
-		this.confManager = confManager;
-	}
-	
 	
 }

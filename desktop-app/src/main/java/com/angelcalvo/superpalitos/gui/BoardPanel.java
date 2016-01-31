@@ -117,14 +117,12 @@ public class BoardPanel extends JPanel implements GameListener {
   private GameState gameState;
   
   private SuperPalitos sp;
-  private ConfManager confManager;
   
   /**
    * Crea un TableroPanel
    */
-  public BoardPanel(final SuperPalitos sp, ConfManager confManager) {
+  public BoardPanel(final SuperPalitos sp) {
   	this.sp = sp;
-  	this.confManager = confManager;
   	
     lineas = new LinkedList<Line>();
     state = STATE_OFF;
@@ -212,7 +210,7 @@ public class BoardPanel extends JPanel implements GameListener {
   	
     line.setColor(player.getColor());
     drawLine(line, player != j);
-    if(confManager.getBoolean(ConfManager.SOUND_OPT)) {
+    if(ConfManager.get().getBoolean(ConfManager.SOUND_OPT)) {
     	clip.loop();
     	timer.schedule(new StopSound(), (Math.abs(line.getX1() - line.getX2()) / ANCHO) * QUAD_DELAY);
     }

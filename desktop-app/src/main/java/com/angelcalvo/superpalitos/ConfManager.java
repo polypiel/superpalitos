@@ -10,10 +10,19 @@ public class ConfManager {
 	public static final String P2_COLOR = "player2.color";
 	public static final String GAME_MODE = "game.mode";
 	
+	private static ConfManager INSTANCE;
+	
 	private Map<String, String> options;
 	
-	public ConfManager() {
+	private ConfManager() {
 		options = new HashMap<String, String>();
+	}
+	
+	public static ConfManager get() {
+		if (INSTANCE == null) {
+			INSTANCE = new ConfManager();
+		}
+		return INSTANCE;
 	}
 	
 	public void save(String option, String value) {

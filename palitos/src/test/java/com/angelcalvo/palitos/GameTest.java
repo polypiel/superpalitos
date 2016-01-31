@@ -36,7 +36,7 @@ public class GameTest {
 						Color.RED), true);
 		assertFalse(game.isFinished());
 
-		game.finish();
+		game.kill();
 		assertTrue(game.isFinished());
 	}
 

@@ -81,6 +81,9 @@ public class Game {
       
       // Changes move
       isPlayerOneTurn = !isPlayerOneTurn;
+      if (state.alive() == 1) {
+      	playingState = FINISHED_STATE;
+      }
     }
     playingState = FINISHED_STATE;
     Player winner = (isPlayerOneTurn) ? pTwo : pOne;
@@ -94,7 +97,7 @@ public class Game {
   /**
    * Finishes the game immediately and notifies the board and the players.
    */
-  public void finish() {
+  public void kill() {
   	playingState = FINISHED_STATE;
     fireGameEndEvent(null);
   }
@@ -121,6 +124,6 @@ public class Game {
 
   @Override
   public String toString() {
-	return state.toString();
+  	return state.toString();
   }
 }

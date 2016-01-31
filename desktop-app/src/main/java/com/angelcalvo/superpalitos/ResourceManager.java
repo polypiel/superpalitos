@@ -39,10 +39,19 @@ public class ResourceManager {
   
   public static final String A_PEN = "boli.wav";
   
+  private static ResourceManager INSTANCE;
+  
 	private Map<String, Object> resources;
 
-	public ResourceManager() {
+	private ResourceManager() {
 		resources = new HashMap<String, Object>();
+	}
+	
+	public static ResourceManager get() {
+		if (INSTANCE == null) {
+			INSTANCE = new ResourceManager();
+		}
+		return INSTANCE;
 	}
 	
 	public Object getResource(String key) {
